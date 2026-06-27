@@ -1,0 +1,21 @@
+# Utilitarios de uso unico (nao sao entregaveis do projeto)
+create_bmi_structure.py
+
+# Protocolo pessoal de workflow com IA (nao e entregavel do projeto)
+v_model_protocol/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# PlatformIO
+firmware/.pio/
+firmware/.pioenvs/
+
+# Credenciais (nunca commitar)
+firmware/include/credentials.h
+*.env
+secrets.*
