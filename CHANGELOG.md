@@ -12,11 +12,16 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 ### Adicionado
 - Documentacao completa do V-model: conceito, arquitetura, modulos, hardware
 - Protocolo V-model de engenharia (`v_model_protocol/`)
-- Padroes de governanca e scripts de verificacao (`_governance/`)
+- Padroes de governanca (`_governance/`)
+- Scripts de verificacao de documentacao (`scripts/`)
 - Pipeline CI/CD (`.github/workflows/verify-docs.yml`)
 - Licenca GPL-3.0
 - `CHANGELOG.md` (este arquivo)
 - Script de automacao de versionamento (`_governance/scripts/bump_version.py`)
+
+### Corrigido
+- Scripts de verificacao movidos de `_governance/scripts/` para `scripts/` (alinhamento com CLAUDE.md e CI)
+- `scripts/run_all.py`: corrige UnicodeEncodeError no Windows ao imprimir caracteres UTF-8
 
 ---
 

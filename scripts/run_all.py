@@ -6,9 +6,12 @@ Uso: python scripts/run_all.py
 Retorna exit code 0 se tudo passar, 1 se houver erros.
 """
 
+import os
 import subprocess
 import sys
 from pathlib import Path
+
+sys.stdout.reconfigure(encoding='utf-8')
 
 SCRIPTS = [
     ('verify_links.py',   'Links [VER: file#anchor]'),
@@ -28,7 +31,8 @@ for script_file, description in SCRIPTS:
     print(f"  ({script_file})")
     result = subprocess.run(
         [sys.executable, scripts_dir / script_file],
-        capture_output=False
+        capture_output=False,
+        env={**os.environ, 'PYTHONIOENCODING': 'utf-8'},
     )
     if result.returncode != 0:
         all_passed = False
