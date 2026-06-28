@@ -10,6 +10,14 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 ## [Nao lancado]
 
 ### Adicionado
+- `firmware/src/game/game.h` — interface publica de MOD_JOGO: `Cor`, `ParCores`, `ResultadoJogo`, `EventoJogo`, `ConfigSessao`, `GameCallback`; API publica (`gameInit`, `gameOnEvento`, `gameIniciarSessao`, `gameOnImpacto`, `gameLoop`); API de teste (`gameZonaParaCor`, `gameProximaCorA`, `gameProximaCorB`, `gameProximasDuasA`, `gameProximasDuasB`, `gameGetCorAtual`, `gameGetParAtual`)
+- `firmware/src/game/game.cpp` — implementacao de MOD_JOGO derivada de `spec/game/game.json` e `04_logica_jogo.md`; maquina de estados (OCIOSO, ESTIMULO, AVALIANDO, INTERVALO, FIM_SESSAO); Mecanismo A (Fisher-Yates por bloco de 4) e Mecanismo B (peso decrescente); logica de acerto/erro Modo 1 e Modo 2 com janela de simultaneidade; callback de resultado e fim de sessao
+- `firmware/test/test_game/test_main.cpp` — 11 testes Unity para MOD_JOGO; cobre CA-04-01 (distribuicao Mec A), CA-04-02 (variacao Mec B), CA-04-03 (pares distintos Modo 2), CA-04-04 (acerto Modo 1), CA-04-05 (erro Modo 1), CA-04-06 (acerto Modo 2 dentro da janela), CA-04-07 (erro Modo 2 fora da janela), CA-04-08 (fim de sessao), CA-04-10 (intervalo); CA-04-09 documentado como REQUER HARDWARE
+
+### Alterado
+- `firmware/platformio.ini`: atualiza `build_src_filter` para `+<sensor/> +<visual/> +<game/>` — inclui MOD_JOGO no build principal
+- `firmware/test/mock/Arduino.h`: adiciona mock minimo de `String` (construtor default, `const char*`, copia, atribuicao) rastreado a `ConfigSessao.nome_crianca`; adiciona declaracao de `long random(long max)` rastreada ao mecanismo de aleatoriedade de `game.cpp`
+
 - `firmware/test/mock/FastLED.h` — mock minimo de FastLED para compilacao nativa: `CRGB`, `CFastLED`, `EOrder`/`GRB`, `WS2812B`; `show()` copia estado para `g_mock_led_buf` (observavel nos testes); padrao declare->define
 - `firmware/test/test_visual/test_main.cpp` — 14 testes Unity para MOD_LED; cobre CA-03-01 (boot animation), CA-03-04 (LED correto por modo), CA-03-06 (celebracao); constantes T_ derivadas de `visual_config.h`; CAs hardware documentados como comentario
 - `firmware/src/visual/visual.h` — interface publica de MOD_LED: `ComandoLED` (struct + enums LED/Cor), `visualInit()`, `visualLoop()`, `visualSetLED()`, `visualRunCelebracao()`
