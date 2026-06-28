@@ -20,6 +20,8 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - Script de automacao de versionamento (`_governance/scripts/bump_version.py`)
 - `spec/power/power.json` — spec derivada de `05_alimentacao.md` v0.1.0
 - `spec/power/power.schema.json` — schema de validacao do power spec
+- `spec/sensor/sensor.json` — spec derivada de `02_sensor_impacto.md` v0.1.0
+- `spec/sensor/sensor.schema.json` — schema de validacao do sensor spec
 - `README.md` — documentacao de entrada do repositorio
 
 ### Alterado

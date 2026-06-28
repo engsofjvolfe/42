@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "documento_fonte": "02_sensor_impacto.md",
+    "versao_fonte": "0.1.0",
+    "depende_tambem_de": "spec/power/power.json"
+  },
+
+  "componente": {
+    "tipo": "disco_piezoeletrico_passivo",
+    "diametro_mm": 27,
+    "terminais": 2,
+    "tensao_pico_min_v": 5,
+    "tensao_pico_max_v": 50,
+    "quantidade": 4
+  },
+
+  "circuito_protecao": {
+    "r1_ohm": 1000000,
+    "r1_potencia_w": 0.25,
+    "d1_tensao_zener_v": 3.3,
+    "d1_modelos": ["BZX55C3V3", "1N5226B"],
+    "d1_modelo_proibido": "1N4728A",
+    "tensao_maxima_gpio_v": 3.3
+  },
+
+  "mapeamento_gpios": [
+    {"zona": "LARANJA", "gpio": 34, "canal_adc": "ADC1_CH6"},
+    {"zona": "AZUL",    "gpio": 35, "canal_adc": "ADC1_CH7"},
+    {"zona": "AMARELO", "gpio": 32, "canal_adc": "ADC1_CH4"},
+    {"zona": "ROXO",    "gpio": 33, "canal_adc": "ADC1_CH5"}
+  ],
+
+  "adc": {
+    "banco": "ADC1",
+    "resolucao_bits": 12,
+    "contagens_maximas": 4095,
+    "tensao_referencia_v": 3.3
+  },
+
+  "deteccao": {
+    "threshold": 500,
+    "threshold_tipo": "CALIBRAR",
+    "threshold_tensao_v": 0.4,
+    "debounce_ms": 200,
+    "timer_independente_por_gpio": true
+  },
+
+  "montagem_fisica": {
+    "gap_min_entre_zonas_mm": 5,
+    "comprimento_maximo_cabo_cm": 50
+  },
+
+  "criterios_aceitacao": [
+    {"id": "CA-02-01", "batidas_total": 50, "batidas_detectadas_minimo": 50},
+    {"id": "CA-02-02", "falsos_positivos_maximos": 0, "duracao_min": 5},
+    {"id": "CA-02-03", "isolamento_entre_zonas": true},
+    {"id": "CA-02-04", "impactos_fortes_total": 100, "gpio_danificado": false},
+    {"id": "CA-02-05", "eventos_por_batida": 1},
+    {"id": "CA-02-06", "latencia_maxima_ms": 10}
+  ]
+}

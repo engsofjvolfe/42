@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sensor.schema.json",
+  "title": "Sensor Spec — derivado de 02_sensor_impacto.md v0.1.0",
+  "type": "object",
+  "required": ["meta", "componente", "circuito_protecao", "mapeamento_gpios", "adc", "deteccao", "montagem_fisica", "criterios_aceitacao"],
+  "additionalProperties": false,
+
+  "definitions": {
+    "zona_gpio": {
+      "type": "object",
+      "required": ["zona", "gpio", "canal_adc"],
+      "additionalProperties": false,
+      "properties": {
+        "zona":      {"type": "string", "enum": ["LARANJA", "AZUL", "AMARELO", "ROXO"]},
+        "gpio":      {"type": "integer", "minimum": 0},
+        "canal_adc": {"type": "string", "pattern": "^ADC1_CH[0-9]+$"}
+      }
+    }
+  },
+
+  "properties": {
+
+    "meta": {
+      "type": "object",
+      "required": ["documento_fonte", "versao_fonte", "depende_tambem_de"],
+      "additionalProperties": false,
+      "properties": {
+        "documento_fonte":   {"type": "string"},
+        "versao_fonte":      {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+        "depende_tambem_de": {"type": "string"}
+      }
+    },
+
+    "componente": {
+      "type": "object",
+      "required": ["tipo", "diametro_mm", "terminais", "tensao_pico_min_v", "tensao_pico_max_v", "quantidade"],
+      "additionalProperties": false,
+      "properties": {
+        "tipo":              {"type": "string"},
+        "diametro_mm":       {"type": "integer", "exclusiveMinimum": 0},
+        "terminais":         {"type": "integer", "minimum": 2},
+        "tensao_pico_min_v": {"type": "number", "exclusiveMinimum": 0},
+        "tensao_pico_max_v": {"type": "number", "exclusiveMinimum": 0},
+        "quantidade":        {"type": "integer", "minimum": 1}
+      }
+    },
+
+    "circuito_protecao": {
+      "type": "object",
+      "required": ["r1_ohm", "r1_potencia_w", "d1_tensao_zener_v", "d1_modelos", "d1_modelo_proibido", "tensao_maxima_gpio_v"],
+      "additionalProperties": false,
+      "properties": {
+        "r1_ohm":              {"type": "integer", "exclusiveMinimum": 0},
+        "r1_potencia_w":       {"type": "number", "exclusiveMinimum": 0},
+        "d1_tensao_zener_v":   {"type": "number", "exclusiveMinimum": 0},
+        "d1_modelos":          {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "d1_modelo_proibido":  {"type": "string"},
+        "tensao_maxima_gpio_v":{"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+
+    "mapeamento_gpios": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/definitions/zona_gpio"}
+    },
+
+    "adc": {
+      "type": "object",
+      "required": ["banco", "resolucao_bits", "contagens_maximas", "tensao_referencia_v"],
+      "additionalProperties": false,
+      "properties": {
+        "banco":               {"type": "string", "const": "ADC1"},
+        "resolucao_bits":      {"type": "integer", "const": 12},
+        "contagens_maximas":   {"type": "integer", "const": 4095},
+        "tensao_referencia_v": {"type": "number", "const": 3.3}
+      }
+    },
+
+    "deteccao": {
+      "type": "object",
+      "required": ["threshold", "threshold_tipo", "threshold_tensao_v", "debounce_ms", "timer_independente_por_gpio"],
+      "additionalProperties": false,
+      "properties": {
+        "threshold":                   {"type": "integer", "minimum": 0, "maximum": 4095},
+        "threshold_tipo":              {"type": "string", "enum": ["CALIBRAR", "FIXO"]},
+        "threshold_tensao_v":          {"type": "number", "exclusiveMinimum": 0},
+        "debounce_ms":                 {"type": "integer", "exclusiveMinimum": 0},
+        "timer_independente_por_gpio": {"type": "boolean"}
+      }
+    },
+
+    "montagem_fisica": {
+      "type": "object",
+      "required": ["gap_min_entre_zonas_mm", "comprimento_maximo_cabo_cm"],
+      "additionalProperties": false,
+      "properties": {
+        "gap_min_entre_zonas_mm":     {"type": "integer", "exclusiveMinimum": 0},
+        "comprimento_maximo_cabo_cm": {"type": "integer", "exclusiveMinimum": 0}
+      }
+    },
+
+    "criterios_aceitacao": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id":                        {"type": "string", "pattern": "^CA-02-0[1-6]$"},
+          "batidas_total":             {"type": "integer", "minimum": 1},
+          "batidas_detectadas_minimo": {"type": "integer", "minimum": 1},
+          "falsos_positivos_maximos":  {"type": "integer", "minimum": 0},
+          "duracao_min":               {"type": "integer", "minimum": 0},
+          "isolamento_entre_zonas":    {"type": "boolean"},
+          "impactos_fortes_total":     {"type": "integer", "minimum": 1},
+          "gpio_danificado":           {"type": "boolean"},
+          "eventos_por_batida":        {"type": "integer", "minimum": 1},
+          "latencia_maxima_ms":        {"type": "integer", "minimum": 0}
+        },
+        "additionalProperties": false
+      }
+    }
+
+  }
+}
