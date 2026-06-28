@@ -18,7 +18,7 @@ impacta:      todos os documentos do projeto [OBRIGATÓRIO]
 | Campo | Valor |
 |---|---|
 | Documento | _PADRAO.md |
-| Versão | 1.1.0 |
+| Versão | 0.1.0 |
 | Status | APROVADO |
 | Escopo | Todos os documentos do projeto sem exceção |
 | Pai | Nenhum — documento raiz de governança |

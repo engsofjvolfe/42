@@ -39,6 +39,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 ### Corrigido
 - Scripts de verificacao movidos de `_governance/scripts/` para `scripts/` (alinhamento com CLAUDE.md e CI)
 - `scripts/run_all.py`: corrige UnicodeEncodeError no Windows ao imprimir caracteres UTF-8
+- `_governance/_PADRAO.md`: corrige versao de 1.1.0 para 0.1.0 (numero incorreto introduzido no HEAD de develop)
 
 ---
 
