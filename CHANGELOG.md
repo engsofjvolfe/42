@@ -33,6 +33,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `spec/firmware_constants.schema.json`: aceita campo opcional `tipo_plataforma: boolean` em `decisoes_manuais_inerentes`
 
 ### Corrigido
+- `firmware/src/sensor/sensor.h`: corrige referencia `[VER:]` de `#interfaces` para `#interfaces-modulos` — ancora inexistente; ancora real em `01_arquitetura.md` e `#interfaces-modulos`
 - `scripts/verify_links.py`: corrige varredura de `.md` de `glob('*.md')` (so raiz) para `rglob` recursivo com registry `{nome: path}` — scripts nao verificavam nenhum documento em subdiretorios
 - `scripts/check_impacta.py`: mesma correcao de varredura recursiva com registry
 - `scripts/check_versions.py`: mesma correcao de varredura recursiva com registry

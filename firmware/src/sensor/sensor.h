@@ -1,8 +1,8 @@
 #pragma once
 
 // sensor.h — Interface publica de MOD_SENSOR
-// Derivado de: spec/sensor/sensor.json + system/01_arquitetura.md#interfaces
-// [VER: 01_arquitetura.md#interfaces]
+// Derivado de: spec/sensor/sensor.json + system/01_arquitetura.md#interfaces-modulos
+// [VER: 01_arquitetura.md#interfaces-modulos]
 
 #include <stdint.h>
 
@@ -24,7 +24,7 @@ struct EventoImpacto {
 
 // ---------------------------------------------------------------------------
 // API publica
-// [VER: 01_arquitetura.md#interfaces]
+// [VER: 01_arquitetura.md#interfaces-modulos]
 // ---------------------------------------------------------------------------
 
 // Inicializa GPIOs, ADC e timers internos de debounce.
