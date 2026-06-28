@@ -15,6 +15,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `firmware/test/test_game/test_main.cpp` — 11 testes Unity para MOD_JOGO; cobre CA-04-01 (distribuicao Mec A), CA-04-02 (variacao Mec B), CA-04-03 (pares distintos Modo 2), CA-04-04 (acerto Modo 1), CA-04-05 (erro Modo 1), CA-04-06 (acerto Modo 2 dentro da janela), CA-04-07 (erro Modo 2 fora da janela), CA-04-08 (fim de sessao), CA-04-10 (intervalo); CA-04-09 documentado como REQUER HARDWARE
 
 ### Alterado
+- `firmware/platformio.ini`: refatora para `[env]` base compartilhada — `build_flags = -std=gnu++17` e `lib_extra_dirs = src` movidos para secao comum; `[env:native]` estende via `${env.build_flags}`; corrige include path em `[env:esp32dev]` que nao resolvia `"game.h"` e `"sensor.h"` — derivado de `CODING_STANDARD.md#estrutura-cpp`
 - `firmware/platformio.ini`: atualiza `build_src_filter` para `+<sensor/> +<visual/> +<game/>` — inclui MOD_JOGO no build principal
 - `firmware/test/mock/Arduino.h`: adiciona mock minimo de `String` (construtor default, `const char*`, copia, atribuicao) rastreado a `ConfigSessao.nome_crianca`; adiciona declaracao de `long random(long max)` rastreada ao mecanismo de aleatoriedade de `game.cpp`
 
