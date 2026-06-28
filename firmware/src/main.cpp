@@ -4,6 +4,7 @@
 
 #include <Arduino.h>
 #include "sensor/sensor.h"
+#include "visual/visual.h"
 
 // ---------------------------------------------------------------------------
 // Callback de impacto (stub — MOD_JOGO ainda nao implementado)
@@ -14,13 +15,16 @@ static void onImpacto(EventoImpacto ev) {
 }
 
 // ---------------------------------------------------------------------------
-// Setup / Loop
+// Setup / Loop — ordem derivada de CODING_STANDARD.md#modularidade-ordem-init
+// [VER: 01_arquitetura.md#modulos-firmware]
 // ---------------------------------------------------------------------------
 void setup() {
     sensorInit();
     sensorOnImpacto(onImpacto);
+    visualInit();
 }
 
 void loop() {
     sensorLoop();
+    visualLoop();
 }

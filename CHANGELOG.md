@@ -10,6 +10,10 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 ## [Nao lancado]
 
 ### Adicionado
+- `firmware/test/mock/FastLED.h` — mock minimo de FastLED para compilacao nativa: `CRGB`, `CFastLED`, `EOrder`/`GRB`, `WS2812B`; `show()` copia estado para `g_mock_led_buf` (observavel nos testes); padrao declare->define
+- `firmware/test/test_visual/test_main.cpp` — 14 testes Unity para MOD_LED; cobre CA-03-01 (boot animation), CA-03-04 (LED correto por modo), CA-03-06 (celebracao); constantes T_ derivadas de `visual_config.h`; CAs hardware documentados como comentario
+- `firmware/src/visual/visual.h` — interface publica de MOD_LED: `ComandoLED` (struct + enums LED/Cor), `visualInit()`, `visualLoop()`, `visualSetLED()`, `visualRunCelebracao()`
+- `firmware/src/visual/visual.cpp` — implementacao de MOD_LED derivada de `spec/visual/visual.json`; animacoes boot e celebracao non-blocking via millis(); paleta e sequencias de boot derivadas de tabelas constexpr; DM-03 (`EOrder`/`GRB`) declarado apos includes de plataforma
 - `firmware/platformio.ini` — configuracao de build: `[env:esp32dev]` (ESP32 Arduino) e `[env:native]` (testes Unity com mingw64); `lib_extra_dirs = src` para LDF detectar modulos de `src/` em testes nativos
 - `firmware/test/mock/Arduino.h` — mock minimo de Arduino para compilacao nativa: `adc_atten_t`, `ADC_ATTEN_DB_11`, `INPUT`, `OUTPUT`, declaracoes de `analogRead`, `millis`, `pinMode`, `analogSetAttenuation`
 - `firmware/test/test_sensor/test_main.cpp` — 13 testes Unity para MOD_SENSOR; cobre CA-02-01 (deteccao), CA-02-02 (falso positivo), CA-02-05 (debounce); constantes T_ derivadas de `sensor_config.h`; CAs hardware documentados como comentario
@@ -24,6 +28,8 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `firmware/src/sensor/sensor_config.h`, `firmware/src/visual/visual_config.h`, `firmware/src/game/game_config.h`, `firmware/src/interface/interface_config.h` — gerados por `generate_coding_standard.py`; cascata completa de ponta a ponta (spec JSON → firmware_constants.json → _config.h); compilaveis em native (constantes com tipo de plataforma emitidas como stub `[PLATAFORMA]`)
 
 ### Alterado
+- `firmware/platformio.ini`: atualiza `build_src_filter` para `+<sensor/> +<visual/>` — inclui MOD_LED no build principal
+- `firmware/src/main.cpp`: adiciona `visualInit()` em `setup()` e `visualLoop()` em `loop()` conforme ordem de init CODING_STANDARD.md#modularidade-ordem-init
 - `_governance/TESTING_STANDARD.md` v0.1.0 → v0.1.1: corrige secao 9.1 — adiciona `lib_extra_dirs = src` obrigatorio; documenta que `build_src_filter` nao afeta test builds em PlatformIO 6.x; bump PATCH
 - `firmware/platformio.ini`: adiciona `lib_extra_dirs = src` em `[env:native]` — corrige compilacao de modulos `src/` em `pio test` (PlatformIO 6.1 nao inclui `src/` em test builds via `build_src_filter`; LDF detecta automaticamente via `lib_extra_dirs`)
 - `_governance/CODING_STANDARD.md` v0.1.0 → v0.1.1: adiciona `TESTING_STANDARD.md` em `impacta` (CONDICIONAL); bump PATCH
