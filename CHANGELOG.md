@@ -22,6 +22,8 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `spec/power/power.schema.json` — schema de validacao do power spec
 - `spec/sensor/sensor.json` — spec derivada de `02_sensor_impacto.md` v0.1.0
 - `spec/sensor/sensor.schema.json` — schema de validacao do sensor spec
+- `spec/visual/visual.json` — spec derivada de `03_saida_visual.md` v0.1.0
+- `spec/visual/visual.schema.json` — schema de validacao do visual spec
 - `README.md` — documentacao de entrada do repositorio
 
 ### Alterado

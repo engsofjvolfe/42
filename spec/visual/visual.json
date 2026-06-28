@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "documento_fonte": "03_saida_visual.md",
+    "versao_fonte": "0.1.0",
+    "depende_de": [
+      "spec/power/power.json"
+    ]
+  },
+
+  "componente": {
+    "tipo": "WS2812B",
+    "descricao_tipo": "LED_RGB_endereçavel_individual",
+    "quantidade": 3,
+    "protocolo": "one_wire_800kHz",
+    "biblioteca": "FastLED",
+    "biblioteca_versao_minima": "3.6",
+    "color_order": "GRB"
+  },
+
+  "alimentacao": {
+    "tensao_vdd_v": 3.3,
+    "rail_fonte": "r3v3",
+    "regulador": "AMS1117_onboard",
+    "tensao_dado_gpio_v": 3.3,
+    "gpio_dados": 5,
+    "resistor_serie_dados_ohm": 300,
+    "level_shifter": false,
+    "corrente_tipica_3leds_ma": 30,
+    "corrente_pico_3leds_ma": 120,
+    "brightness_pico_referencia": 255,
+    "brightness_fixo": 150
+  },
+
+  "mapeamento_led": [
+    {"indice": 0, "posicao": "esquerdo", "modo_ativo": 2, "funcao": "cor_alvo_esquerda"},
+    {"indice": 1, "posicao": "central",  "modo_ativo": 1, "funcao": "cor_alvo_unica"},
+    {"indice": 2, "posicao": "direito",  "modo_ativo": 2, "funcao": "cor_alvo_direita"}
+  ],
+
+  "cores_rgb": {
+    "Laranja": {"r": 255, "g": 80,  "b": 0,   "hex": "FF5000"},
+    "Azul":    {"r": 0,   "g": 0,   "b": 255,  "hex": "0000FF"},
+    "Amarelo": {"r": 255, "g": 180, "b": 0,    "hex": "FFB400"},
+    "Roxo":    {"r": 148, "g": 0,   "b": 211,  "hex": "9400D3"},
+    "OFF":     {"r": 0,   "g": 0,   "b": 0,    "hex": "000000"}
+  },
+
+  "boot_animation": {
+    "duracao_total_ms": 3000,
+    "passos": [
+      {"passo": 1,  "led_indice": 0, "cor": "Laranja", "duracao_ms": 150},
+      {"passo": 2,  "led_indice": 1, "cor": "Azul",    "duracao_ms": 150},
+      {"passo": 3,  "led_indice": 2, "cor": "Amarelo", "duracao_ms": 150},
+      {"passo": 4,  "led_indice": 0, "cor": "Roxo",    "duracao_ms": 150},
+      {"passo": 5,  "led_indice": -1, "cor": "OFF",    "duracao_ms": 500}
+    ],
+    "nota_passos_6_a_25": "repetir_passos_1_a_5_percorrendo_cores_restantes",
+    "estado_final": "todos_OFF"
+  },
+
+  "animacao_celebracao": {
+    "rotacoes_completas": 5,
+    "duracao_total_ms": 3000,
+    "leds_simultaneos": true,
+    "score_exposto_crianca": false,
+    "estado_final": "todos_OFF"
+  },
+
+  "decoupling_por_led": {
+    "eletrolítico": {
+      "capacitancia_uf": 10,
+      "tensao_v": 16,
+      "tipo": "electrolitico",
+      "quantidade_por_led": 1,
+      "quantidade_total": 3
+    },
+    "ceramico": {
+      "capacitancia_uf": 0.1,
+      "tensao_v": 50,
+      "tipo": "ceramico",
+      "quantidade_por_led": 1,
+      "quantidade_total": 3
+    }
+  },
+
+  "criterios_aceitacao": [
+    {"id": "CA-03-01", "descricao_tecnica": "boot_animation_sem_falha", "duracao_total_ms": 3000},
+    {"id": "CA-03-02", "descricao_tecnica": "cor_Laranja_distinta_de_Amarelo", "r": 255, "g": 80,  "b": 0},
+    {"id": "CA-03-03", "descricao_tecnica": "cor_Azul_distinta_de_Roxo_em_luz_ambiente"},
+    {"id": "CA-03-04", "descricao_tecnica": "led_correto_por_modo", "modo1_led_ativo": 1, "modo2_leds_ativos": [0, 2]},
+    {"id": "CA-03-05", "descricao_tecnica": "latencia_led_ms", "latencia_maxima_ms": 10},
+    {"id": "CA-03-06", "descricao_tecnica": "celebracao_fim_sessao", "rotacoes": 5, "duracao_ms": 3000},
+    {"id": "CA-03-07", "descricao_tecnica": "temperatura_leds_operacao_continua", "duracao_min": 60, "temperatura_maxima_c": 70}
+  ]
+}

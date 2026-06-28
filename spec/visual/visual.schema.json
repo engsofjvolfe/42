@@ -1,0 +1,176 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "visual",
+  "description": "Schema derivado de 03_saida_visual.md v0.1.0",
+  "type": "object",
+  "required": ["meta", "componente", "alimentacao", "mapeamento_led", "cores_rgb", "boot_animation", "animacao_celebracao", "decoupling_por_led", "criterios_aceitacao"],
+  "additionalProperties": false,
+
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["documento_fonte", "versao_fonte", "depende_de"],
+      "additionalProperties": false,
+      "properties": {
+        "documento_fonte": {"type": "string"},
+        "versao_fonte":    {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+        "depende_de":      {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    },
+
+    "componente": {
+      "type": "object",
+      "required": ["tipo", "descricao_tipo", "quantidade", "protocolo", "biblioteca", "biblioteca_versao_minima", "color_order"],
+      "additionalProperties": false,
+      "properties": {
+        "tipo":                    {"type": "string", "const": "WS2812B"},
+        "descricao_tipo":          {"type": "string"},
+        "quantidade":              {"type": "integer", "const": 3},
+        "protocolo":               {"type": "string", "const": "one_wire_800kHz"},
+        "biblioteca":              {"type": "string", "const": "FastLED"},
+        "biblioteca_versao_minima":{"type": "string"},
+        "color_order":             {"type": "string", "const": "GRB"}
+      }
+    },
+
+    "alimentacao": {
+      "type": "object",
+      "required": ["tensao_vdd_v", "rail_fonte", "regulador", "tensao_dado_gpio_v", "gpio_dados", "resistor_serie_dados_ohm", "level_shifter", "corrente_tipica_3leds_ma", "corrente_pico_3leds_ma", "brightness_pico_referencia", "brightness_fixo"],
+      "additionalProperties": false,
+      "properties": {
+        "tensao_vdd_v":              {"type": "number", "const": 3.3},
+        "rail_fonte":                {"type": "string", "const": "r3v3"},
+        "regulador":                 {"type": "string", "const": "AMS1117_onboard"},
+        "tensao_dado_gpio_v":        {"type": "number", "const": 3.3},
+        "gpio_dados":                {"type": "integer", "const": 5},
+        "resistor_serie_dados_ohm":  {"type": "integer", "const": 300},
+        "level_shifter":             {"type": "boolean", "const": false},
+        "corrente_tipica_3leds_ma":  {"type": "integer", "minimum": 1},
+        "corrente_pico_3leds_ma":    {"type": "integer", "minimum": 1},
+        "brightness_pico_referencia":{"type": "integer", "const": 255},
+        "brightness_fixo":           {"type": "integer", "minimum": 1, "maximum": 255}
+      }
+    },
+
+    "mapeamento_led": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["indice", "posicao", "modo_ativo", "funcao"],
+        "additionalProperties": false,
+        "properties": {
+          "indice":     {"type": "integer", "minimum": 0, "maximum": 2},
+          "posicao":    {"type": "string", "enum": ["esquerdo", "central", "direito"]},
+          "modo_ativo": {"type": "integer", "enum": [1, 2]},
+          "funcao":     {"type": "string"}
+        }
+      }
+    },
+
+    "cores_rgb": {
+      "type": "object",
+      "required": ["Laranja", "Azul", "Amarelo", "Roxo", "OFF"],
+      "additionalProperties": false,
+      "properties": {
+        "Laranja": {"$ref": "#/definitions/cor_rgb"},
+        "Azul":    {"$ref": "#/definitions/cor_rgb"},
+        "Amarelo": {"$ref": "#/definitions/cor_rgb"},
+        "Roxo":    {"$ref": "#/definitions/cor_rgb"},
+        "OFF":     {"$ref": "#/definitions/cor_rgb"}
+      }
+    },
+
+    "boot_animation": {
+      "type": "object",
+      "required": ["duracao_total_ms", "passos", "nota_passos_6_a_25", "estado_final"],
+      "additionalProperties": false,
+      "properties": {
+        "duracao_total_ms":    {"type": "integer", "minimum": 1},
+        "passos": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "required": ["passo", "led_indice", "cor", "duracao_ms"],
+            "additionalProperties": false,
+            "properties": {
+              "passo":      {"type": "integer", "minimum": 1},
+              "led_indice": {"type": "integer", "minimum": -1, "maximum": 2},
+              "cor":        {"type": "string", "enum": ["Laranja", "Azul", "Amarelo", "Roxo", "OFF"]},
+              "duracao_ms": {"type": "integer", "minimum": 1}
+            }
+          }
+        },
+        "nota_passos_6_a_25": {"type": "string"},
+        "estado_final":       {"type": "string", "const": "todos_OFF"}
+      }
+    },
+
+    "animacao_celebracao": {
+      "type": "object",
+      "required": ["rotacoes_completas", "duracao_total_ms", "leds_simultaneos", "score_exposto_crianca", "estado_final"],
+      "additionalProperties": false,
+      "properties": {
+        "rotacoes_completas":    {"type": "integer", "const": 5},
+        "duracao_total_ms":      {"type": "integer", "minimum": 1},
+        "leds_simultaneos":      {"type": "boolean", "const": true},
+        "score_exposto_crianca": {"type": "boolean", "const": false},
+        "estado_final":          {"type": "string", "const": "todos_OFF"}
+      }
+    },
+
+    "decoupling_por_led": {
+      "type": "object",
+      "required": ["eletrolítico", "ceramico"],
+      "additionalProperties": false,
+      "properties": {
+        "eletrolítico": {"$ref": "#/definitions/decoupling_cap"},
+        "ceramico":     {"$ref": "#/definitions/decoupling_cap"}
+      }
+    },
+
+    "criterios_aceitacao": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["id", "descricao_tecnica"],
+        "properties": {
+          "id":               {"type": "string", "pattern": "^CA-03-0[1-9]$"},
+          "descricao_tecnica":{"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+
+  "definitions": {
+    "cor_rgb": {
+      "type": "object",
+      "required": ["r", "g", "b", "hex"],
+      "additionalProperties": false,
+      "properties": {
+        "r":   {"type": "integer", "minimum": 0, "maximum": 255},
+        "g":   {"type": "integer", "minimum": 0, "maximum": 255},
+        "b":   {"type": "integer", "minimum": 0, "maximum": 255},
+        "hex": {"type": "string", "pattern": "^[0-9A-F]{6}$"}
+      }
+    },
+    "decoupling_cap": {
+      "type": "object",
+      "required": ["capacitancia_uf", "tensao_v", "tipo", "quantidade_por_led", "quantidade_total"],
+      "additionalProperties": false,
+      "properties": {
+        "capacitancia_uf":    {"type": "number", "exclusiveMinimum": 0},
+        "tensao_v":           {"type": "number", "exclusiveMinimum": 0},
+        "tipo":               {"type": "string", "enum": ["electrolitico", "ceramico"]},
+        "quantidade_por_led": {"type": "integer", "minimum": 1},
+        "quantidade_total":   {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}
