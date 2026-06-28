@@ -57,13 +57,14 @@
         "required": ["id", "modulo", "constante", "valor", "tipo_c", "classe", "justificativa"],
         "additionalProperties": false,
         "properties": {
-          "id":            { "type": "string", "pattern": "^DM-[0-9]+$" },
-          "modulo":        { "type": "string" },
-          "constante":     { "type": "string", "pattern": "^[A-Z][A-Z0-9_]+$" },
-          "valor":         { "type": ["string", "null"] },
-          "tipo_c":        { "type": "string" },
-          "classe":        { "type": "string", "enum": ["HARDCODED_JUSTIFICADO"] },
-          "justificativa": { "type": "string", "minLength": 20 }
+          "id":              { "type": "string", "pattern": "^DM-[0-9]+$" },
+          "modulo":          { "type": "string" },
+          "constante":       { "type": "string", "pattern": "^[A-Z][A-Z0-9_]+$" },
+          "valor":           { "type": ["string", "null"] },
+          "tipo_c":          { "type": "string" },
+          "classe":          { "type": "string", "enum": ["HARDCODED_JUSTIFICADO"] },
+          "tipo_plataforma": { "type": "boolean" },
+          "justificativa":   { "type": "string", "minLength": 20 }
         }
       }
     }

@@ -525,6 +525,7 @@
       "valor": "ADC_ATTEN_DB_11",
       "tipo_c": "adc_atten_t",
       "classe": "HARDCODED_JUSTIFICADO",
+      "tipo_plataforma": true,
       "justificativa": "Constante de plataforma ESP-IDF para range 0-3.3V no ADC1. Nao e parametro de dominio; e configuracao de silicio. Nao existe campo correspondente em nenhum spec JSON."
     },
     {
@@ -534,6 +535,7 @@
       "valor": "GRB",
       "tipo_c": "EOrder",
       "classe": "HARDCODED_JUSTIFICADO",
+      "tipo_plataforma": true,
       "justificativa": "GRB e enum da biblioteca FastLED. visual.json#componente.color_order registra 'GRB' como string; o simbolo C++ e fornecido pela API da biblioteca e nao pode ser parametrizado sem reflexao."
     }
   ]

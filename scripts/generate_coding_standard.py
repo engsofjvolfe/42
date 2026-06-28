@@ -2,16 +2,16 @@
 """
 generate_coding_standard.py
 
-Gera as secoes derivadas de _governance/CODING_STANDARD.md
-a partir de spec/firmware_constants.json.
+Gera as secoes derivadas de _governance/CODING_STANDARD.md e os arquivos
+firmware/src/<modulo>/<modulo>_config.h a partir de spec/firmware_constants.json.
 
 Modos de uso:
   python scripts/generate_coding_standard.py
-      Gera e escreve as secoes no documento. Valida cascata.
+      Gera e escreve as secoes no documento e os arquivos _config.h. Valida cascata.
 
   python scripts/generate_coding_standard.py --check
-      So valida: verifica cascata (valores vs specs) e sync do documento.
-      Nao escreve nada. Retorna exit code 1 se houver divergencia.
+      So valida: verifica cascata (valores vs specs), sync do documento e sync dos
+      arquivos _config.h. Nao escreve nada. Retorna exit code 1 se houver divergencia.
 
 Cascata: para cada constante em firmware_constants.json, le o valor real
 no spec JSON e compara com o campo 'valor'. Qualquer divergencia e erro.
@@ -182,6 +182,72 @@ def gerar_tabela_dm(decisoes):
 
 
 # ---------------------------------------------------------------------------
+# Geracao de _config.h
+# ---------------------------------------------------------------------------
+
+def formatar_valor_c(valor, tipo_c):
+    """
+    Retorna o literal C++ adequado para o valor.
+      - const char* : string entre aspas duplas
+      - tipo nao-char* + valor string : simbolo sem aspas (ex: ADC_ATTEN_DB_11)
+      - numerico : str(valor)
+      - None : None (chamador decide o que fazer)
+    """
+    if valor is None:
+        return None
+    if tipo_c == "const char*":
+        return f'"{valor}"'
+    if isinstance(valor, str):
+        return valor  # simbolo de plataforma/biblioteca
+    return str(valor)
+
+
+def gerar_config_h(modulo_meta, constantes_modulo, decisoes_modulo):
+    """
+    Gera o conteudo completo de <modulo>_config.h conforme
+    CODING_STANDARD.md#estrutura-config-h.
+    """
+    nome = modulo_meta["nome"]
+    linhas = [
+        "#pragma once",
+        "",
+        f"// {nome}_config.h",
+        f"// Fonte: spec/{nome}/{nome}.json (via spec/firmware_constants.json)",
+        "// Nenhum valor neste arquivo e inventado.",
+        "// Toda alteracao exige atualizacao de firmware_constants.json e regeneracao.",
+        "",
+        "#include <stdint.h>",
+    ]
+
+    for c in constantes_modulo:
+        linhas.append("")
+        linhas.append(f"// --- DERIVADO: {c['spec_arquivo']}#{c['spec_campo']} ---")
+        val = formatar_valor_c(c["valor"], c["tipo_c"])
+        calibrar = "  // [CALIBRAR] — confirmar apos prototipagem" if c.get("calibrar") else ""
+        linhas.append(f"constexpr {c['tipo_c']} {c['constante']} = {val};{calibrar}")
+
+    for d in decisoes_modulo:
+        linhas.append("")
+        linhas.append(f"// --- HARDCODED JUSTIFICADO: {d['id']} ---")
+        linhas.append(f"// {d['justificativa']}")
+        val = formatar_valor_c(d["valor"], d["tipo_c"])
+        if d.get("tipo_plataforma"):
+            linhas.append(
+                f"// [PLATAFORMA] constexpr {d['tipo_c']} {d['constante']} = {val};"
+            )
+            linhas.append(
+                f"// Declarar em {d['modulo']}.cpp apos includes de plataforma."
+            )
+        elif val is None:
+            linhas.append(f"// [DETERMINAR] constexpr {d['tipo_c']} {d['constante']} = ???;")
+        else:
+            linhas.append(f"constexpr {d['tipo_c']} {d['constante']} = {val};")
+
+    linhas.append("")
+    return "\n".join(linhas)
+
+
+# ---------------------------------------------------------------------------
 # Manipulacao do documento
 # ---------------------------------------------------------------------------
 
@@ -248,10 +314,18 @@ def main():
             modulos_vistos.append(m)
         por_modulo[m].append(c)
 
+    decisoes_por_modulo = defaultdict(list)
+    for d in decisoes:
+        decisoes_por_modulo[d["modulo"]].append(d)
+
     # --- Geracao dos conteudos ---
     arvore = gerar_arvore_diretorios(modulos)
     tabelas = {m["nome"]: gerar_tabela_modulo(por_modulo[m["nome"]]) for m in modulos}
     tabela_dm = gerar_tabela_dm(decisoes)
+    config_hs = {
+        m["nome"]: gerar_config_h(m, por_modulo[m["nome"]], decisoes_por_modulo[m["nome"]])
+        for m in modulos
+    }
 
     if not CODING_STANDARD.exists():
         print(f"ERRO: {CODING_STANDARD} nao encontrado.")
@@ -283,6 +357,29 @@ def main():
                 print(e)
             sys.exit(1)
         print(f"  OK: todas as {len(secoes)} secoes geradas estao em sync.")
+
+        print("Verificando sync dos arquivos _config.h...")
+        erros_config = []
+        for m in modulos:
+            config_path = REPO_ROOT / m["config_h"]
+            esperado = config_hs[m["nome"]]
+            if not config_path.exists():
+                erros_config.append(
+                    f"  ERRO   {m['config_h']} nao encontrado. "
+                    f"Rodar: python scripts/generate_coding_standard.py"
+                )
+            elif config_path.read_text(encoding="utf-8") != esperado:
+                erros_config.append(
+                    f"  ERRO   {m['config_h']} desatualizado. "
+                    f"Rodar: python scripts/generate_coding_standard.py"
+                )
+
+        if erros_config:
+            print("\nArquivos _config.h fora de sync com firmware_constants.json:")
+            for e in erros_config:
+                print(e)
+            sys.exit(1)
+        print(f"  OK: {len(modulos)} arquivos _config.h em sync.")
         sys.exit(0)
 
     # --- Modo generate: escrever ---
@@ -313,6 +410,15 @@ def main():
         print("Avisos:")
         for a in avisos:
             print(a)
+
+    # --- Gerar _config.h ---
+    print("Gerando arquivos _config.h...")
+    for m in modulos:
+        config_path = REPO_ROOT / m["config_h"]
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        config_path.write_text(config_hs[m["nome"]], encoding="utf-8")
+        print(f"  Gerado: {m['config_h']}")
+    print(f"  {len(modulos)} arquivos _config.h gerados.")
 
 
 if __name__ == "__main__":

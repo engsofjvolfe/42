@@ -5,9 +5,10 @@
 
 CONTEXTO: continuando projeto Instrumento Ludico-Pedagogico ESP32 — 2026-06-28
 Processo: V-Model (ISO 26262 / IEC 61508 / IEC 62304)
+Estado verificado em 2026-06-28: run_all.py → TODOS OS CHECKS PASSARAM (47 constantes, 6 seções, 4 _config.h em sync)
 
 Camada atual: DERIVAÇÃO
-Fase V-Model atual: ETAPA 7 — Firmware (aguardando merge de docs/coding-standard)
+Fase V-Model atual: ETAPA 7 — Firmware (pronto para iniciar)
 
 Fases concluídas e aprovadas:
   [x] Fase 1 — Requisitos          (concept/00_conceito.md v0.1.0 APROVADO)
@@ -15,13 +16,14 @@ Fases concluídas e aprovadas:
   [x] Fase 3 — Design de Hardware   (hardware/08–11 v0.1.0 APROVADO)
   [x] Fase 4 — Arquitetura Firmware (modules/02–07 v0.1.0 APROVADO)
   [x] GATE Formalização             (spec/power, spec/sensor, spec/visual, spec/game, spec/interface MERGEADOS em develop — tag v0.2.0)
+  [x] GATE pré-ETAPA 7              (CODING_STANDARD.md v0.1.0 + firmware_constants.json + _config.h gerados — mergeados em develop)
   [ ] Fase 5 — Testes de Módulos
   [ ] Fase 6 — Validação de Hardware
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: docs/coding-standard (aguardando aprovacao do usuario para commit)
-Próxima ação apos merge: criar branch feat/sensor a partir de develop → ETAPA 7 (Firmware), começando por MOD_SENSOR
+Branch ativa: develop (feat/gerar-config-h mergeado — fast-forward)
+Próxima ação: criar branch feat/sensor a partir de develop → ETAPA 7 (Firmware), começando por MOD_SENSOR
 
 Ordem de implementação dos módulos (ETAPA 7):
   1. MOD_SENSOR  ← sem dependência de outros módulos  ← PRÓXIMO
@@ -40,21 +42,25 @@ Decisões aprovadas:
   - Intervalo entre interações: 2000ms [CALIBRAR]
   - Zener proteção GPIO: 3.3V BZX55C3V3 ou 1N5226B (não usar 1N4728A — 3.9V inadequado)
   - R1 proteção piezo: 1MΩ 1/4W
+  - Constantes com tipo de plataforma (adc_atten_t, EOrder) declaradas no .cpp após includes de plataforma — não no _config.h (flag tipo_plataforma: true em firmware_constants.json)
 
 Pendências:
   - ETAPA 7: Firmware (4 módulos, TDD, pio test -e native)
   - tag v0.3.0 ao concluir gate ETAPA 7
 
-Artefatos criados nesta sessao (branch docs/coding-standard):
-  - _governance/CODING_STANDARD.md v0.1.0
-  - spec/firmware_constants.json (47 constantes DERIVADO + 3 HARDCODED_JUSTIFICADO)
-  - spec/firmware_constants.schema.json
-  - scripts/generate_coding_standard.py
-  Corrigidos: scripts/verify_links.py, check_impacta.py, check_versions.py (rglob)
-  Alterado: scripts/run_all.py (4 check adicionado)
+Artefatos em develop — sessão anterior (feat/gerar-config-h — mergeado, FECHADO):
+  NOTA: estes artefatos já existem em disco e estão em sync. Não recriar.
+  - scripts/generate_coding_standard.py: gera firmware/src/<modulo>/<modulo>_config.h
+    (a promessa do CODING_STANDARD.md seção 2 está honrada — confirmado em 2026-06-28)
+  - firmware/src/sensor/sensor_config.h, visual/visual_config.h, game/game_config.h, interface/interface_config.h
+  - spec/firmware_constants.json: campo tipo_plataforma: true em DM-02 e DM-03
+  - spec/firmware_constants.schema.json: aceita tipo_plataforma opcional
+  - _governance/CODING_STANDARD.md: seção 2 corrigida + registro no changelog interno
 
-Desvios desta sessão (registrados para não repetir):
-  - Nenhum desvio de protocolo identificado na meta-análise
+Desvios da sessão feat/gerar-config-h (registrados para não repetir):
+  - Branch não criada antes de iniciar o trabalho — iniciado em develop, branch criada tardiamente
+  - Merge commit criado com --no-ff e depois desfeito — usar fast-forward (sem --no-ff)
+  - Changelog interno do CODING_STANDARD.md não incluído no commit original — corrigido via amend
 
 Desvios da sessão anterior (registrados para não repetir):
   - CHANGELOG não atualizado antes da revisão do diff — terceira reincidência consecutiva (identificado pelo usuário, corrigido antes do commit)

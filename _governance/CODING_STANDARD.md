@@ -34,7 +34,7 @@ Definir de forma determinística as regras que governam todo código em `firmwar
 
 **Princípio central:** nenhum número ou string literal aparece em `.cpp`. Todo valor com significado de domínio é uma constante nomeada declarada em `_config.h`, com origem rastreável a um campo de spec JSON via `spec/firmware_constants.json`.
 
-**Geração automática:** as seções 3, 6.2 e 7 são geradas automaticamente por `scripts/generate_coding_standard.py` a partir de `spec/firmware_constants.json`. Não editar manualmente. Para regenerar:
+**Geração automática:** as seções 3, 6.2 e 7, e os arquivos `firmware/src/<modulo>/<modulo>_config.h`, são gerados automaticamente por `scripts/generate_coding_standard.py` a partir de `spec/firmware_constants.json`. Não editar manualmente. Para regenerar:
 
 ```
 python scripts/generate_coding_standard.py
@@ -483,6 +483,7 @@ Derivado de [VER: 01_arquitetura.md#requisitos-nao-funcionais].
 | Versão | Data | Seção | Mudança | Impacto em dependentes |
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-28 | — | Criação: padrão de código firmware. Seções 3, 6.2 e 7 geradas automaticamente por generate_coding_standard.py a partir de spec/firmware_constants.json | firmware/src/ |
+| 0.1.0 | 2026-06-28 | 2, 4.1 | generate_coding_standard.py estendido para gerar _config.h. Seção 2 corrigida para listar _config.h como artefato gerado. Constantes com tipo de plataforma (DM-02, DM-03) emitidas como stub [PLATAFORMA] — compilaveis em native. | firmware/src/ |
 
 ---
 
