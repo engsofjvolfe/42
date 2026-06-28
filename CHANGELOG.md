@@ -10,6 +10,12 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 ## [Nao lancado]
 
 ### Adicionado
+- `firmware/platformio.ini` — configuracao de build: `[env:esp32dev]` (ESP32 Arduino) e `[env:native]` (testes Unity com mingw64); `lib_extra_dirs = src` para LDF detectar modulos de `src/` em testes nativos
+- `firmware/test/mock/Arduino.h` — mock minimo de Arduino para compilacao nativa: `adc_atten_t`, `ADC_ATTEN_DB_11`, `INPUT`, `OUTPUT`, declaracoes de `analogRead`, `millis`, `pinMode`, `analogSetAttenuation`
+- `firmware/test/test_sensor/test_main.cpp` — 13 testes Unity para MOD_SENSOR; cobre CA-02-01 (deteccao), CA-02-02 (falso positivo), CA-02-05 (debounce); constantes T_ derivadas de `sensor_config.h`; CAs hardware documentados como comentario
+- `firmware/src/sensor/sensor.h` — interface publica de MOD_SENSOR: `EventoImpacto` (struct + enum Zona), `sensorInit()`, `sensorOnImpacto()`, `sensorLoop()`
+- `firmware/src/sensor/sensor.cpp` — implementacao de MOD_SENSOR derivada de `spec/sensor/sensor.json`; tabelas GPIO→Zona, debounce por zona independente, DM-02 (`ADC_ATTEN_DB_11`) declarado apos include de plataforma
+- `firmware/src/main.cpp` — stub de entry point Arduino; chama `sensorInit()` e `sensorLoop()`; callback placeholder para MOD_JOGO
 - `_governance/TESTING_STANDARD.md` v0.1.0 — padrão genérico de testes de firmware; define zero magic numbers em testes, constantes T_ derivadas de `_config.h`, padrão mock declare→define, rastreabilidade de CAs
 - `_governance/CODING_STANDARD.md` v0.1.0 — padrao de codigo firmware derivado de `01_arquitetura.md` v0.1.0 e de todos os specs v0.2.0; secoes derivadas geradas automaticamente por script
 - `spec/firmware_constants.json` — mapeamento canonico de 47 constantes DERIVADO e 3 HARDCODED_JUSTIFICADO; liga cada constante C++ ao campo JSON de origem no spec correspondente
@@ -18,6 +24,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `firmware/src/sensor/sensor_config.h`, `firmware/src/visual/visual_config.h`, `firmware/src/game/game_config.h`, `firmware/src/interface/interface_config.h` — gerados por `generate_coding_standard.py`; cascata completa de ponta a ponta (spec JSON → firmware_constants.json → _config.h); compilaveis em native (constantes com tipo de plataforma emitidas como stub `[PLATAFORMA]`)
 
 ### Alterado
+- `firmware/platformio.ini`: adiciona `lib_extra_dirs = src` em `[env:native]` — corrige compilacao de modulos `src/` em `pio test` (PlatformIO 6.1 nao inclui `src/` em test builds via `build_src_filter`; LDF detecta automaticamente via `lib_extra_dirs`)
 - `_governance/CODING_STANDARD.md` v0.1.0 → v0.1.1: adiciona `TESTING_STANDARD.md` em `impacta` (CONDICIONAL); bump PATCH
 - `scripts/run_all.py`: adiciona 4 check — `generate_coding_standard.py --check` (cascata specs -> CODING_STANDARD.md)
 - `scripts/generate_coding_standard.py`: estende para gerar `_config.h` em modo generate e verificar sync dos arquivos em modo --check; suporte a flag `tipo_plataforma` em DMs — emite stub comentado `[PLATAFORMA]` em vez de declaracao C++ para tipos que requerem headers de plataforma
