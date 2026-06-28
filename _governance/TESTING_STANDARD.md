@@ -1,6 +1,6 @@
 ---
 documento:    TESTING_STANDARD.md
-versão:       0.1.0
+versão:       0.1.1
 status:       APROVADO
 data:         2026-06-28
 depende_de:
@@ -21,7 +21,7 @@ impacta: firmware/test/ (test_main.cpp de cada modulo — nao sao .md)
 | Campo | Valor |
 |---|---|
 | Documento | TESTING_STANDARD.md |
-| Versão | 0.1.0 |
+| Versão | 0.1.1 |
 | Status | APROVADO |
 | Escopo | Todos os arquivos de teste em `firmware/test/` |
 | Pais | _PADRAO.md v0.1.0, CODING_STANDARD.md v0.1.1, 01_arquitetura.md v0.1.0 |
@@ -270,25 +270,34 @@ ser documentados no próprio `test_main.cpp` como comentários:
 
 ```ini
 [env:native]
-platform        = native
-test_framework  = unity
-build_flags     =
+platform         = native
+test_framework   = unity
+build_flags      =
     -std=gnu++17
     -I $PROJECT_DIR/test/mock
 build_src_filter = +<sensor/>   ; atualizar conforme modulos sao adicionados
+lib_extra_dirs   = src
 ```
 
 O `-I $PROJECT_DIR/test/mock` faz o compilador nativo encontrar `test/mock/Arduino.h`
 quando `sensor.cpp` executa `#include <Arduino.h>`.
 
-O `build_src_filter` limita quais arquivos de `src/` são compilados no ambiente nativo.
-Deve incluir apenas os módulos com testes ativos. Atualizar ao adicionar cada módulo.
+O `build_src_filter` limita quais arquivos de `src/` são compilados no build principal
+(`pio run`). Em PlatformIO 6.x, esta opção **não afeta** o build de testes (`pio test`).
+
+O `lib_extra_dirs = src` instrui o LDF (Library Dependency Finder) a tratar os
+subdiretórios de `src/` como bibliotecas. Quando `test_main.cpp` inclui
+`"sensor/sensor.h"`, o LDF detecta a dependência e compila `src/sensor/sensor.cpp`
+automaticamente no build de testes. Sem esta opção, `sensor.cpp` não é linkado e
+os símbolos ficam indefinidos.
 
 | Estado | build_src_filter |
 |---|---|
 | Apenas MOD_SENSOR implementado | `+<sensor/>` |
 | MOD_SENSOR + MOD_LED | `+<sensor/> +<visual/>` |
 | MOD_SENSOR + MOD_LED + MOD_JOGO | `+<sensor/> +<visual/> +<game/>` |
+
+`lib_extra_dirs = src` permanece fixo independente do número de módulos ativos.
 
 ### 9.2 Execução <a id="execucao"></a>
 
@@ -319,6 +328,7 @@ Resultado esperado: todos os testes passam, zero falhas.
 
 | Versão | Data | Seção | Mudança | Impacto em dependentes |
 |---|---|---|---|---|
+| 0.1.1 | 2026-06-28 | 9.1 | Corrige configuração `[env:native]`: adiciona `lib_extra_dirs = src` obrigatório para PlatformIO 6.x; `build_src_filter` sozinho não inclui `src/` em test builds | firmware/platformio.ini |
 | 0.1.0 | 2026-06-28 | — | Criação: padrão genérico de testes derivados — zero magic numbers, mock declare→define, constantes T_, rastreabilidade de CAs | firmware/test/ |
 
 ---
