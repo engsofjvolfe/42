@@ -3,7 +3,7 @@
 # Atualizar ao encerrar cada sessão. Enviar junto com arquivo2 ao retomar.
 ---
 
-CONTEXTO: continuando projeto [Nome a definir] — 2026-06-27
+CONTEXTO: continuando projeto Instrumento Ludico-Pedagogico ESP32 — 2026-06-27
 Processo: V-Model (ISO 26262 / IEC 61508 / IEC 62304)
 
 Camada atual: FORMALIZAÇÃO
@@ -14,14 +14,20 @@ Fases concluídas e aprovadas:
   [x] Fase 2 — Arquitetura Sistema  (system/01_arquitetura.md v0.1.0 APROVADO)
   [x] Fase 3 — Design de Hardware   (hardware/08–11 v0.1.0 APROVADO)
   [x] Fase 4 — Arquitetura Firmware (modules/02–07 v0.1.0 APROVADO)
-  [~] GATE Formalização             (spec/power DONE — 4 módulos pendentes)
+  [~] GATE Formalização             (spec/power MERGEADO em develop — 4 módulos pendentes)
   [ ] Fase 5 — Testes de Módulos
   [ ] Fase 6 — Validação de Hardware
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: spec/power
-Próxima ação: criar spec/sensor (depende de spec/power/ + 02_sensor_impacto.md)
+Branch ativa: develop
+Próxima ação: criar branch spec/sensor a partir de develop, depois criar spec/sensor/sensor.json + sensor.schema.json
+
+Ordem obrigatória dos módulos restantes (ETAPA 6):
+  2. spec/sensor/  ← deriva de spec/power/ + 02_sensor_impacto.md
+  3. spec/visual/  ← deriva de spec/power/ + 03_saida_visual.md
+  4. spec/game/    ← deriva de spec/sensor/ + spec/visual/ + 04_logica_jogo.md
+  5. spec/interface/ ← deriva de spec/game/ + 07_interface_pedagogo.md
 
 Decisões aprovadas:
   - LM2596 módulo pré-montado → 5V ± 0.1V (eficiência 85–90%)
@@ -40,11 +46,10 @@ Pendências:
   - spec/visual/visual.json + visual.schema.json
   - spec/game/game.json + game.schema.json
   - spec/interface/interface.json + interface.schema.json
-  - merge spec/power → develop (após todos os 5 módulos)
-  - tag v0.2.0 ao concluir gate ETAPA 6
-  - Adicionar à ETAPA 5 do CLAUDE.md: meta-análise de cadeia como item do checklist pré-commit
+  - tag v0.2.0 ao concluir gate ETAPA 6 (todos os 5 módulos mergeados em develop)
 
-Desvios desta sessão (registrados para não repetir):
+Desvios da sessão anterior (registrados para não repetir):
   - Commits em main antes de criar develop + branch de trabalho
   - CHANGELOG não atualizado antes dos commits spec(power) e docs(padrao)
   - Gate ETAPA 3 não validado com as 4 perguntas antes de avançar
+  - Meta-análise executada após entrega (deve ser pré-commit)
