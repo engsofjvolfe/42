@@ -11,7 +11,7 @@ Nunca leia à frente antes de validar a etapa atual.
 Se é a primeira vez neste repositório: comece na **ETAPA 1**.
 
 Se está retornando:
-- `git status` mostra branch de trabalho ativa → **ETAPA 5**
+- `git status` mostra branch de trabalho ativa → ler `SESSION_STATE.md` → **ETAPA 3**
 - Nenhuma branch ativa, mas `run_all.py` passa → **ETAPA 3**
 - `run_all.py` com erros → **ETAPA 2**
 
@@ -273,6 +273,7 @@ git tag -a v1.0.0 -m "release: V-model fechado — validação completa"
 □ Tipo e escopo do commit corretos
 □ Descrição no imperativo
 □ Sem Co-authored-by
+□ Meta-análise de cadeia: cada etapa foi seguida na ordem correta? (executar ANTES do commit)
 ```
 
 **Gate:** Contrato Git claro. Crie a branch de trabalho agora. Avance para ETAPA 6.
@@ -320,6 +321,7 @@ Se um valor exige interpretação humana para extrair um dado: está errado.
 ### Procedimento por módulo
 
 ```
+0. Ao retomar sessão: ler SESSION_STATE.md → identificar módulos já criados → começar pelo próximo
 1. Ler o documento .md do módulo integralmente (ETAPA 3 se não fez ainda)
 2. Ler os specs dos módulos pai (se existirem)
 3. Criar <modulo>.json derivando dos campos dos documentos .md
@@ -328,7 +330,11 @@ Se um valor exige interpretação humana para extrair um dado: está errado.
    jsonschema.validate(json.load(open('<modulo>.json')),
    json.load(open('<modulo>.schema.json'))); print('OK')"
 6. run_all.py → zero erros
-7. Commit: spec(<modulo>): cria spec e schema derivados de <doc>.md v<X.Y.Z>
+7. Executar checklist da ETAPA 5 (incluindo meta-análise) antes de commitar
+8. Commit: spec(<modulo>): cria spec e schema derivados de <doc>.md v<X.Y.Z>
+9. Merge branch spec/<modulo> → develop
+10. Criar branch spec/<proximo-modulo> a partir de develop
+11. Atualizar SESSION_STATE.md na nova branch
 ```
 
 ### Gate desta etapa
