@@ -3,11 +3,11 @@
 # Atualizar ao encerrar cada sessão. Enviar junto com arquivo2 ao retomar.
 ---
 
-CONTEXTO: continuando projeto Instrumento Ludico-Pedagogico ESP32 — 2026-06-27
+CONTEXTO: continuando projeto Instrumento Ludico-Pedagogico ESP32 — 2026-06-28
 Processo: V-Model (ISO 26262 / IEC 61508 / IEC 62304)
 
 Camada atual: DERIVAÇÃO
-Fase V-Model atual: ETAPA 7 — Firmware
+Fase V-Model atual: ETAPA 7 — Firmware (aguardando merge de docs/coding-standard)
 
 Fases concluídas e aprovadas:
   [x] Fase 1 — Requisitos          (concept/00_conceito.md v0.1.0 APROVADO)
@@ -20,8 +20,8 @@ Fases concluídas e aprovadas:
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: develop (gate ETAPA 6 concluído, pronto para ETAPA 7)
-Próxima ação: criar branch feat/sensor a partir de develop → ETAPA 7 (Firmware), começando por MOD_SENSOR
+Branch ativa: docs/coding-standard (aguardando aprovacao do usuario para commit)
+Próxima ação apos merge: criar branch feat/sensor a partir de develop → ETAPA 7 (Firmware), começando por MOD_SENSOR
 
 Ordem de implementação dos módulos (ETAPA 7):
   1. MOD_SENSOR  ← sem dependência de outros módulos  ← PRÓXIMO
@@ -44,6 +44,14 @@ Decisões aprovadas:
 Pendências:
   - ETAPA 7: Firmware (4 módulos, TDD, pio test -e native)
   - tag v0.3.0 ao concluir gate ETAPA 7
+
+Artefatos criados nesta sessao (branch docs/coding-standard):
+  - _governance/CODING_STANDARD.md v0.1.0
+  - spec/firmware_constants.json (47 constantes DERIVADO + 3 HARDCODED_JUSTIFICADO)
+  - spec/firmware_constants.schema.json
+  - scripts/generate_coding_standard.py
+  Corrigidos: scripts/verify_links.py, check_impacta.py, check_versions.py (rglob)
+  Alterado: scripts/run_all.py (4 check adicionado)
 
 Desvios desta sessão (registrados para não repetir):
   - Nenhum desvio de protocolo identificado na meta-análise

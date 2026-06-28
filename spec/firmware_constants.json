@@ -1,0 +1,540 @@
+{
+  "meta": {
+    "documento_fonte": "CODING_STANDARD.md",
+    "versao_fonte": "0.1.0",
+    "descricao": "Mapeamento de campos de spec JSON para constantes C++ de firmware. Fonte de derivacao para scripts/generate_coding_standard.py e para os arquivos _config.h."
+  },
+
+  "modulos": [
+    {
+      "nome": "sensor",
+      "prefixo": "SENSOR_",
+      "config_h": "firmware/src/sensor/sensor_config.h",
+      "tem_teste_native": true
+    },
+    {
+      "nome": "visual",
+      "prefixo": "VISUAL_",
+      "config_h": "firmware/src/visual/visual_config.h",
+      "tem_teste_native": true
+    },
+    {
+      "nome": "game",
+      "prefixo": "GAME_",
+      "config_h": "firmware/src/game/game_config.h",
+      "tem_teste_native": true
+    },
+    {
+      "nome": "interface",
+      "prefixo": "INTERFACE_",
+      "config_h": "firmware/src/interface/interface_config.h",
+      "tem_teste_native": false
+    }
+  ],
+
+  "constantes": [
+    {
+      "modulo": "sensor",
+      "constante": "SENSOR_GPIO_LARANJA",
+      "valor": 34,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/sensor/sensor.json",
+      "spec_campo": "mapeamento_gpios[0].gpio"
+    },
+    {
+      "modulo": "sensor",
+      "constante": "SENSOR_GPIO_AZUL",
+      "valor": 35,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/sensor/sensor.json",
+      "spec_campo": "mapeamento_gpios[1].gpio"
+    },
+    {
+      "modulo": "sensor",
+      "constante": "SENSOR_GPIO_AMARELO",
+      "valor": 32,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/sensor/sensor.json",
+      "spec_campo": "mapeamento_gpios[2].gpio"
+    },
+    {
+      "modulo": "sensor",
+      "constante": "SENSOR_GPIO_ROXO",
+      "valor": 33,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/sensor/sensor.json",
+      "spec_campo": "mapeamento_gpios[3].gpio"
+    },
+    {
+      "modulo": "sensor",
+      "constante": "SENSOR_THRESHOLD_ADC",
+      "valor": 500,
+      "tipo_c": "uint16_t",
+      "classe": "DERIVADO",
+      "calibrar": true,
+      "spec_arquivo": "spec/sensor/sensor.json",
+      "spec_campo": "deteccao.threshold"
+    },
+    {
+      "modulo": "sensor",
+      "constante": "SENSOR_DEBOUNCE_MS",
+      "valor": 200,
+      "tipo_c": "uint16_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/sensor/sensor.json",
+      "spec_campo": "deteccao.debounce_ms"
+    },
+    {
+      "modulo": "sensor",
+      "constante": "SENSOR_ADC_MAX",
+      "valor": 4095,
+      "tipo_c": "uint16_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/sensor/sensor.json",
+      "spec_campo": "adc.contagens_maximas"
+    },
+    {
+      "modulo": "sensor",
+      "constante": "SENSOR_N_ZONAS",
+      "valor": 4,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/sensor/sensor.json",
+      "spec_campo": "componente.quantidade"
+    },
+
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_GPIO_DADOS",
+      "valor": 5,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "alimentacao.gpio_dados"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_N_LEDS",
+      "valor": 3,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "componente.quantidade"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_BRIGHTNESS",
+      "valor": 150,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "alimentacao.brightness_fixo"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_LED_ESQUERDO",
+      "valor": 0,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "mapeamento_led[0].indice"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_LED_CENTRAL",
+      "valor": 1,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "mapeamento_led[1].indice"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_LED_DIREITO",
+      "valor": 2,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "mapeamento_led[2].indice"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_LARANJA_R",
+      "valor": 255,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Laranja.r"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_LARANJA_G",
+      "valor": 80,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Laranja.g"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_LARANJA_B",
+      "valor": 0,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Laranja.b"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_AZUL_R",
+      "valor": 0,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Azul.r"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_AZUL_G",
+      "valor": 0,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Azul.g"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_AZUL_B",
+      "valor": 255,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Azul.b"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_AMARELO_R",
+      "valor": 255,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Amarelo.r"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_AMARELO_G",
+      "valor": 180,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Amarelo.g"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_AMARELO_B",
+      "valor": 0,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Amarelo.b"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_ROXO_R",
+      "valor": 148,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Roxo.r"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_ROXO_G",
+      "valor": 0,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Roxo.g"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_COR_ROXO_B",
+      "valor": 211,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "cores_rgb.Roxo.b"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_BOOT_PASSO_MS",
+      "valor": 150,
+      "tipo_c": "uint16_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "boot_animation.passos[0].duracao_ms"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_BOOT_PAUSA_MS",
+      "valor": 500,
+      "tipo_c": "uint16_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "boot_animation.passos[4].duracao_ms"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_BOOT_DURACAO_MS",
+      "valor": 3000,
+      "tipo_c": "uint16_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "boot_animation.duracao_total_ms"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_CELEBRACAO_ROTACOES",
+      "valor": 5,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "animacao_celebracao.rotacoes_completas"
+    },
+    {
+      "modulo": "visual",
+      "constante": "VISUAL_CELEBRACAO_DURACAO_MS",
+      "valor": 3000,
+      "tipo_c": "uint16_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/visual/visual.json",
+      "spec_campo": "animacao_celebracao.duracao_total_ms"
+    },
+
+    {
+      "modulo": "game",
+      "constante": "GAME_MODO_UM",
+      "valor": 1,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/game/game.json",
+      "spec_campo": "modos[0].id"
+    },
+    {
+      "modulo": "game",
+      "constante": "GAME_MODO_DOIS",
+      "valor": 2,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/game/game.json",
+      "spec_campo": "modos[1].id"
+    },
+    {
+      "modulo": "game",
+      "constante": "GAME_N_CORES",
+      "valor": 4,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/game/game.json",
+      "spec_campo": "mecanismos_aleatoriedade[0].n_cores"
+    },
+    {
+      "modulo": "game",
+      "constante": "GAME_INTERVALO_MS",
+      "valor": 2000,
+      "tipo_c": "uint16_t",
+      "classe": "DERIVADO",
+      "calibrar": true,
+      "spec_arquivo": "spec/game/game.json",
+      "spec_campo": "timings.intervalo_ms.valor_padrao"
+    },
+    {
+      "modulo": "game",
+      "constante": "GAME_JANELA_MS_PADRAO",
+      "valor": 800,
+      "tipo_c": "uint16_t",
+      "classe": "DERIVADO",
+      "calibrar": true,
+      "spec_arquivo": "spec/game/game.json",
+      "spec_campo": "timings.janela_ms.valor_padrao"
+    },
+    {
+      "modulo": "game",
+      "constante": "GAME_MECA_A_BLOCO",
+      "valor": 4,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/game/game.json",
+      "spec_campo": "mecanismos_aleatoriedade[0].tamanho_bloco"
+    },
+    {
+      "modulo": "game",
+      "constante": "GAME_MECA_A_INDICE_INICIAL",
+      "valor": 4,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/game/game.json",
+      "spec_campo": "mecanismos_aleatoriedade[0].indice_inicial"
+    },
+    {
+      "modulo": "game",
+      "constante": "GAME_MECA_B_PESO_INICIAL",
+      "valor": 4,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/game/game.json",
+      "spec_campo": "mecanismos_aleatoriedade[1].peso_inicial_por_cor"
+    },
+    {
+      "modulo": "game",
+      "constante": "GAME_MECA_B_PESO_MIN",
+      "valor": 0,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/game/game.json",
+      "spec_campo": "mecanismos_aleatoriedade[1].peso_minimo"
+    },
+    {
+      "modulo": "game",
+      "constante": "GAME_SCORE_DELTA_ACERTO",
+      "valor": 1,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/game/game.json",
+      "spec_campo": "acerto.score_delta"
+    },
+    {
+      "modulo": "game",
+      "constante": "GAME_SCORE_DELTA_ERRO",
+      "valor": 0,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/game/game.json",
+      "spec_campo": "erro.score_delta"
+    },
+
+    {
+      "modulo": "interface",
+      "constante": "INTERFACE_AP_SSID",
+      "valor": "BMI",
+      "tipo_c": "const char*",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/interface/interface.json",
+      "spec_campo": "access_point.ssid"
+    },
+    {
+      "modulo": "interface",
+      "constante": "INTERFACE_AP_IP",
+      "valor": "192.168.4.1",
+      "tipo_c": "const char*",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/interface/interface.json",
+      "spec_campo": "access_point.ip"
+    },
+    {
+      "modulo": "interface",
+      "constante": "INTERFACE_AP_CANAL",
+      "valor": 1,
+      "tipo_c": "uint8_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/interface/interface.json",
+      "spec_campo": "access_point.canal"
+    },
+    {
+      "modulo": "interface",
+      "constante": "INTERFACE_FEEDBACK_ACERTO_MS",
+      "valor": 1500,
+      "tipo_c": "uint16_t",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/interface/interface.json",
+      "spec_campo": "estados_interface.duracao_feedback_acerto_ms"
+    },
+    {
+      "modulo": "interface",
+      "constante": "INTERFACE_WS_PATH",
+      "valor": "/ws",
+      "tipo_c": "const char*",
+      "classe": "DERIVADO",
+      "calibrar": false,
+      "spec_arquivo": "spec/interface/interface.json",
+      "spec_campo": "servidor_http.rotas[1].rota"
+    }
+  ],
+
+  "decisoes_manuais_inerentes": [
+    {
+      "id": "DM-01",
+      "modulo": "sensor",
+      "constante": "SENSOR_WDT_TIMEOUT_MS",
+      "valor": null,
+      "tipo_c": "uint32_t",
+      "classe": "HARDCODED_JUSTIFICADO",
+      "justificativa": "Timeout do WDT nao e parametro de dominio. Calculado como duracao_max_loop_ms multiplicado por fator de seguranca. Determinar apos medir o loop mais longo na implementacao. Comentario obrigatorio com o calculo explicito."
+    },
+    {
+      "id": "DM-02",
+      "modulo": "sensor",
+      "constante": "SENSOR_ADC_ATENUACAO",
+      "valor": "ADC_ATTEN_DB_11",
+      "tipo_c": "adc_atten_t",
+      "classe": "HARDCODED_JUSTIFICADO",
+      "justificativa": "Constante de plataforma ESP-IDF para range 0-3.3V no ADC1. Nao e parametro de dominio; e configuracao de silicio. Nao existe campo correspondente em nenhum spec JSON."
+    },
+    {
+      "id": "DM-03",
+      "modulo": "visual",
+      "constante": "VISUAL_COLOR_ORDER",
+      "valor": "GRB",
+      "tipo_c": "EOrder",
+      "classe": "HARDCODED_JUSTIFICADO",
+      "justificativa": "GRB e enum da biblioteca FastLED. visual.json#componente.color_order registra 'GRB' como string; o simbolo C++ e fornecido pela API da biblioteca e nao pode ser parametrizado sem reflexao."
+    }
+  ]
+}

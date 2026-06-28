@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "firmware_constants",
+  "description": "Schema de validacao para spec/firmware_constants.json",
+  "type": "object",
+  "required": ["meta", "modulos", "constantes", "decisoes_manuais_inerentes"],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["documento_fonte", "versao_fonte", "descricao"],
+      "additionalProperties": false,
+      "properties": {
+        "documento_fonte": { "type": "string" },
+        "versao_fonte":    { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "descricao":       { "type": "string" }
+      }
+    },
+    "modulos": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["nome", "prefixo", "config_h", "tem_teste_native"],
+        "additionalProperties": false,
+        "properties": {
+          "nome":             { "type": "string" },
+          "prefixo":          { "type": "string", "pattern": "^[A-Z_]+_$" },
+          "config_h":         { "type": "string" },
+          "tem_teste_native": { "type": "boolean" }
+        }
+      }
+    },
+    "constantes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["modulo", "constante", "valor", "tipo_c", "classe", "calibrar", "spec_arquivo", "spec_campo"],
+        "additionalProperties": false,
+        "properties": {
+          "modulo":       { "type": "string" },
+          "constante":    { "type": "string", "pattern": "^[A-Z][A-Z0-9_]+$" },
+          "valor":        { "type": ["number", "string", "null"] },
+          "tipo_c":       { "type": "string" },
+          "classe":       { "type": "string", "enum": ["DERIVADO"] },
+          "calibrar":     { "type": "boolean" },
+          "spec_arquivo": { "type": "string" },
+          "spec_campo":   { "type": "string" }
+        }
+      }
+    },
+    "decisoes_manuais_inerentes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "modulo", "constante", "valor", "tipo_c", "classe", "justificativa"],
+        "additionalProperties": false,
+        "properties": {
+          "id":            { "type": "string", "pattern": "^DM-[0-9]+$" },
+          "modulo":        { "type": "string" },
+          "constante":     { "type": "string", "pattern": "^[A-Z][A-Z0-9_]+$" },
+          "valor":         { "type": ["string", "null"] },
+          "tipo_c":        { "type": "string" },
+          "classe":        { "type": "string", "enum": ["HARDCODED_JUSTIFICADO"] },
+          "justificativa": { "type": "string", "minLength": 20 }
+        }
+      }
+    }
+  }
+}
