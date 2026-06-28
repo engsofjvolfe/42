@@ -14,19 +14,18 @@ Fases concluídas e aprovadas:
   [x] Fase 2 — Arquitetura Sistema  (system/01_arquitetura.md v0.1.0 APROVADO)
   [x] Fase 3 — Design de Hardware   (hardware/08–11 v0.1.0 APROVADO)
   [x] Fase 4 — Arquitetura Firmware (modules/02–07 v0.1.0 APROVADO)
-  [~] GATE Formalização             (spec/power MERGEADO em develop — 4 módulos pendentes)
+  [~] GATE Formalização             (spec/power e spec/sensor MERGEADOS em develop — 3 módulos pendentes)
   [ ] Fase 5 — Testes de Módulos
   [ ] Fase 6 — Validação de Hardware
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: develop
-Próxima ação: criar branch spec/sensor a partir de develop, depois criar spec/sensor/sensor.json + sensor.schema.json
+Branch ativa: spec/visual
+Próxima ação: criar spec/visual/visual.json + visual.schema.json derivados de spec/power/ + 03_saida_visual.md
 
 Ordem obrigatória dos módulos restantes (ETAPA 6):
-  2. spec/sensor/  ← deriva de spec/power/ + 02_sensor_impacto.md
-  3. spec/visual/  ← deriva de spec/power/ + 03_saida_visual.md
-  4. spec/game/    ← deriva de spec/sensor/ + spec/visual/ + 04_logica_jogo.md
+  3. spec/visual/    ← deriva de spec/power/ + 03_saida_visual.md  ← EM ANDAMENTO
+  4. spec/game/      ← deriva de spec/sensor/ + spec/visual/ + 04_logica_jogo.md
   5. spec/interface/ ← deriva de spec/game/ + 07_interface_pedagogo.md
 
 Decisões aprovadas:
@@ -42,11 +41,14 @@ Decisões aprovadas:
   - R1 proteção piezo: 1MΩ 1/4W
 
 Pendências:
-  - spec/sensor/sensor.json + sensor.schema.json
   - spec/visual/visual.json + visual.schema.json
   - spec/game/game.json + game.schema.json
   - spec/interface/interface.json + interface.schema.json
   - tag v0.2.0 ao concluir gate ETAPA 6 (todos os 5 módulos mergeados em develop)
+
+Desvios desta sessão (registrados para não repetir):
+  - CHANGELOG não atualizado antes do commit spec(sensor) — corrigido via amend
+  - Merge commit tentado antes de verificar CHANGELOG — bloqueado pelo usuário
 
 Desvios da sessão anterior (registrados para não repetir):
   - Commits em main antes de criar develop + branch de trabalho
