@@ -9,6 +9,20 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Nao lancado]
 
+### Adicionado
+- `_governance/CODING_STANDARD.md` v0.1.0 — padrao de codigo firmware derivado de `01_arquitetura.md` v0.1.0 e de todos os specs v0.2.0; secoes derivadas geradas automaticamente por script
+- `spec/firmware_constants.json` — mapeamento canonico de 47 constantes DERIVADO e 3 HARDCODED_JUSTIFICADO; liga cada constante C++ ao campo JSON de origem no spec correspondente
+- `spec/firmware_constants.schema.json` — schema JSON (draft/2020-12) para validacao de firmware_constants.json
+- `scripts/generate_coding_standard.py` — gera secoes derivadas de CODING_STANDARD.md a partir de firmware_constants.json; valida cascata (valores spec vs valor mapeado) em modo --check
+
+### Alterado
+- `scripts/run_all.py`: adiciona 4 check — `generate_coding_standard.py --check` (cascata specs -> CODING_STANDARD.md)
+
+### Corrigido
+- `scripts/verify_links.py`: corrige varredura de `.md` de `glob('*.md')` (so raiz) para `rglob` recursivo com registry `{nome: path}` — scripts nao verificavam nenhum documento em subdiretorios
+- `scripts/check_impacta.py`: mesma correcao de varredura recursiva com registry
+- `scripts/check_versions.py`: mesma correcao de varredura recursiva com registry
+
 ---
 
 ## [0.2.0] — 2026-06-28
