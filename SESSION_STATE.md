@@ -14,18 +14,17 @@ Fases concluídas e aprovadas:
   [x] Fase 2 — Arquitetura Sistema  (system/01_arquitetura.md v0.1.0 APROVADO)
   [x] Fase 3 — Design de Hardware   (hardware/08–11 v0.1.0 APROVADO)
   [x] Fase 4 — Arquitetura Firmware (modules/02–07 v0.1.0 APROVADO)
-  [~] GATE Formalização             (spec/power e spec/sensor MERGEADOS em develop — 3 módulos pendentes)
+  [~] GATE Formalização             (spec/power, spec/sensor e spec/visual MERGEADOS em develop — 2 módulos pendentes)
   [ ] Fase 5 — Testes de Módulos
   [ ] Fase 6 — Validação de Hardware
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: spec/visual
-Próxima ação: criar spec/visual/visual.json + visual.schema.json derivados de spec/power/ + 03_saida_visual.md
+Branch ativa: spec/game
+Próxima ação: criar spec/game/game.json + game.schema.json derivados de spec/sensor/ + spec/visual/ + 04_logica_jogo.md
 
 Ordem obrigatória dos módulos restantes (ETAPA 6):
-  3. spec/visual/    ← deriva de spec/power/ + 03_saida_visual.md  ← EM ANDAMENTO
-  4. spec/game/      ← deriva de spec/sensor/ + spec/visual/ + 04_logica_jogo.md
+  4. spec/game/      ← deriva de spec/sensor/ + spec/visual/ + 04_logica_jogo.md  ← EM ANDAMENTO
   5. spec/interface/ ← deriva de spec/game/ + 07_interface_pedagogo.md
 
 Decisões aprovadas:
@@ -41,16 +40,19 @@ Decisões aprovadas:
   - R1 proteção piezo: 1MΩ 1/4W
 
 Pendências:
-  - spec/visual/visual.json + visual.schema.json
   - spec/game/game.json + game.schema.json
   - spec/interface/interface.json + interface.schema.json
   - tag v0.2.0 ao concluir gate ETAPA 6 (todos os 5 módulos mergeados em develop)
 
 Desvios desta sessão (registrados para não repetir):
+  - ETAPA 4 e ETAPA 5 não relidas como ato explícito na primeira tentativa — corrigido na segunda passagem
+  - CHANGELOG não atualizado antes do commit (identificado na meta-análise, corrigido antes do commit)
+
+Desvios da sessão anterior (registrados para não repetir):
   - CHANGELOG não atualizado antes do commit spec(sensor) — corrigido via amend
   - Merge commit tentado antes de verificar CHANGELOG — bloqueado pelo usuário
 
-Desvios da sessão anterior (registrados para não repetir):
+Desvios de sessões anteriores (registrados para não repetir):
   - Commits em main antes de criar develop + branch de trabalho
   - CHANGELOG não atualizado antes dos commits spec(power) e docs(padrao)
   - Gate ETAPA 3 não validado com as 4 perguntas antes de avançar
