@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "documento_fonte": "05_alimentacao.md",
+    "versao_fonte": "0.1.0"
+  },
+
+  "fonte_ac_dc": {
+    "modelo": "NBS30G-120250VB",
+    "tensao_saida_v": 12,
+    "corrente_maxima_a": 2.5,
+    "potencia_w": 30
+  },
+
+  "regulador_buck": {
+    "componente": "LM2596",
+    "tipo": "modulo_pre_montado",
+    "tensao_entrada_v": 12,
+    "tensao_saida_alvo_v": 5.0,
+    "tolerancia_saida_v": 0.1,
+    "corrente_maxima_a": 3.0,
+    "eficiencia_min_pct": 85,
+    "eficiencia_max_pct": 90,
+    "eficiencia_calculo": 0.85,
+    "ci_isolado": {
+      "indutor_uh_min": 68,
+      "indutor_uh_max": 100,
+      "indutor_corrente_minima_a": 1.5,
+      "diodo_principal": "1N5819",
+      "diodo_alternativo": "SR360"
+    }
+  },
+
+  "regulador_linear": {
+    "componente": "AMS1117-3.3",
+    "tensao_entrada_v": 5.0,
+    "tensao_saida_v": 3.3,
+    "corrente_maxima_ma": 800,
+    "psrr_db": 40,
+    "atenuacao_ripple_lm2596": 100
+  },
+
+  "rails": {
+    "r5v": {
+      "tensao_nominal_v": 5.0,
+      "tolerancia_v": 0.1,
+      "regulador": "LM2596"
+    },
+    "r3v3": {
+      "tensao_nominal_v": 3.3,
+      "regulador": "AMS1117_onboard"
+    }
+  },
+
+  "orcamento_corrente": {
+    "esp32_devkit": {
+      "tipica_ma": 150,
+      "pico_ma": 240,
+      "rail": "r5v"
+    },
+    "ws2812b_3x": {
+      "tipica_ma": 30,
+      "pico_ma": 120,
+      "brightness_max": 150,
+      "rail": "r3v3"
+    },
+    "total_tipico_ma": 180,
+    "total_pico_ma": 360,
+    "entrada_12v_pico_ma": 175,
+    "potencia_carga_w": 1.8,
+    "potencia_entrada_w": 2.1
+  },
+
+  "margens": {
+    "lm2596_sobre_pico": 8.3,
+    "ams1117_sobre_pico": 2.2,
+    "fonte_sobre_entrada_pico": 14.3
+  },
+
+  "decoupling": {
+    "lm2596_in":     {"capacitancia_uf": 100,  "tensao_v": 25, "tipo": "electrolitico", "quantidade": 1},
+    "lm2596_out":    {"capacitancia_uf": 470,  "tensao_v": 10, "tipo": "electrolitico", "quantidade": 1},
+    "lm2596_out_hf": {"capacitancia_uf": 0.1,  "tensao_v": 50, "tipo": "ceramico",      "quantidade": 1},
+    "vin_devkit":    {"capacitancia_uf": 10,   "tensao_v": 16, "tipo": "electrolitico", "quantidade": 1},
+    "vin_devkit_hf": {"capacitancia_uf": 0.1,  "tensao_v": 50, "tipo": "ceramico",      "quantidade": 1},
+    "vdd_ws2812b":   {"capacitancia_uf": 10,   "tensao_v": 16, "tipo": "electrolitico", "quantidade": 3},
+    "vdd_ws2812b_hf":{"capacitancia_uf": 0.1,  "tensao_v": 50, "tipo": "ceramico",      "quantidade": 3}
+  },
+
+  "restricoes_filhos": {
+    "tensao_maxima_adc1_v": 3.3,
+    "tensao_zener_protecao_v": 3.3,
+    "tensao_alimentacao_ws2812b_v": 3.3,
+    "brightness_max_ws2812b": 150,
+    "corrente_maxima_ws2812b_ma": 120
+  },
+
+  "criterios_aceitacao": [
+    {"id": "CA-05-01", "nominal_v": 5.0, "tolerancia_v": 0.1},
+    {"id": "CA-05-02", "nominal_v": 5.0, "tolerancia_pct": 5,  "duracao_min": 60},
+    {"id": "CA-05-03", "nominal_v": 3.3, "tolerancia_pct": 5,  "duracao_min": 60},
+    {"id": "CA-05-04", "resets_maximos": 0,                     "duracao_min": 60},
+    {"id": "CA-05-05", "temperatura_maxima_c": 70, "apos_min": 30},
+    {"id": "CA-05-06", "temperatura_maxima_c": 70, "apos_min": 30},
+    {"id": "CA-05-07", "ripple_maximo_mv_pp": 50}
+  ]
+}

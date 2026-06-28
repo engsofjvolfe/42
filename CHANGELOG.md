@@ -18,6 +18,8 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - Licenca GPL-3.0
 - `CHANGELOG.md` (este arquivo)
 - Script de automacao de versionamento (`_governance/scripts/bump_version.py`)
+- `spec/power/power.json` — spec derivada de `05_alimentacao.md` v0.1.0
+- `spec/power/power.schema.json` — schema de validacao do power spec
 
 ### Corrigido
 - Scripts de verificacao movidos de `_governance/scripts/` para `scripts/` (alinhamento com CLAUDE.md e CI)

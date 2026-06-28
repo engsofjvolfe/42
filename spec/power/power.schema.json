@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "power.schema.json",
+  "title": "Power Spec — derivado de 05_alimentacao.md v0.1.0",
+  "type": "object",
+  "required": ["meta", "fonte_ac_dc", "regulador_buck", "regulador_linear", "rails", "orcamento_corrente", "margens", "decoupling", "restricoes_filhos", "criterios_aceitacao"],
+  "additionalProperties": false,
+
+  "definitions": {
+    "capacitor": {
+      "type": "object",
+      "required": ["capacitancia_uf", "tensao_v", "tipo", "quantidade"],
+      "additionalProperties": false,
+      "properties": {
+        "capacitancia_uf": {"type": "number", "exclusiveMinimum": 0},
+        "tensao_v":        {"type": "number", "exclusiveMinimum": 0},
+        "tipo":            {"type": "string", "enum": ["electrolitico", "ceramico"]},
+        "quantidade":      {"type": "integer", "minimum": 1}
+      }
+    }
+  },
+
+  "properties": {
+
+    "meta": {
+      "type": "object",
+      "required": ["documento_fonte", "versao_fonte"],
+      "additionalProperties": false,
+      "properties": {
+        "documento_fonte": {"type": "string"},
+        "versao_fonte":    {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"}
+      }
+    },
+
+    "fonte_ac_dc": {
+      "type": "object",
+      "required": ["modelo", "tensao_saida_v", "corrente_maxima_a", "potencia_w"],
+      "additionalProperties": false,
+      "properties": {
+        "modelo":            {"type": "string"},
+        "tensao_saida_v":    {"type": "number", "exclusiveMinimum": 0},
+        "corrente_maxima_a": {"type": "number", "exclusiveMinimum": 0},
+        "potencia_w":        {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+
+    "regulador_buck": {
+      "type": "object",
+      "required": ["componente", "tipo", "tensao_entrada_v", "tensao_saida_alvo_v", "tolerancia_saida_v", "corrente_maxima_a", "eficiencia_min_pct", "eficiencia_max_pct", "eficiencia_calculo", "ci_isolado"],
+      "additionalProperties": false,
+      "properties": {
+        "componente":          {"type": "string"},
+        "tipo":                {"type": "string", "enum": ["modulo_pre_montado", "ci_isolado"]},
+        "tensao_entrada_v":    {"type": "number", "exclusiveMinimum": 0},
+        "tensao_saida_alvo_v": {"type": "number", "exclusiveMinimum": 0},
+        "tolerancia_saida_v":  {"type": "number", "exclusiveMinimum": 0},
+        "corrente_maxima_a":   {"type": "number", "exclusiveMinimum": 0},
+        "eficiencia_min_pct":  {"type": "number", "minimum": 0, "maximum": 100},
+        "eficiencia_max_pct":  {"type": "number", "minimum": 0, "maximum": 100},
+        "eficiencia_calculo":  {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "ci_isolado": {
+          "type": "object",
+          "required": ["indutor_uh_min", "indutor_uh_max", "indutor_corrente_minima_a", "diodo_principal", "diodo_alternativo"],
+          "additionalProperties": false,
+          "properties": {
+            "indutor_uh_min":            {"type": "number", "exclusiveMinimum": 0},
+            "indutor_uh_max":            {"type": "number", "exclusiveMinimum": 0},
+            "indutor_corrente_minima_a": {"type": "number", "exclusiveMinimum": 0},
+            "diodo_principal":           {"type": "string"},
+            "diodo_alternativo":         {"type": "string"}
+          }
+        }
+      }
+    },
+
+    "regulador_linear": {
+      "type": "object",
+      "required": ["componente", "tensao_entrada_v", "tensao_saida_v", "corrente_maxima_ma", "psrr_db", "atenuacao_ripple_lm2596"],
+      "additionalProperties": false,
+      "properties": {
+        "componente":              {"type": "string"},
+        "tensao_entrada_v":        {"type": "number", "exclusiveMinimum": 0},
+        "tensao_saida_v":          {"type": "number", "exclusiveMinimum": 0},
+        "corrente_maxima_ma":      {"type": "number", "exclusiveMinimum": 0},
+        "psrr_db":                 {"type": "number"},
+        "atenuacao_ripple_lm2596": {"type": "number", "minimum": 1}
+      }
+    },
+
+    "rails": {
+      "type": "object",
+      "required": ["r5v", "r3v3"],
+      "additionalProperties": false,
+      "properties": {
+        "r5v": {
+          "type": "object",
+          "required": ["tensao_nominal_v", "tolerancia_v", "regulador"],
+          "additionalProperties": false,
+          "properties": {
+            "tensao_nominal_v": {"type": "number", "exclusiveMinimum": 0},
+            "tolerancia_v":     {"type": "number", "exclusiveMinimum": 0},
+            "regulador":        {"type": "string"}
+          }
+        },
+        "r3v3": {
+          "type": "object",
+          "required": ["tensao_nominal_v", "regulador"],
+          "additionalProperties": false,
+          "properties": {
+            "tensao_nominal_v": {"type": "number", "exclusiveMinimum": 0},
+            "regulador":        {"type": "string"}
+          }
+        }
+      }
+    },
+
+    "orcamento_corrente": {
+      "type": "object",
+      "required": ["esp32_devkit", "ws2812b_3x", "total_tipico_ma", "total_pico_ma", "entrada_12v_pico_ma", "potencia_carga_w", "potencia_entrada_w"],
+      "additionalProperties": false,
+      "properties": {
+        "esp32_devkit": {
+          "type": "object",
+          "required": ["tipica_ma", "pico_ma", "rail"],
+          "additionalProperties": false,
+          "properties": {
+            "tipica_ma": {"type": "number", "minimum": 0},
+            "pico_ma":   {"type": "number", "minimum": 0},
+            "rail":      {"type": "string"}
+          }
+        },
+        "ws2812b_3x": {
+          "type": "object",
+          "required": ["tipica_ma", "pico_ma", "brightness_max", "rail"],
+          "additionalProperties": false,
+          "properties": {
+            "tipica_ma":     {"type": "number", "minimum": 0},
+            "pico_ma":       {"type": "number", "minimum": 0},
+            "brightness_max":{"type": "integer", "minimum": 0, "maximum": 255},
+            "rail":          {"type": "string"}
+          }
+        },
+        "total_tipico_ma":     {"type": "number", "minimum": 0},
+        "total_pico_ma":       {"type": "number", "minimum": 0},
+        "entrada_12v_pico_ma": {"type": "number", "minimum": 0},
+        "potencia_carga_w":    {"type": "number", "minimum": 0},
+        "potencia_entrada_w":  {"type": "number", "minimum": 0}
+      }
+    },
+
+    "margens": {
+      "type": "object",
+      "required": ["lm2596_sobre_pico", "ams1117_sobre_pico", "fonte_sobre_entrada_pico"],
+      "additionalProperties": false,
+      "properties": {
+        "lm2596_sobre_pico":        {"type": "number", "minimum": 1},
+        "ams1117_sobre_pico":       {"type": "number", "minimum": 1},
+        "fonte_sobre_entrada_pico": {"type": "number", "minimum": 1}
+      }
+    },
+
+    "decoupling": {
+      "type": "object",
+      "required": ["lm2596_in", "lm2596_out", "lm2596_out_hf", "vin_devkit", "vin_devkit_hf", "vdd_ws2812b", "vdd_ws2812b_hf"],
+      "additionalProperties": false,
+      "properties": {
+        "lm2596_in":     {"$ref": "#/definitions/capacitor"},
+        "lm2596_out":    {"$ref": "#/definitions/capacitor"},
+        "lm2596_out_hf": {"$ref": "#/definitions/capacitor"},
+        "vin_devkit":    {"$ref": "#/definitions/capacitor"},
+        "vin_devkit_hf": {"$ref": "#/definitions/capacitor"},
+        "vdd_ws2812b":   {"$ref": "#/definitions/capacitor"},
+        "vdd_ws2812b_hf":{"$ref": "#/definitions/capacitor"}
+      }
+    },
+
+    "restricoes_filhos": {
+      "type": "object",
+      "required": ["tensao_maxima_adc1_v", "tensao_zener_protecao_v", "tensao_alimentacao_ws2812b_v", "brightness_max_ws2812b", "corrente_maxima_ws2812b_ma"],
+      "additionalProperties": false,
+      "properties": {
+        "tensao_maxima_adc1_v":         {"type": "number", "exclusiveMinimum": 0},
+        "tensao_zener_protecao_v":      {"type": "number", "exclusiveMinimum": 0},
+        "tensao_alimentacao_ws2812b_v": {"type": "number", "exclusiveMinimum": 0},
+        "brightness_max_ws2812b":       {"type": "integer", "minimum": 0, "maximum": 255},
+        "corrente_maxima_ws2812b_ma":   {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+
+    "criterios_aceitacao": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id":                  {"type": "string", "pattern": "^CA-05-0[1-7]$"},
+          "nominal_v":           {"type": "number"},
+          "tolerancia_v":        {"type": "number", "minimum": 0},
+          "tolerancia_pct":      {"type": "number", "minimum": 0},
+          "duracao_min":         {"type": "integer", "minimum": 0},
+          "resets_maximos":      {"type": "integer", "minimum": 0},
+          "temperatura_maxima_c":{"type": "number"},
+          "apos_min":            {"type": "integer", "minimum": 0},
+          "ripple_maximo_mv_pp": {"type": "number", "minimum": 0}
+        },
+        "additionalProperties": false
+      }
+    }
+
+  }
+}
