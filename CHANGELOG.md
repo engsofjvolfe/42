@@ -20,6 +20,10 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - Script de automacao de versionamento (`_governance/scripts/bump_version.py`)
 - `spec/power/power.json` — spec derivada de `05_alimentacao.md` v0.1.0
 - `spec/power/power.schema.json` — schema de validacao do power spec
+- `README.md` — documentacao de entrada do repositorio
+
+### Alterado
+- `CLAUDE.md` ETAPA 6: adiciona regra obrigatoria de campos sem narrativa nos arquivos JSON
 
 ### Corrigido
 - Scripts de verificacao movidos de `_governance/scripts/` para `scripts/` (alinhamento com CLAUDE.md e CI)

@@ -302,6 +302,21 @@ spec/<modulo>/
 └── <modulo>.schema.json   ← schema JSON para validação
 ```
 
+### Regra obrigatória para o .json
+
+Todo campo deve conter um dado utilizável diretamente em código.
+Texto narrativo ou descritivo é proibido em qualquer valor.
+
+```
+ERRADO:  "tipo": "saída do regulador buck"
+CORRETO: "tensao_saida_alvo_v": 5.0
+
+ERRADO:  "descricao": "capacitor de bulk na entrada do LM2596"
+CORRETO: "lm2596_in": {"capacitancia_uf": 100, "tensao_v": 25, "tipo": "electrolitico", "quantidade": 1}
+```
+
+Se um valor exige interpretação humana para extrair um dado: está errado.
+
 ### Procedimento por módulo
 
 ```
