@@ -22,8 +22,8 @@ Fases concluídas e aprovadas:
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: develop (feat/gerar-config-h mergeado — fast-forward)
-Próxima ação: criar branch feat/sensor a partir de develop → ETAPA 7 (Firmware), começando por MOD_SENSOR
+Branch ativa: feat/sensor (criada a partir de develop em 2026-06-28 — branch em aberto para ETAPA 7)
+Próxima ação: implementar MOD_SENSOR → ETAPA 7 (TDD: escrever teste, implementar, pio test -e native)
 
 Ordem de implementação dos módulos (ETAPA 7):
   1. MOD_SENSOR  ← sem dependência de outros módulos  ← PRÓXIMO
@@ -56,6 +56,19 @@ Artefatos em develop — sessão anterior (feat/gerar-config-h — mergeado, FEC
   - spec/firmware_constants.json: campo tipo_plataforma: true em DM-02 e DM-03
   - spec/firmware_constants.schema.json: aceita tipo_plataforma opcional
   - _governance/CODING_STANDARD.md: seção 2 corrigida + registro no changelog interno
+
+Premissas verificadas (NÃO re-analisar em sessões futuras):
+  - generate_coding_standard.py GERA _config.h (linhas 414-421 do script): config_path.write_text(...)
+  - Modo --check VERIFICA sync dos _config.h em disco (linhas 361-382)
+  - run_all.py confirma: "OK: 4 arquivos _config.h em sync" — verificado em 2026-06-28
+  - A promessa do CODING_STANDARD.md seção 4.1 ("conteúdo gerado pelo script") está honrada
+  - Cascata de ponta a ponta está fechada: spec JSON → firmware_constants.json → _config.h → CI detecta divergência
+  - Opção A (estender o script) foi implementada na sessão feat/gerar-config-h (já mergeada)
+
+Desvios desta sessão feat/sensor abertura (2026-06-28):
+  - Re-análise de premissa já resolvida: sessão questionou se generate_coding_standard.py gera _config.h —
+    premissa era falsa; o script já fazia isso desde feat/gerar-config-h; SESSION_STATE.md e CHANGELOG
+    atualizados para bloquear recorrência
 
 Desvios da sessão feat/gerar-config-h (registrados para não repetir):
   - Branch não criada antes de iniciar o trabalho — iniciado em develop, branch criada tardiamente

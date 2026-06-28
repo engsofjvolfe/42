@@ -26,6 +26,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `scripts/verify_links.py`: corrige varredura de `.md` de `glob('*.md')` (so raiz) para `rglob` recursivo com registry `{nome: path}` — scripts nao verificavam nenhum documento em subdiretorios
 - `scripts/check_impacta.py`: mesma correcao de varredura recursiva com registry
 - `scripts/check_versions.py`: mesma correcao de varredura recursiva com registry
+- `SESSION_STATE.md`: corrige premissa falsa registrada implicitamente — `generate_coding_standard.py` JA gera `_config.h` (linhas 414-421 do script) e JA verifica sync em modo --check; `run_all.py` confirma `OK: 4 arquivos _config.h em sync`; premissa de que "o script nao tem logica de saida para firmware/src/" e falsa e nao deve ser re-analisada em sessoes futuras
 
 ---
 
