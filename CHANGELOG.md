@@ -9,6 +9,14 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Nao lancado]
 
+### Corrigido
+- `spec/firmware_constants.json` DM-02: `adc_atten_t`/`ADC_ATTEN_DB_11` (ESP-IDF direto) corrigido para `adc_attenuation_t`/`ADC_11db` (camada Arduino ESP32 3.x / IDF5)
+- `_governance/CODING_STANDARD.md` secao 7: tabela DM-02 regenerada automaticamente — reflete tipo correto `adc_attenuation_t`
+- `firmware/src/sensor/sensor_config.h`: stub [PLATAFORMA] de DM-02 regenerado — reflete tipo correto `adc_attenuation_t`/`ADC_11db`
+- `firmware/src/sensor/sensor.cpp`: `SENSOR_ADC_ATENUACAO` corrigida de `adc_atten_t`/`ADC_ATTEN_DB_11` para `adc_attenuation_t`/`ADC_11db`
+- `firmware/test/mock/Arduino.h`: typedef e define de ADC corrigidos de `adc_atten_t`/`ADC_ATTEN_DB_11` para `adc_attenuation_t`/`ADC_11db`; assinatura de `analogSetAttenuation` atualizada
+- `firmware/test/test_game/test_main.cpp`: definicao de `analogSetAttenuation` atualizada para `adc_attenuation_t`
+
 ### Adicionado
 - `firmware/src/game/game.h` — interface publica de MOD_JOGO: `Cor`, `ParCores`, `ResultadoJogo`, `EventoJogo`, `ConfigSessao`, `GameCallback`; API publica (`gameInit`, `gameOnEvento`, `gameIniciarSessao`, `gameOnImpacto`, `gameLoop`); API de teste (`gameZonaParaCor`, `gameProximaCorA`, `gameProximaCorB`, `gameProximasDuasA`, `gameProximasDuasB`, `gameGetCorAtual`, `gameGetParAtual`)
 - `firmware/src/game/game.cpp` — implementacao de MOD_JOGO derivada de `spec/game/game.json` e `04_logica_jogo.md`; maquina de estados (OCIOSO, ESTIMULO, AVALIANDO, INTERVALO, FIM_SESSAO); Mecanismo A (Fisher-Yates por bloco de 4) e Mecanismo B (peso decrescente); logica de acerto/erro Modo 1 e Modo 2 com janela de simultaneidade; callback de resultado e fim de sessao

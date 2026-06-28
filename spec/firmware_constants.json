@@ -522,11 +522,11 @@
       "id": "DM-02",
       "modulo": "sensor",
       "constante": "SENSOR_ADC_ATENUACAO",
-      "valor": "ADC_ATTEN_DB_11",
-      "tipo_c": "adc_atten_t",
+      "valor": "ADC_11db",
+      "tipo_c": "adc_attenuation_t",
       "classe": "HARDCODED_JUSTIFICADO",
       "tipo_plataforma": true,
-      "justificativa": "Constante de plataforma ESP-IDF para range 0-3.3V no ADC1. Nao e parametro de dominio; e configuracao de silicio. Nao existe campo correspondente em nenhum spec JSON."
+      "justificativa": "Tipo da camada Arduino (Arduino ESP32 3.x / IDF5) para range 0-3.3V no ADC1. adc_attenuation_t substitui adc_atten_t (ESP-IDF direto) a partir do Arduino ESP32 3.x. Nao e parametro de dominio; e configuracao de silicio. Nao existe campo correspondente em nenhum spec JSON."
     },
     {
       "id": "DM-03",

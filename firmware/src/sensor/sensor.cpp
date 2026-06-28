@@ -7,10 +7,11 @@
 #include <Arduino.h>
 
 // --- HARDCODED JUSTIFICADO: DM-02 ---
-// Constante de plataforma ESP-IDF para range 0-3.3V no ADC1.
+// Tipo da camada Arduino (Arduino ESP32 3.x / IDF5) para range 0-3.3V no ADC1.
+// adc_attenuation_t substitui adc_atten_t (ESP-IDF direto) a partir do Arduino ESP32 3.x.
 // Nao e parametro de dominio; e configuracao de silicio.
 // Declarada apos includes de plataforma conforme sensor_config.h#DM-02.
-static constexpr adc_atten_t SENSOR_ADC_ATENUACAO = ADC_ATTEN_DB_11;
+static constexpr adc_attenuation_t SENSOR_ADC_ATENUACAO = ADC_11db;
 
 // ---------------------------------------------------------------------------
 // Tabelas de mapeamento (indexadas por zona 0-3)

@@ -7,10 +7,11 @@
 
 #include <stdint.h>
 
-// --- HARDCODED_TESTE: tipos de plataforma ESP-IDF/Arduino para ADC ---
+// --- HARDCODED_TESTE: tipos de plataforma Arduino ESP32 3.x para ADC ---
 // Corresponde a DM-02 em CODING_STANDARD.md#decisoes-manuais
-typedef int adc_atten_t;
-#define ADC_ATTEN_DB_11 3
+// adc_attenuation_t (camada Arduino) substitui adc_atten_t (ESP-IDF) a partir do Arduino ESP32 3.x
+typedef int adc_attenuation_t;
+#define ADC_11db 3
 
 #define INPUT  0
 #define OUTPUT 1
@@ -31,7 +32,7 @@ public:
 uint16_t analogRead(uint8_t pin);
 uint32_t millis();
 void     pinMode(uint8_t pin, uint8_t mode);
-void     analogSetAttenuation(adc_atten_t attenuation);
+void     analogSetAttenuation(adc_attenuation_t attenuation);
 
 // random(max) — retorna long no intervalo [0, max-1].
 // Rastreabilidade: game.cpp (Mecanismo A Fisher-Yates, Mecanismo B peso).

@@ -34,7 +34,7 @@ static uint32_t g_mock_millis;
 // ---------------------------------------------------------------------------
 uint32_t millis() { return g_mock_millis; }
 void     pinMode(uint8_t, uint8_t) {}
-void     analogSetAttenuation(adc_atten_t) {}
+void     analogSetAttenuation(adc_attenuation_t) {}
 uint16_t analogRead(uint8_t) { return 0; }
 
 // ---------------------------------------------------------------------------

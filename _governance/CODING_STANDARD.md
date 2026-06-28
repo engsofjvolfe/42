@@ -310,7 +310,7 @@ Valores que não existem em nenhum spec JSON. São detalhes de plataforma, API o
 | # | Constante | Modulo | Tipo C | Justificativa |
 |---|---|---|---|---|
 | DM-01 | `SENSOR_WDT_TIMEOUT_MS` | sensor | `uint32_t` | Timeout do WDT nao e parametro de dominio. Calculado como duracao_max_loop_ms multiplicado por fator de seguranca. Determinar apos medir o loop mais longo na implementacao. Comentario obrigatorio com o calculo explicito. |
-| DM-02 | `SENSOR_ADC_ATENUACAO` | sensor | `adc_atten_t` | Constante de plataforma ESP-IDF para range 0-3.3V no ADC1. Nao e parametro de dominio; e configuracao de silicio. Nao existe campo correspondente em nenhum spec JSON. |
+| DM-02 | `SENSOR_ADC_ATENUACAO` | sensor | `adc_attenuation_t` | Tipo da camada Arduino (Arduino ESP32 3.x / IDF5) para range 0-3.3V no ADC1. adc_attenuation_t substitui adc_atten_t (ESP-IDF direto) a partir do Arduino ESP32 3.x. Nao e parametro de dominio; e configuracao de silicio. Nao existe campo correspondente em nenhum spec JSON. |
 | DM-03 | `VISUAL_COLOR_ORDER` | visual | `EOrder` | GRB e enum da biblioteca FastLED. visual.json#componente.color_order registra 'GRB' como string; o simbolo C++ e fornecido pela API da biblioteca e nao pode ser parametrizado sem reflexao. |
 <!-- END GENERATED:decisoes_manuais -->
 
@@ -331,7 +331,7 @@ Derivado de [VER: 01_arquitetura.md#interfaces-modulos].
 | MOD_SENSOR | `sensor.h`, `sensor_config.h`, `<Arduino.h>` | ADC1, `millis()`, callback registrado |
 | MOD_LED | `visual.h`, `visual_config.h`, `<FastLED.h>` | GPIO 5, FastLED API |
 | MOD_JOGO | `game.h`, `game_config.h`, `sensor.h`, `visual.h` | Callbacks de MOD_SENSOR; `visualSetLED()` |
-| MOD_WIFI | `interface.h`, `interface_config.h`, `game.h` | ESPAsyncWebServer, WebSocket, callback de MOD_JOGO |
+| MOD_WIFI | `interface.h`, `interface_config.h`, `game.h`, `<ArduinoJson.h>` | ESPAsyncWebServer, WebSocket, ArduinoJson, callback de MOD_JOGO |
 
 ### 8.2 O que cada módulo não pode fazer <a id="modularidade-nao-pode"></a>
 
@@ -487,6 +487,7 @@ Derivado de [VER: 01_arquitetura.md#requisitos-nao-funcionais].
 | 0.1.0 | 2026-06-28 | — | Criação: padrão de código firmware. Seções 3, 6.2 e 7 geradas automaticamente por generate_coding_standard.py a partir de spec/firmware_constants.json | firmware/src/ |
 | 0.1.0 | 2026-06-28 | 2, 4.1 | generate_coding_standard.py estendido para gerar _config.h. Seção 2 corrigida para listar _config.h como artefato gerado. Constantes com tipo de plataforma (DM-02, DM-03) emitidas como stub [PLATAFORMA] — compilaveis em native. | firmware/src/ |
 | 0.1.1 | 2026-06-28 | frontmatter, Rastreabilidade | Adicionado TESTING_STANDARD.md em impacta (CONDICIONAL: secoes de constantes, estrutura e nomenclatura). Bump PATCH. | TESTING_STANDARD.md |
+| 0.1.1 | 2026-06-28 | 8.1 | Adiciona ArduinoJson a includes e usos permitidos de MOD_WIFI — conforme 01_arquitetura.md#stack-tecnologico | firmware/src/interface/ |
 
 ---
 
