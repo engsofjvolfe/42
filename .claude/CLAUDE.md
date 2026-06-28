@@ -196,7 +196,7 @@ Formato obrigatório:
 ```
 <tipo>(<escopo>): <descrição no imperativo, em português>
 
-[corpo: o que mudou e por quê — omitir se óbvio]
+<corpo: o que mudou e por quê>
 ```
 
 Tipos:
@@ -226,6 +226,49 @@ git commit -m "Co-authored-by: ..."
 
 A linha `Co-authored-by` não é incluída em nenhum commit deste repositório.
 
+### Corpo da mensagem — regras obrigatórias
+
+O corpo é **obrigatório** para os tipos abaixo. Omiti-lo é erro de protocolo.
+
+| Tipo | Corpo obrigatório | O que incluir no corpo |
+|---|---|---|
+| `spec` | SIM | Documento fonte (nome + versão), campos derivados relevantes, CAs cobertos |
+| `feat` | SIM | Funcionalidade implementada, spec que a origina, módulo afetado |
+| `fix` | SIM | O que estava errado, causa raiz, o que foi corrigido |
+| `docs` | SIM, se altera regra ou procedimento | A regra que mudou e por quê |
+| `chore` | NÃO, se o assunto for completamente autoexplicativo | — |
+| `test` | SIM | Cenário testado, CA coberto, resultado esperado |
+
+Modelo para `spec`:
+```
+spec(sensor): cria spec e schema derivados de 02_sensor_impacto.md v0.1.0
+
+Derivados de 02_sensor_impacto.md v0.1.0 (APROVADO) e spec/power/power.json.
+sensor.json: pinos GPIO, thresholds, janela de deteccao, decoupling,
+criterios de aceitacao CA-02-*.
+sensor.schema.json: schema JSON (draft/2020-12) para validacao automatica.
+```
+
+Modelo para `fix`:
+```
+fix(padrao): corrige versao de _PADRAO.md de 1.1.0 para 0.1.0
+
+Versao 1.1.0 foi introduzida incorretamente. O documento nao passou
+por nenhuma alteracao que justificasse bumpar de 0.1.0; versao correta
+e 0.1.0 conforme commit inicial aprovado.
+```
+
+Sempre usar `git commit` com heredoc para garantir o formato:
+```bash
+git commit -m "$(cat <<'EOF'
+tipo(escopo): descricao no imperativo
+
+Corpo explicando o que mudou e por que.
+Segunda linha do corpo se necessario.
+EOF
+)"
+```
+
 ### Commits atômicos
 
 **Um commit = uma razão lógica de mudança.**
@@ -254,6 +297,60 @@ git commit -m "fix(sensor): corrige polaridade do Zener no diagrama"
 git commit -m "docs(sensor): atualiza changelog versão 0.1.1"
 ```
 
+### Protocolo CHANGELOG — quando e o que atualizar
+
+O CHANGELOG é atualizado **antes** de escrever a mensagem de commit.
+Nunca após. Nunca via amend por esquecimento.
+
+**Decisão obrigatória antes de qualquer commit:**
+
+```
+1. Este commit cria ou altera um artefato de especificação
+   (.json, .schema.json, .md de módulo)?
+   → SIM: adicionar em ### Adicionado ou ### Alterado
+
+2. Este commit corrige um erro em artefato existente?
+   → SIM: adicionar em ### Corrigido
+
+3. Este commit é chore (SESSION_STATE, CI interno, reorganização)?
+   → Verificar: o chore altera comportamento ou estrutura visível?
+     → SIM: adicionar em ### Alterado
+     → NÃO: CHANGELOG não é necessário para este commit
+
+4. Qualquer dúvida sobre se o CHANGELOG precisa ser atualizado?
+   → Atualizar. Custo de entrada desnecessária é zero.
+   → Custo de entrada faltando é amend + reescrita de histórico.
+```
+
+**Commits que nunca dispensam atualização de CHANGELOG:**
+
+| Tipo | Seção no CHANGELOG |
+|---|---|
+| `spec(*)` — criação | `### Adicionado` |
+| `spec(*)` — alteração | `### Alterado` |
+| `feat(*)` | `### Adicionado` |
+| `fix(*)` | `### Corrigido` |
+| `docs(*)` — altera regra/procedimento | `### Alterado` |
+
+**Formato das entradas:**
+
+```markdown
+- `spec/sensor/sensor.json` — spec derivada de `02_sensor_impacto.md` v0.1.0
+- `spec/sensor/sensor.schema.json` — schema de validacao do sensor spec
+- `_governance/_PADRAO.md`: corrige versao de 1.1.0 para 0.1.0 (descricao do erro)
+```
+
+**Gate imediato antes do commit:**
+
+```
+□ Abri o CHANGELOG.md antes de escrever a mensagem de commit?
+□ Identifiquei qual seção (Adicionado / Alterado / Corrigido) corresponde?
+□ A entrada foi adicionada e salva?
+□ git diff --staged inclui CHANGELOG.md (se aplicável)?
+```
+
+Se qualquer resposta for NÃO: atualizar CHANGELOG antes de continuar.
+
 ### Tags e releases
 
 ```bash
@@ -267,11 +364,12 @@ git tag -a v1.0.0 -m "release: V-model fechado — validação completa"
 
 ```
 □ run_all.py retorna zero erros
-□ git diff revisado linha a linha
-□ Changelog atualizado em todos os arquivos alterados
+□ git diff --staged revisado linha a linha
+□ Protocolo CHANGELOG executado (ver seção acima) — CHANGELOG.md atualizado se aplicável
 □ Versões bumpadas onde necessário
 □ Tipo e escopo do commit corretos
-□ Descrição no imperativo
+□ Corpo da mensagem presente (obrigatório para spec, feat, fix, docs — ver seção acima)
+□ Mensagem escrita com heredoc (git commit -m "$(cat <<'EOF' ... EOF)")
 □ Sem Co-authored-by
 □ Meta-análise de cadeia: cada etapa foi seguida na ordem correta? (executar ANTES do commit)
 ```
