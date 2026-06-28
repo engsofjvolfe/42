@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "documento_fonte": "07_interface_pedagogo.md",
+    "versao_fonte": "0.1.0",
+    "depende_de": ["spec/game/game.json"]
+  },
+
+  "access_point": {
+    "ssid": "BMI",
+    "senha_obrigatoria": false,
+    "ip": "192.168.4.1",
+    "canal": 1
+  },
+
+  "servidor_http": {
+    "biblioteca": "ESPAsyncWebServer",
+    "rotas": [
+      {"rota": "/",   "metodo": "GET",       "tipo_resposta": "html_inline"},
+      {"rota": "/ws", "metodo": "WebSocket",  "tipo_resposta": "websocket_bidirecional"}
+    ]
+  },
+
+  "websocket": {
+    "url": "ws://192.168.4.1/ws",
+    "latencia_max_evento_tela_ms": 200,
+    "formato_mensagem": "JSON",
+    "acao_desconexao": "pausarSessao",
+    "acao_reconexao": "retomarSessao"
+  },
+
+  "protocolo_mensagens": {
+    "browser_para_esp32": [
+      {
+        "tipo": "INICIAR",
+        "campos": [
+          {"nome": "tipo",      "tipo_c": "String",   "valor_fixo": "INICIAR"},
+          {"nome": "nome",      "tipo_c": "String"},
+          {"nome": "n",         "tipo_c": "uint8_t",  "minimo": 1},
+          {"nome": "modo",      "tipo_c": "String",   "valores_validos": ["UM_MARTELO", "DOIS_MARTELOS"]},
+          {"nome": "mecanismo", "tipo_c": "String",   "valores_validos": ["A_SHUFFLE", "B_PESO"]},
+          {"nome": "janela_ms", "tipo_c": "uint16_t", "padrao": 800}
+        ]
+      },
+      {
+        "tipo": "PAUSAR",
+        "campos": [
+          {"nome": "tipo", "tipo_c": "String", "valor_fixo": "PAUSAR"}
+        ]
+      },
+      {
+        "tipo": "RETOMAR",
+        "campos": [
+          {"nome": "tipo", "tipo_c": "String", "valor_fixo": "RETOMAR"}
+        ]
+      }
+    ],
+    "esp32_para_browser": [
+      {
+        "tipo": "ACERTO",
+        "campos": [
+          {"nome": "tipo",       "tipo_c": "String",   "valor_fixo": "ACERTO"},
+          {"nome": "acertos",    "tipo_c": "uint8_t"},
+          {"nome": "total",      "tipo_c": "uint8_t"},
+          {"nome": "duracao_ms", "tipo_c": "uint32_t"}
+        ]
+      },
+      {
+        "tipo": "ERRO",
+        "campos": [
+          {"nome": "tipo",       "tipo_c": "String",   "valor_fixo": "ERRO"},
+          {"nome": "acertos",    "tipo_c": "uint8_t"},
+          {"nome": "total",      "tipo_c": "uint8_t"},
+          {"nome": "duracao_ms", "tipo_c": "uint32_t"}
+        ]
+      },
+      {
+        "tipo": "FIM_SESSAO",
+        "campos": [
+          {"nome": "tipo",       "tipo_c": "String",   "valor_fixo": "FIM_SESSAO"},
+          {"nome": "acertos",    "tipo_c": "uint8_t"},
+          {"nome": "total",      "tipo_c": "uint8_t"},
+          {"nome": "duracao_ms", "tipo_c": "uint32_t"}
+        ]
+      },
+      {
+        "tipo": "PAUSADO",
+        "campos": [
+          {"nome": "tipo", "tipo_c": "String", "valor_fixo": "PAUSADO"}
+        ]
+      },
+      {
+        "tipo": "RETOMADO",
+        "campos": [
+          {"nome": "tipo", "tipo_c": "String", "valor_fixo": "RETOMADO"}
+        ]
+      }
+    ]
+  },
+
+  "configuracao_ui": {
+    "modo_padrao":             "UM_MARTELO",
+    "mecanismo_padrao":        "A_SHUFFLE",
+    "janela_ms_padrao":        800,
+    "janela_ms_visivel_modo2": true,
+    "n_interacoes_min":        1,
+    "nome_obrigatorio":        true
+  },
+
+  "estados_interface": {
+    "lista": ["CONFIGURANDO", "SESSAO_ATIVA", "FEEDBACK_ACERTO", "FEEDBACK_ERRO", "PAUSADO", "RESULTADOS"],
+    "duracao_feedback_acerto_ms": 1500,
+    "feedback_erro_dura_ate_proximo_evento": true
+  },
+
+  "feedback_visual": {
+    "acerto_cor_hex":    "#2ECC40",
+    "acerto_duracao_ms": 1500,
+    "erro_cor_hex":      "#FF4136",
+    "implementacao":     "overlay_css_fullscreen"
+  },
+
+  "feedback_sonoro": {
+    "api": "WebAudioAPI",
+    "acerto": {
+      "frequencias_hz":       [440, 880],
+      "duracao_por_tom_ms":   200,
+      "offset_entre_tons_ms": 220,
+      "attack_ms":            10,
+      "release_ms":           50,
+      "ganho":                0.4
+    },
+    "erro": {
+      "frequencia_hz": 220,
+      "duracao_ms":    150,
+      "attack_ms":     10,
+      "release_ms":    50,
+      "ganho":         0.4
+    }
+  },
+
+  "armazenamento": {
+    "tecnologia": "localStorage",
+    "chave":      "bmi_sessoes",
+    "estrutura":  "array_json",
+    "campos_registro": [
+      {"nome": "id",               "tipo_js": "string",  "minlength": 1},
+      {"nome": "nome",             "tipo_js": "string",  "minlength": 1},
+      {"nome": "timestamp_inicio", "tipo_js": "string",  "formato": "ISO8601"},
+      {"nome": "modo",             "tipo_js": "string",  "valores_validos": ["UM_MARTELO", "DOIS_MARTELOS"]},
+      {"nome": "mecanismo",        "tipo_js": "string",  "valores_validos": ["A_SHUFFLE", "B_PESO"]},
+      {"nome": "n_configurado",    "tipo_js": "integer", "minimo": 1},
+      {"nome": "acertos",          "tipo_js": "integer", "minimo": 0},
+      {"nome": "erros",            "tipo_js": "integer", "minimo": 0},
+      {"nome": "taxa_pct",         "tipo_js": "number",  "casas_decimais": 1, "formula": "acertos/n_configurado*100"},
+      {"nome": "duracao_s",        "tipo_js": "number",  "casas_decimais": 1, "formula": "duracao_ms/1000"}
+    ]
+  },
+
+  "exportacao_csv": {
+    "cabecalho":     "id,nome,timestamp_inicio,modo,mecanismo,n_configurado,acertos,erros,taxa_pct,duracao_s",
+    "nome_arquivo":  "bmi_sessoes.csv",
+    "tipo_mime":     "text/csv",
+    "exporta_todos": true
+  },
+
+  "criterios_aceitacao": [
+    {"id": "CA-07-01", "descricao_tecnica": "hotspot_visivel_apos_boot",       "ssid": "BMI", "visivel_em_s": 5},
+    {"id": "CA-07-02", "descricao_tecnica": "carregamento_interface",           "url": "192.168.4.1", "carga_max_s": 3},
+    {"id": "CA-07-03", "descricao_tecnica": "validacao_formulario",             "nome_vazio_bloqueado": true, "formulario_completo_inicia": true},
+    {"id": "CA-07-04", "descricao_tecnica": "visibilidade_campo_janela",        "janela_oculta_modo_1": true, "janela_visivel_modo_2": true},
+    {"id": "CA-07-05", "descricao_tecnica": "feedback_acerto",                  "evento": "ACERTO",  "latencia_max_ms": 200, "duracao_verde_ms": 1500},
+    {"id": "CA-07-06", "descricao_tecnica": "feedback_erro",                    "evento": "ERRO",    "latencia_max_ms": 200, "dura_ate_proximo_evento": true},
+    {"id": "CA-07-07", "descricao_tecnica": "tela_resultados",                  "campos_exibidos": ["nome", "acertos", "total", "taxa_pct", "duracao_s"]},
+    {"id": "CA-07-08", "descricao_tecnica": "persistencia_localstorage",        "campos_localstorage": ["id", "nome", "timestamp_inicio", "modo", "mecanismo", "n_configurado", "acertos", "erros", "taxa_pct", "duracao_s"]},
+    {"id": "CA-07-09", "descricao_tecnica": "exportacao_csv",                   "cabecalho_csv": "id,nome,timestamp_inicio,modo,mecanismo,n_configurado,acertos,erros,taxa_pct,duracao_s"},
+    {"id": "CA-07-10", "descricao_tecnica": "desconexao_e_retomada",            "desconexao_pausa": true, "reconexao_retoma": true},
+    {"id": "CA-07-11", "descricao_tecnica": "operacao_offline",                 "offline_total": true}
+  ]
+}

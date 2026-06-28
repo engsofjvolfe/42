@@ -26,6 +26,8 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `spec/visual/visual.schema.json` — schema de validacao do visual spec
 - `spec/game/game.json` — spec derivada de `04_logica_jogo.md` v0.1.0
 - `spec/game/game.schema.json` — schema de validacao do game spec
+- `spec/interface/interface.json` — spec derivada de `07_interface_pedagogo.md` v0.1.0
+- `spec/interface/interface.schema.json` — schema de validacao do interface spec
 - `README.md` — documentacao de entrada do repositorio
 
 ### Alterado
