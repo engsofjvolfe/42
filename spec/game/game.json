@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "documento_fonte": "04_logica_jogo.md",
+    "versao_fonte": "0.1.0",
+    "depende_de": ["spec/sensor/sensor.json", "spec/visual/visual.json"]
+  },
+
+  "modos": [
+    {
+      "id": 1,
+      "martelos": 1,
+      "leds_estimulo_indices": [1],
+      "n_leds_estimulo": 1,
+      "cores_distintas_obrigatorio": false,
+      "janela_ms_aplicavel": false
+    },
+    {
+      "id": 2,
+      "martelos": 2,
+      "leds_estimulo_indices": [0, 2],
+      "n_leds_estimulo": 2,
+      "cores_distintas_obrigatorio": true,
+      "janela_ms_aplicavel": true
+    }
+  ],
+
+  "mecanismos_aleatoriedade": [
+    {
+      "id": "A",
+      "n_cores": 4,
+      "tamanho_bloco": 4,
+      "indice_inicial": 4
+    },
+    {
+      "id": "B",
+      "n_cores": 4,
+      "peso_inicial_por_cor": 4,
+      "peso_minimo": 0,
+      "total_pesos_inicial": 16
+    }
+  ],
+
+  "timings": {
+    "intervalo_ms": {
+      "valor_padrao": 2000,
+      "tipo": "CALIBRAR",
+      "tipo_c": "uint16_t",
+      "configuravel_v1": false,
+      "tolerancia_ca_ms": 100
+    },
+    "janela_ms": {
+      "valor_padrao": 800,
+      "tipo": "CALIBRAR",
+      "tipo_c": "uint16_t",
+      "configuravel_v1": true
+    }
+  },
+
+  "acerto": {
+    "leds_acao": "OFF_imediato",
+    "score_delta": 1
+  },
+
+  "erro": {
+    "leds_acao": "manter_acesos",
+    "score_delta": 0,
+    "sem_limite_tentativas": true
+  },
+
+  "estado_sessao": {
+    "persistencia_esp32": false,
+    "responsavel_persistencia": "localStorage_browser",
+    "campos": [
+      {"nome": "nome_crianca",        "tipo_c": "String"},
+      {"nome": "timestamp_inicio_ms", "tipo_c": "uint32_t"},
+      {"nome": "modo",                "tipo_c": "uint8_t",  "valores_validos": [1, 2]},
+      {"nome": "mecanismo",           "tipo_c": "char",     "valores_validos": ["A", "B"]},
+      {"nome": "n_configurado",       "tipo_c": "uint8_t"},
+      {"nome": "acertos",             "tipo_c": "uint8_t"},
+      {"nome": "erros",               "tipo_c": "uint8_t"},
+      {"nome": "duracao_ms",          "tipo_c": "uint32_t"}
+    ]
+  },
+
+  "mapeamento_zona_cor": [
+    {"cor": "LARANJA", "zona": "LARANJA"},
+    {"cor": "AZUL",    "zona": "AZUL"},
+    {"cor": "AMARELO", "zona": "AMARELO"},
+    {"cor": "ROXO",    "zona": "ROXO"}
+  ],
+
+  "criterios_aceitacao": [
+    {"id": "CA-04-01", "n_interacoes": 40, "contagem_esperada_por_cor": 10, "tolerancia_contagem": 0},
+    {"id": "CA-04-02", "n_interacoes": 40, "max_consecutivas_mesma_cor": 3},
+    {"id": "CA-04-03", "n_pares_sorteados": 20, "max_pares_cor_igual": 0},
+    {"id": "CA-04-04", "resultado": "ACERTO", "zona_era_correta": true,  "led_apaga": true,  "score_delta": 1},
+    {"id": "CA-04-05", "resultado": "ERRO",   "zona_era_correta": false, "led_apaga": false, "score_delta": 0},
+    {"id": "CA-04-06", "delta_t_ms_max": 800, "resultado": "ACERTO"},
+    {"id": "CA-04-07", "delta_t_ms_min": 801, "resultado": "ERRO"},
+    {"id": "CA-04-08", "n_configurado": 5, "evento": "FIM_SESSAO", "campos_evento": ["acertos", "n_configurado", "duracao_ms"]},
+    {"id": "CA-04-09", "estado_preservado_em_pausa": true, "leds_reacendem_em_reconexao": true},
+    {"id": "CA-04-10", "intervalo_nominal_ms": 2000, "tolerancia_ms": 100}
+  ]
+}

@@ -24,6 +24,8 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `spec/sensor/sensor.schema.json` — schema de validacao do sensor spec
 - `spec/visual/visual.json` — spec derivada de `03_saida_visual.md` v0.1.0
 - `spec/visual/visual.schema.json` — schema de validacao do visual spec
+- `spec/game/game.json` — spec derivada de `04_logica_jogo.md` v0.1.0
+- `spec/game/game.schema.json` — schema de validacao do game spec
 - `README.md` — documentacao de entrada do repositorio
 
 ### Alterado

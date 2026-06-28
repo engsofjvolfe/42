@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "game.schema.json",
+  "title": "Game Spec — derivado de 04_logica_jogo.md v0.1.0",
+  "type": "object",
+  "required": ["meta", "modos", "mecanismos_aleatoriedade", "timings", "acerto", "erro", "estado_sessao", "mapeamento_zona_cor", "criterios_aceitacao"],
+  "additionalProperties": false,
+
+  "definitions": {
+    "cor_zona": {
+      "type": "string",
+      "enum": ["LARANJA", "AZUL", "AMARELO", "ROXO"]
+    },
+    "resultado_enum": {
+      "type": "string",
+      "enum": ["ACERTO", "ERRO"]
+    },
+    "timing_entry": {
+      "type": "object",
+      "required": ["valor_padrao", "tipo", "tipo_c", "configuravel_v1"],
+      "additionalProperties": false,
+      "properties": {
+        "valor_padrao":     {"type": "integer", "exclusiveMinimum": 0},
+        "tipo":             {"type": "string", "enum": ["CALIBRAR", "FIXO"]},
+        "tipo_c":           {"type": "string"},
+        "configuravel_v1":  {"type": "boolean"},
+        "tolerancia_ca_ms": {"type": "integer", "minimum": 0}
+      }
+    }
+  },
+
+  "properties": {
+
+    "meta": {
+      "type": "object",
+      "required": ["documento_fonte", "versao_fonte", "depende_de"],
+      "additionalProperties": false,
+      "properties": {
+        "documento_fonte": {"type": "string"},
+        "versao_fonte":    {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+        "depende_de":      {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    },
+
+    "modos": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["id", "martelos", "leds_estimulo_indices", "n_leds_estimulo", "cores_distintas_obrigatorio", "janela_ms_aplicavel"],
+        "additionalProperties": false,
+        "properties": {
+          "id":                         {"type": "integer", "minimum": 1},
+          "martelos":                   {"type": "integer", "minimum": 1},
+          "leds_estimulo_indices":      {"type": "array", "items": {"type": "integer", "minimum": 0, "maximum": 2}, "minItems": 1},
+          "n_leds_estimulo":            {"type": "integer", "minimum": 1},
+          "cores_distintas_obrigatorio":{"type": "boolean"},
+          "janela_ms_aplicavel":        {"type": "boolean"}
+        }
+      }
+    },
+
+    "mecanismos_aleatoriedade": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["id", "n_cores"],
+        "additionalProperties": false,
+        "properties": {
+          "id":                  {"type": "string", "enum": ["A", "B"]},
+          "n_cores":             {"type": "integer", "const": 4},
+          "tamanho_bloco":       {"type": "integer", "minimum": 1},
+          "indice_inicial":      {"type": "integer", "minimum": 0},
+          "peso_inicial_por_cor":{"type": "integer", "minimum": 1},
+          "peso_minimo":         {"type": "integer", "minimum": 0},
+          "total_pesos_inicial": {"type": "integer", "minimum": 1}
+        }
+      }
+    },
+
+    "timings": {
+      "type": "object",
+      "required": ["intervalo_ms", "janela_ms"],
+      "additionalProperties": false,
+      "properties": {
+        "intervalo_ms": {"$ref": "#/definitions/timing_entry"},
+        "janela_ms":    {"$ref": "#/definitions/timing_entry"}
+      }
+    },
+
+    "acerto": {
+      "type": "object",
+      "required": ["leds_acao", "score_delta"],
+      "additionalProperties": false,
+      "properties": {
+        "leds_acao":   {"type": "string", "const": "OFF_imediato"},
+        "score_delta": {"type": "integer", "const": 1}
+      }
+    },
+
+    "erro": {
+      "type": "object",
+      "required": ["leds_acao", "score_delta", "sem_limite_tentativas"],
+      "additionalProperties": false,
+      "properties": {
+        "leds_acao":             {"type": "string", "const": "manter_acesos"},
+        "score_delta":           {"type": "integer", "const": 0},
+        "sem_limite_tentativas": {"type": "boolean", "const": true}
+      }
+    },
+
+    "estado_sessao": {
+      "type": "object",
+      "required": ["persistencia_esp32", "responsavel_persistencia", "campos"],
+      "additionalProperties": false,
+      "properties": {
+        "persistencia_esp32":       {"type": "boolean", "const": false},
+        "responsavel_persistencia": {"type": "string"},
+        "campos": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "required": ["nome", "tipo_c"],
+            "additionalProperties": false,
+            "properties": {
+              "nome":           {"type": "string"},
+              "tipo_c":         {"type": "string"},
+              "valores_validos":{"type": "array", "minItems": 1}
+            }
+          }
+        }
+      }
+    },
+
+    "mapeamento_zona_cor": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["cor", "zona"],
+        "additionalProperties": false,
+        "properties": {
+          "cor":  {"$ref": "#/definitions/cor_zona"},
+          "zona": {"$ref": "#/definitions/cor_zona"}
+        }
+      }
+    },
+
+    "criterios_aceitacao": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "additionalProperties": true,
+        "properties": {
+          "id": {"type": "string", "pattern": "^CA-04-[0-9]{2}$"}
+        }
+      }
+    }
+
+  }
+}
