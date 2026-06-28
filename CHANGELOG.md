@@ -10,6 +10,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 ## [Nao lancado]
 
 ### Adicionado
+- `_governance/TESTING_STANDARD.md` v0.1.0 — padrão genérico de testes de firmware; define zero magic numbers em testes, constantes T_ derivadas de `_config.h`, padrão mock declare→define, rastreabilidade de CAs
 - `_governance/CODING_STANDARD.md` v0.1.0 — padrao de codigo firmware derivado de `01_arquitetura.md` v0.1.0 e de todos os specs v0.2.0; secoes derivadas geradas automaticamente por script
 - `spec/firmware_constants.json` — mapeamento canonico de 47 constantes DERIVADO e 3 HARDCODED_JUSTIFICADO; liga cada constante C++ ao campo JSON de origem no spec correspondente
 - `spec/firmware_constants.schema.json` — schema JSON (draft/2020-12) para validacao de firmware_constants.json
@@ -17,6 +18,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `firmware/src/sensor/sensor_config.h`, `firmware/src/visual/visual_config.h`, `firmware/src/game/game_config.h`, `firmware/src/interface/interface_config.h` — gerados por `generate_coding_standard.py`; cascata completa de ponta a ponta (spec JSON → firmware_constants.json → _config.h); compilaveis em native (constantes com tipo de plataforma emitidas como stub `[PLATAFORMA]`)
 
 ### Alterado
+- `_governance/CODING_STANDARD.md` v0.1.0 → v0.1.1: adiciona `TESTING_STANDARD.md` em `impacta` (CONDICIONAL); bump PATCH
 - `scripts/run_all.py`: adiciona 4 check — `generate_coding_standard.py --check` (cascata specs -> CODING_STANDARD.md)
 - `scripts/generate_coding_standard.py`: estende para gerar `_config.h` em modo generate e verificar sync dos arquivos em modo --check; suporte a flag `tipo_plataforma` em DMs — emite stub comentado `[PLATAFORMA]` em vez de declaracao C++ para tipos que requerem headers de plataforma
 - `spec/firmware_constants.json`: adiciona `tipo_plataforma: true` em DM-02 (`adc_atten_t`) e DM-03 (`EOrder`)

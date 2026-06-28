@@ -1,12 +1,14 @@
 ---
 documento:    CODING_STANDARD.md
-versão:       0.1.0
+versão:       0.1.1
 status:       APROVADO
 data:         2026-06-28
 depende_de:
   - _PADRAO.md v0.1.0           [BLOQUEADOR]
   - 01_arquitetura.md v0.1.0    [BLOQUEADOR]
-impacta: firmware/src/ (arquivos .h e .cpp — nao sao .md)
+impacta:
+  - TESTING_STANDARD.md         [CONDICIONAL: #constantes-zero-magic-numbers, #estrutura-arquivo, #nomenclatura]
+  - firmware/src/ (arquivos .h e .cpp — nao sao .md)
 ---
 
 # CODING_STANDARD.md — Padrão de Código Firmware
@@ -20,7 +22,7 @@ impacta: firmware/src/ (arquivos .h e .cpp — nao sao .md)
 | Campo | Valor |
 |---|---|
 | Documento | CODING_STANDARD.md |
-| Versão | 0.1.0 |
+| Versão | 0.1.1 |
 | Status | APROVADO |
 | Escopo | Firmware C++/Arduino no PlatformIO — todos os módulos |
 | Pais | _PADRAO.md v0.1.0, 01_arquitetura.md v0.1.0 |
@@ -484,6 +486,7 @@ Derivado de [VER: 01_arquitetura.md#requisitos-nao-funcionais].
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-28 | — | Criação: padrão de código firmware. Seções 3, 6.2 e 7 geradas automaticamente por generate_coding_standard.py a partir de spec/firmware_constants.json | firmware/src/ |
 | 0.1.0 | 2026-06-28 | 2, 4.1 | generate_coding_standard.py estendido para gerar _config.h. Seção 2 corrigida para listar _config.h como artefato gerado. Constantes com tipo de plataforma (DM-02, DM-03) emitidas como stub [PLATAFORMA] — compilaveis em native. | firmware/src/ |
+| 0.1.1 | 2026-06-28 | frontmatter, Rastreabilidade | Adicionado TESTING_STANDARD.md em impacta (CONDICIONAL: secoes de constantes, estrutura e nomenclatura). Bump PATCH. | TESTING_STANDARD.md |
 
 ---
 
@@ -494,6 +497,7 @@ Derivado de [VER: 01_arquitetura.md#requisitos-nao-funcionais].
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 01_arquitetura.md | 0.1.0 | BLOQUEADOR | #modulos-firmware, #interfaces-modulos, #stack-tecnologico, #mapeamento-gpios, #requisitos-nao-funcionais |
 | Fonte | spec/firmware_constants.json | — | DERIVADO | modulos, constantes, decisoes_manuais_inerentes |
+| Filho | TESTING_STANDARD.md | — | CONDICIONAL: #constantes-zero-magic-numbers, #estrutura-arquivo, #nomenclatura | — |
 | Governa | firmware/src/ | — | OBRIGATÓRIO | todos os .h e .cpp |
 
 ---
