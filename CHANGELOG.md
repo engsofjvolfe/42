@@ -9,15 +9,11 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Nao lancado]
 
+---
+
+## [0.2.0] — 2026-06-28
+
 ### Adicionado
-- Documentacao completa do V-model: conceito, arquitetura, modulos, hardware
-- Protocolo V-model de engenharia (`v_model_protocol/`)
-- Padroes de governanca (`_governance/`)
-- Scripts de verificacao de documentacao (`scripts/`)
-- Pipeline CI/CD (`.github/workflows/verify-docs.yml`)
-- Licenca GPL-3.0
-- `CHANGELOG.md` (este arquivo)
-- Script de automacao de versionamento (`_governance/scripts/bump_version.py`)
 - `spec/power/power.json` — spec derivada de `05_alimentacao.md` v0.1.0
 - `spec/power/power.schema.json` — schema de validacao do power spec
 - `spec/sensor/sensor.json` — spec derivada de `02_sensor_impacto.md` v0.1.0
@@ -29,6 +25,8 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `spec/interface/interface.json` — spec derivada de `07_interface_pedagogo.md` v0.1.0
 - `spec/interface/interface.schema.json` — schema de validacao do interface spec
 - `README.md` — documentacao de entrada do repositorio
+- Script de automacao de versionamento (`_governance/scripts/bump_version.py`)
+- `CHANGELOG.md` (este arquivo)
 
 ### Alterado
 - `CLAUDE.md` ETAPA 6: adiciona regra obrigatoria de campos sem narrativa nos arquivos JSON
@@ -62,6 +60,11 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
   - `hardware/10_cablagem.md` v0.1.0
   - `hardware/11_montagem.md` v0.1.0
   - `_governance/_PADRAO.md` v0.1.0
+- Protocolo V-model de engenharia (`v_model_protocol/`)
+- Padroes de governanca (`_governance/`)
+- Scripts de verificacao de documentacao (`scripts/`)
+- Pipeline CI/CD (`.github/workflows/verify-docs.yml`)
+- Licenca GPL-3.0
 
 ---
 
@@ -69,6 +72,5 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
 | Tag | Conteudo |
 |---|---|
-| v0.2.0 | JSON Spec e Schema de todos os 5 modulos (ETAPA 6) |
 | v0.3.0 | Firmware MVP — todos os modulos implementados (ETAPA 7) |
 | v1.0.0 | V-model fechado — validacao completa (ETAPA 8) |
