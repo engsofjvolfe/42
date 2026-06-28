@@ -22,8 +22,8 @@ Fases concluídas e aprovadas:
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: feat/sensor (aberta — MOD_SENSOR implementado, aguarda merge para develop)
-Próxima ação: merge feat/sensor → develop; criar branch feat/visual; implementar MOD_LED (ETAPA 7, passo 2)
+Branch ativa: develop (feat/sensor mergeado FF em 2026-06-28)
+Próxima ação: criar branch feat/visual a partir de develop; implementar MOD_LED (ETAPA 7, passo 2)
 
 Ordem de implementação dos módulos (ETAPA 7):
   1. MOD_SENSOR  [CONCLUÍDO — feat/sensor] ← commits: a2d2fef, 59b25ea, 9d313ac
