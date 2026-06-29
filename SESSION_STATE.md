@@ -8,7 +8,7 @@ Processo: V-Model (ISO 26262 / IEC 61508 / IEC 62304)
 Estado verificado em 2026-06-28: run_all.py → TODOS OS CHECKS PASSARAM (47 constantes, 6 seções, 4 _config.h em sync)
 
 Camada atual: DERIVAÇÃO
-Fase V-Model atual: ETAPA 7 — Firmware (MOD_SENSOR, MOD_LED e MOD_JOGO concluídos)
+Fase V-Model atual: ETAPA 7 — Firmware (todos os 4 módulos implementados)
 
 Fases concluídas e aprovadas:
   [x] Fase 1 — Requisitos          (concept/00_conceito.md v0.1.0 APROVADO)
@@ -22,19 +22,46 @@ Fases concluídas e aprovadas:
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: develop (feat/game mergeado FF em 2026-06-28)
-Próxima ação: criar branch feat/interface a partir de develop; implementar MOD_WIFI (ETAPA 7, passo 4)
+Branch ativa: feat/interface (commit HEAD: 2308d61 feat(interface): implementa MOD_WIFI)
+Próxima ação: pio test -e native → confirmar 38/38 PASSED; depois merge feat/interface → develop; tag v0.3.0
 
 Ordem de implementação dos módulos (ETAPA 7):
   1. MOD_SENSOR  [CONCLUÍDO — feat/sensor] ← commits: a2d2fef, 59b25ea, 9d313ac
   2. MOD_LED     [CONCLUÍDO — feat/visual] ← commit: 48bbe36
-  3. MOD_JOGO    [CONCLUÍDO — feat/game]   ← commit: 51246f3
-  4. MOD_WIFI    ← depende da interface de MOD_JOGO  ← PRÓXIMO
+  3. MOD_JOGO    [CONCLUÍDO — feat/game]   ← commits: 51246f3, 89fac38
+  4. MOD_WIFI    [CONCLUÍDO — feat/interface] ← commit: 2308d61
+
+Gate ETAPA 7 — estado atual:
+  [x] Todos os módulos implementados (SENSOR, LED, JOGO, WIFI)
+  [?] pio test -e native → 38/38 PASSED (validado em sessão anterior; re-confirmar com novo main.cpp)
+  [x] pio run → SUCCESS (0 errors, 0 warnings — 2026-06-28; RAM 13.6%, Flash 65.4%)
+  [ ] tag v0.3.0
+
+MOD_WIFI — artefatos criados (branch feat/interface):
+  - _governance/WEB_STANDARD.md v0.1.0: governanca HTML/CSS/JS embutido; MD3 offline; zero magic numbers; cenarios CA-07-01..11
+  - firmware/src/interface/interface.h: API publica interfaceInit() e interfaceLoop()
+  - firmware/src/interface/interface.cpp: WiFi AP + ESPAsyncWebServer + WebSocket /ws + ArduinoJson 7.x
+    HTML/CSS/JS embutido: maquina de estados 6 telas; WebAudio; localStorage; exportação CSV
+    Helpers DRY: enviarEvento(), enviarStatus(), _aplicarToggle(), _mostrarOverlay()
+  - firmware/src/game/game.h: adiciona declaracoes gamePausarSessao() e gameRetomarSessao()
+  - system/01_arquitetura.md: ArduinoJson >= 7.0 registrado na tabela de stack
+
+Commits do usuário feitos entre as sessões (já no HEAD de feat/interface):
+  - 5a6ed41 build(interface): refatora platformio.ini para [env] base compartilhada
+      → lib_extra_dirs = src movido para [env] compartilhado; corrige include path esp32dev
+  - afc0661 fix(sensor): corrige tipo ADC de adc_atten_t para adc_attenuation_t
+      → sensor.cpp: SENSOR_ADC_ATENUACAO = ADC_11db (Arduino ESP32 3.x)
+  - 89fac38 feat(game): integra visualSetLED e visualRunCelebracao em MOD_JOGO
+      → game.cpp: helper cor_para_led(); visualSetLED no ESTIMULO; visualRunCelebracao no FIM_SESSAO
+      → game.cpp: gameRetomarSessao() reacende LEDs (CA-04-09); game.cpp: gamePausarSessao() implementado
+      → main.cpp: remove [DECIDIR]; add [VER: 01_arquitetura.md#interface-jogo-led]
+      → test_game: mock FastLED adicionado; 38/38 PASSED
 
 MOD_JOGO — artefatos criados (branch feat/game):
   - firmware/src/game/game.h: Cor, ParCores, ResultadoJogo, EventoJogo, ConfigSessao; API publica + API de teste
   - firmware/src/game/game.cpp: maquina de estados; Mec A (Fisher-Yates) e Mec B (peso decrescente); logica Modo 1 e Modo 2
-  - firmware/test/test_game/test_main.cpp: 11 testes TDD; 11/11 PASSED; cobre CA-04-01..08, CA-04-10
+    visualSetLED, visualRunCelebracao e gamePausarSessao/gameRetomarSessao integrados via commits do usuario
+  - firmware/test/test_game/test_main.cpp: 11 testes TDD; 38/38 PASSED (com visual mock); cobre CA-04-01..08, CA-04-10
   - firmware/platformio.ini: build_src_filter atualizado para +<sensor/> +<visual/> +<game/>
   - firmware/test/mock/Arduino.h: adiciona String (mock minimo) e declaracao random(long)
 
@@ -66,6 +93,10 @@ Descoberta registrada — NÃO re-investigar:
   - test_game/test_main.cpp deve incluir <Arduino.h> explicitamente para ter adc_atten_t disponível.
   - gameIniciarSessao() emite ESTIMULO via callback — testes que verificam s_cb_count após impacto
     devem resetar s_cb_count = 0u após gameIniciarSessao() para contar apenas o evento do impacto.
+  - ESPAsyncWebServer 3.x: send_P() está deprecated; usar send() com os mesmos argumentos.
+  - MOD_WIFI não é testável em native (WiFi, WebSocket). TDD equivalente: cenários CA-07-* em WEB_STANDARD.md.
+  - ArduinoJson v7: JsonDocument sem tamanho (alocacao dinâmica); deserializeJson(doc, data, len) para dados binários WS.
+  - _aplicarToggle(pausar, client): abstrai PAUSAR/RETOMAR de forma simétrica; client != nullptr → send só ao cliente reconectado.
 
 Decisões aprovadas:
   - LM2596 módulo pré-montado → 5V ± 0.1V (eficiência 85–90%)
@@ -84,11 +115,16 @@ Decisões aprovadas:
   - N_PALETA (4 cores) não existe em visual_config.h — derivado implicitamente de sizeof(s_paleta) em visual.cpp; em testes usa T_VISUAL_N_PALETA = 4u (HARDCODED_TESTE com justificativa)
   - rand() em game.cpp requer #include <stdlib.h> em native (MinGW não fornece via Arduino.h)
   - API de teste (gameGetCorAtual, gameGetParAtual, gameZonaParaCor, etc.) exposta em game.h com comentário "Nao chamar em producao" — necessária para observabilidade dos CAs sem acoplar test_main.cpp ao estado interno
+  - gameOnEvento: único slot de callback (um consumidor). MOD_JOGO chama visualSetLED diretamente ([VER: 01_arquitetura.md#interface-jogo-led]); interfaceInit() registra o callback para MOD_WIFI
+  - ArduinoJson ≥ 7.0: escolhido sobre parsing manual (frágil); documentado em 01_arquitetura.md#stack-tecnologico e CODING_STANDARD.md#modularidade-pode
+  - WEB_STANDARD.md em _governance/: governa HTML/CSS/JS embutido; mesma estrutura de CODING_STANDARD.md e TESTING_STANDARD.md
+  - Bump de versão de documentos: NÃO necessário quando o conteúdo é atualizado durante branch de desenvolvimento ativa (scripts verificam sincronismo, não versão de documento de governança)
 
 Pendências:
-  - ETAPA 7: MOD_WIFI restante (TDD — não testável em native; requer hardware)
-  - Após MOD_WIFI: pio run → compilação sem erro ou warning
-  - tag v0.3.0 ao concluir gate ETAPA 7 (todos os módulos + pio test -e native zero falhas + pio run sem erro)
+  - pio test -e native → re-confirmar 38/38 PASSED com firmware completo (main.cpp wiring novo)
+  - merge feat/interface → develop (fast-forward, sem --no-ff)
+  - tag v0.3.0 após gate ETAPA 7 completo
+  - ETAPA 8: Validação (fecha o V-model) — requer hardware físico
 
 Artefatos em develop — sessão anterior (feat/gerar-config-h — mergeado, FECHADO):
   NOTA: estes artefatos já existem em disco e estão em sync. Não recriar.
@@ -106,7 +142,15 @@ Premissas verificadas (NÃO re-analisar em sessões futuras):
   - A promessa do CODING_STANDARD.md seção 4.1 ("conteúdo gerado pelo script") está honrada
   - Cascata de ponta a ponta está fechada: spec JSON → firmware_constants.json → _config.h → CI detecta divergência
   - Opção A (estender o script) foi implementada na sessão feat/gerar-config-h (já mergeada)
-  - pio test -e native: 38/38 PASSED (11 game + 13 sensor + 14 visual) — confirmado em 2026-06-28
+  - pio test -e native: 38/38 PASSED (11 game + 13 sensor + 14 visual) — confirmado em 2026-06-28 (pré-feat/interface)
+
+Desvios desta sessão feat/interface (2026-06-28) — registrados para não repetir:
+  - Tentou usar Task agent (proibido neste repositório) — corrigido imediatamente ao ser alertado
+  - Leu módulos existentes para entender padrão na prática — padrão correto: ler _governance/CODING_STANDARD.md
+  - Saltou direto para interface.h sem escrever cenários de teste primeiro (ETAPA 7 passo 3) — corrigido: WEB_STANDARD.md#padrao-testes escrito antes do HTML
+  - send_P() não detectado como deprecated antes de rodar pio run — corrigido após primeira compilação
+  - CHANGELOG editado após staging em vez de antes — inverter ordem nas próximas sessões
+  - game.h com declarações gamePausarSessao/gameRetomarSessao staged mas game.cpp já implementado pelo usuário em commit anterior — registrar este padrão: usuário pode commitar implementações entre sessões; verificar commits recentes ao iniciar
 
 Desvios desta sessão feat/game (2026-06-28) — registrados para não repetir:
   - game.h incluiu "sensor/sensor.h" em vez de "sensor.h" — erro de compilacao; corrigido pelo erro real
