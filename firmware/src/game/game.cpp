@@ -4,6 +4,7 @@
 
 #include "game.h"
 #include "game_config.h"
+#include "visual.h"
 #include <Arduino.h>
 #include <stdlib.h>
 
@@ -29,10 +30,12 @@ enum class Estado : uint8_t {
     ESTIMULO,
     AVALIANDO,
     INTERVALO,
-    FIM_SESSAO
+    FIM_SESSAO,
+    PAUSADO
 };
 
 static Estado       s_estado;
+static Estado       s_estado_anterior; // salvo por gamePausarSessao
 static ConfigSessao s_cfg;
 static uint8_t      s_acertos;
 static uint32_t     s_timestamp_inicio_ms;
@@ -84,6 +87,20 @@ static void reset_meca_B() {
     }
 }
 
+// Converte Cor (game) em ComandoLED::Cor (visual).
+// Mapeamento 1:1 derivado de game.json#mapeamento_zona_cor
+// (nomes identicos em ambos os enums; OFF nao existe em Cor).
+// [VER: 01_arquitetura.md#interface-jogo-led]
+static ComandoLED::Cor cor_para_led(Cor cor) {
+    switch (cor) {
+        case Cor::LARANJA: return ComandoLED::Cor::LARANJA;
+        case Cor::AZUL:    return ComandoLED::Cor::AZUL;
+        case Cor::AMARELO: return ComandoLED::Cor::AMARELO;
+        case Cor::ROXO:    return ComandoLED::Cor::ROXO;
+        default:           return ComandoLED::Cor::OFF;
+    }
+}
+
 static void emitir(ResultadoJogo resultado) {
     if (s_callback != nullptr) {
         EventoJogo ev;
@@ -111,6 +128,15 @@ static void iniciar_estimulo() {
     }
     s_primeiro_impacto = false;
     s_estado = Estado::ESTIMULO;
+    // Acende LED(s) do estimulo — [VER: 04_logica_jogo.md#logica-modo-1]
+    // [VER: 04_logica_jogo.md#logica-modo-2]
+    // [VER: 01_arquitetura.md#interface-jogo-led]
+    if (s_cfg.modo == GAME_MODO_UM) {
+        visualSetLED({ ComandoLED::LED::CENTRAL, cor_para_led(s_cor_atual) });
+    } else {
+        visualSetLED({ ComandoLED::LED::ESQUERDO, cor_para_led(s_par_atual.cor1) });
+        visualSetLED({ ComandoLED::LED::DIREITO,  cor_para_led(s_par_atual.cor2) });
+    }
     emitir(ResultadoJogo::ESTIMULO);
 }
 
@@ -152,6 +178,8 @@ void gameOnImpacto(EventoImpacto evt) {
             s_acertos += GAME_SCORE_DELTA_ACERTO;
             s_estado   = Estado::INTERVALO;
             s_timestamp_intervalo_ms = millis();
+            // Apaga LEDs imediatamente apos acerto — [VER: spec/game/game.json#acerto.leds_acao]
+            visualSetLED({ ComandoLED::LED::TODOS, ComandoLED::Cor::OFF });
             emitir(ResultadoJogo::ACERTO);
         } else {
             s_estado = Estado::AVALIANDO;
@@ -182,6 +210,8 @@ void gameOnImpacto(EventoImpacto evt) {
                 s_acertos += GAME_SCORE_DELTA_ACERTO;
                 s_estado   = Estado::INTERVALO;
                 s_timestamp_intervalo_ms = millis();
+                // Apaga LEDs imediatamente apos acerto — [VER: spec/game/game.json#acerto.leds_acao]
+                visualSetLED({ ComandoLED::LED::TODOS, ComandoLED::Cor::OFF });
                 emitir(ResultadoJogo::ACERTO);
             } else {
                 s_primeiro_impacto = false;
@@ -199,9 +229,39 @@ void gameLoop() {
     if ((millis() - s_timestamp_intervalo_ms) >= GAME_INTERVALO_MS) {
         if (s_acertos >= s_cfg.n_configurado) {
             s_estado = Estado::FIM_SESSAO;
+            // Inicia celebracao de fim de sessao — [VER: 04_logica_jogo.md#transicoes]
+            visualRunCelebracao();
             emitir(ResultadoJogo::FIM_SESSAO);
         } else {
             iniciar_estimulo();
+        }
+    }
+}
+
+void gamePausarSessao() {
+    // Derivado de: [VER: 01_arquitetura.md#interface-jogo-wifi]
+    if (s_estado == Estado::OCIOSO || s_estado == Estado::FIM_SESSAO ||
+        s_estado == Estado::PAUSADO) {
+        return;
+    }
+    s_estado_anterior = s_estado;
+    s_estado          = Estado::PAUSADO;
+}
+
+void gameRetomarSessao() {
+    // Derivado de: [VER: 01_arquitetura.md#interface-jogo-wifi]
+    if (s_estado != Estado::PAUSADO) {
+        return;
+    }
+    s_estado = s_estado_anterior;
+    // Reacende LEDs se sessao estava em ESTIMULO ou AVALIANDO ao pausar
+    // [VER: spec/game/game.json#criterios_aceitacao CA-04-09]
+    if (s_estado == Estado::ESTIMULO || s_estado == Estado::AVALIANDO) {
+        if (s_cfg.modo == GAME_MODO_UM) {
+            visualSetLED({ ComandoLED::LED::CENTRAL, cor_para_led(s_cor_atual) });
+        } else {
+            visualSetLED({ ComandoLED::LED::ESQUERDO, cor_para_led(s_par_atual.cor1) });
+            visualSetLED({ ComandoLED::LED::DIREITO,  cor_para_led(s_par_atual.cor2) });
         }
     }
 }

@@ -6,8 +6,8 @@
 //   CA-04-01: Mecanismo A — distribuicao uniforme (40 interacoes, 10 por cor ± 0)
 //   CA-04-02: Mecanismo B — sem repeticao > 3x consecutivas (40 interacoes)
 //   CA-04-03: Modo 2 — pares sempre com cores distintas (20 pares)
-//   CA-04-04: Acerto Modo 1 — LED apaga, score+1
-//   CA-04-05: Erro Modo 1 — LED mantido, score inalterado
+//   CA-04-04: Acerto Modo 1 — LED apaga (buffer mock), score+1
+//   CA-04-05: Erro Modo 1 — LED mantido (buffer mock), score inalterado
 //   CA-04-06: Acerto Modo 2 dentro da janela
 //   CA-04-07: Erro Modo 2 fora da janela
 //   CA-04-08: Fim de sessao — FIM_SESSAO emitido com totais corretos
@@ -19,6 +19,9 @@
 #include <unity.h>
 #include <string.h>
 #include <Arduino.h>
+#include <FastLED.h>
+#include "visual/visual.h"
+#include "visual/visual_config.h"
 #include "game/game.h"
 #include "game/game_config.h"
 
@@ -26,6 +29,13 @@
 // Mock state — unico local de definicao
 // [VER: TESTING_STANDARD.md#mock-estado]
 // ---------------------------------------------------------------------------
+
+// FastLED mock (padrao declare->define) — [VER: TESTING_STANDARD.md#mock-declare-define]
+// Necessario porque game.cpp inclui visual.h: LDF compila visual.cpp neste build.
+CRGB     g_mock_led_buf[VISUAL_N_LEDS];
+bool     g_mock_show_called = false;
+CFastLED FastLED;
+
 static uint32_t g_mock_millis;
 
 // ---------------------------------------------------------------------------
@@ -95,9 +105,14 @@ static void test_callback(EventoJogo ev) {
 // [VER: TESTING_STANDARD.md#estrutura-test-main]
 // ---------------------------------------------------------------------------
 void setUp() {
-    g_mock_millis = 0u;
+    g_mock_millis      = 0u;
+    g_mock_show_called = false;
+    for (uint8_t i = 0u; i < VISUAL_N_LEDS; i++) {
+        g_mock_led_buf[i] = CRGB(0u, 0u, 0u);
+    }
     s_cb_count    = 0u;
     memset(&s_ultimo_ev, 0, sizeof(s_ultimo_ev));
+    visualInit(); // inicializa estado de visual.cpp — [VER: 01_arquitetura.md#modularidade-ordem-init]
     gameInit();
     gameOnEvento(test_callback);
 }
@@ -187,6 +202,12 @@ void test_game_modo1_acerto_zona_correta() {
     TEST_ASSERT_EQUAL_UINT8(static_cast<uint8_t>(ResultadoJogo::ACERTO),
                             static_cast<uint8_t>(s_ultimo_ev.resultado));
     TEST_ASSERT_EQUAL_UINT8(1u, s_ultimo_ev.acertos);
+    // CA-04-04: LED apaga imediatamente apos acerto
+    // [VER: spec/game/game.json#acerto.leds_acao]
+    static const CRGB LED_APAGADO(0u, 0u, 0u);
+    for (uint8_t i = 0u; i < VISUAL_N_LEDS; i++) {
+        TEST_ASSERT_EQUAL_MEMORY(&LED_APAGADO, &g_mock_led_buf[i], sizeof(CRGB));
+    }
 }
 
 // [CA-04-05] Erro Modo 1: zona errada -> score inalterado, evento ERRO
@@ -211,6 +232,12 @@ void test_game_modo1_erro_zona_errada() {
     TEST_ASSERT_EQUAL_UINT8(static_cast<uint8_t>(ResultadoJogo::ERRO),
                             static_cast<uint8_t>(s_ultimo_ev.resultado));
     TEST_ASSERT_EQUAL_UINT8(0u, s_ultimo_ev.acertos);
+    // CA-04-05: LED central mantido apos erro (estímulo nao apaga)
+    // [VER: spec/game/game.json#erro.leds_acao]
+    bool led_central_aceso = (g_mock_led_buf[VISUAL_LED_CENTRAL].r != 0u ||
+                              g_mock_led_buf[VISUAL_LED_CENTRAL].g != 0u ||
+                              g_mock_led_buf[VISUAL_LED_CENTRAL].b != 0u);
+    TEST_ASSERT_TRUE(led_central_aceso);
 }
 
 // ---------------------------------------------------------------------------

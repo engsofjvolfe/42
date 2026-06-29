@@ -18,6 +18,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `firmware/test/test_game/test_main.cpp`: definicao de `analogSetAttenuation` atualizada para `adc_attenuation_t`
 
 ### Adicionado
+- `firmware/src/game/game.cpp`: integra chamadas a `visualSetLED()` e `visualRunCelebracao()` derivadas de `01_arquitetura.md#interface-jogo-led` e `04_logica_jogo.md#logica-modo-1/2#tratamento-resultados`; resolve `[DECIDIR]` registrado em `main.cpp`; `gameRetomarSessao()` reacende LEDs (CA-04-09)
 - `firmware/src/game/game.h` — interface publica de MOD_JOGO: `Cor`, `ParCores`, `ResultadoJogo`, `EventoJogo`, `ConfigSessao`, `GameCallback`; API publica (`gameInit`, `gameOnEvento`, `gameIniciarSessao`, `gameOnImpacto`, `gameLoop`); API de teste (`gameZonaParaCor`, `gameProximaCorA`, `gameProximaCorB`, `gameProximasDuasA`, `gameProximasDuasB`, `gameGetCorAtual`, `gameGetParAtual`)
 - `firmware/src/game/game.cpp` — implementacao de MOD_JOGO derivada de `spec/game/game.json` e `04_logica_jogo.md`; maquina de estados (OCIOSO, ESTIMULO, AVALIANDO, INTERVALO, FIM_SESSAO); Mecanismo A (Fisher-Yates por bloco de 4) e Mecanismo B (peso decrescente); logica de acerto/erro Modo 1 e Modo 2 com janela de simultaneidade; callback de resultado e fim de sessao
 - `firmware/test/test_game/test_main.cpp` — 11 testes Unity para MOD_JOGO; cobre CA-04-01 (distribuicao Mec A), CA-04-02 (variacao Mec B), CA-04-03 (pares distintos Modo 2), CA-04-04 (acerto Modo 1), CA-04-05 (erro Modo 1), CA-04-06 (acerto Modo 2 dentro da janela), CA-04-07 (erro Modo 2 fora da janela), CA-04-08 (fim de sessao), CA-04-10 (intervalo); CA-04-09 documentado como REQUER HARDWARE
@@ -56,6 +57,8 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `spec/firmware_constants.schema.json`: aceita campo opcional `tipo_plataforma: boolean` em `decisoes_manuais_inerentes`
 
 ### Corrigido
+- `firmware/src/main.cpp`: remove comentario `[DECIDIR]` sobre fiacao game→visual — resolvido em `game.cpp`
+- `firmware/test/test_game/test_main.cpp`: adiciona definicoes do mock FastLED (padrao declare->define); adiciona `visualInit()` em `setUp()`; estende CA-04-04 com assertiva de LED apagado e CA-04-05 com assertiva de LED mantido
 - `firmware/src/sensor/sensor.h`: corrige referencia `[VER:]` de `#interfaces` para `#interfaces-modulos` — ancora inexistente; ancora real em `01_arquitetura.md` e `#interfaces-modulos`
 - `scripts/verify_links.py`: corrige varredura de `.md` de `glob('*.md')` (so raiz) para `rglob` recursivo com registry `{nome: path}` — scripts nao verificavam nenhum documento em subdiretorios
 - `scripts/check_impacta.py`: mesma correcao de varredura recursiva com registry
