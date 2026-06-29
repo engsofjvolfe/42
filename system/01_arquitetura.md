@@ -47,6 +47,7 @@ Traduzir os requisitos de [VER: 00_conceito.md#componentes-fisicos], [VER: 00_co
 | Protocolo evento | WebSocket (full-duplex) | Latência < 200ms ESP32 → browser; sem polling |
 | Interface pedagogo | HTML + CSS + JS puro | Zero dependência externa; offline-first; sem framework |
 | Armazenamento | localStorage do browser | Dados no dispositivo do pedagogo; ESP32 stateless |
+| Parsing JSON | ArduinoJson ≥ 7.0 | Deserialização de mensagens WebSocket em MOD_WIFI; alocação estática (JsonDocument sem heap dinâmico) |
 
 Nenhuma biblioteca fora desta lista pode ser adicionada sem atualizar este documento e seus dependentes.
 
@@ -224,6 +225,7 @@ stateDiagram-v2
 | Versão | Data | Seção | Mudança | Impacto em dependentes |
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero derivada de 00_conceito v0.1.0 com âncoras e _PADRAO v0.1.0 | Todos os módulos filhos |
+| 0.1.0 | 2026-06-28 | 3 | Adiciona ArduinoJson ≥ 7.0 à tabela de stack — parsing JSON de mensagens WebSocket em MOD_WIFI | CODING_STANDARD.md |
 
 ---
 

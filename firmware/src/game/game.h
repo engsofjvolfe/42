@@ -82,6 +82,16 @@ void gameOnImpacto(EventoImpacto evt);
 // Deve ser chamado a cada iteracao de loop().
 void gameLoop();
 
+// Pausa a sessao ativa preservando o estado atual.
+// Chamado por MOD_WIFI ao detectar desconexao do browser.
+// Derivado de: [VER: 01_arquitetura.md#interface-jogo-wifi]
+void gamePausarSessao();
+
+// Retoma a sessao do ponto de pausa.
+// Chamado por MOD_WIFI ao detectar reconexao do browser.
+// Derivado de: [VER: 01_arquitetura.md#interface-jogo-wifi]
+void gameRetomarSessao();
+
 // ---------------------------------------------------------------------------
 // API de teste — expoe estado interno para test_main.cpp
 // Nao chamar em producao.

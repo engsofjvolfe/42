@@ -18,12 +18,20 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `firmware/test/test_game/test_main.cpp`: definicao de `analogSetAttenuation` atualizada para `adc_attenuation_t`
 
 ### Adicionado
+- `_governance/WEB_STANDARD.md` v0.1.0 — governança de HTML/CSS/JS embutido: MD3 offline via CSS custom properties, zero magic numbers JS/CSS, maquina de estados, nomenclatura de funcoes, cenarios de teste CA-07-* derivados de `spec/interface/interface.json`
+- `firmware/src/interface/interface.h` — interface publica de MOD_WIFI: `interfaceInit()` e `interfaceLoop()` derivados de `01_arquitetura.md#interface-jogo-wifi`
+- `firmware/src/interface/interface.cpp` — implementacao de MOD_WIFI: WiFi AP (SSID BMI, IP 192.168.4.1, canal 1), ESPAsyncWebServer, WebSocket bidirecional `/ws`, parsing JSON com ArduinoJson 7.x, callback `gameOnEvento`; HTML/CSS/JS embutido conforme `WEB_STANDARD.md`; cobre CA-07-01..11
+- `firmware/src/game/game.h` — adiciona declaracoes publicas de `gamePausarSessao()` e `gameRetomarSessao()` derivadas de `01_arquitetura.md#interface-jogo-wifi` (implementacao ja presente em `game.cpp` via feat(game) anterior)
 - `firmware/src/game/game.cpp`: integra chamadas a `visualSetLED()` e `visualRunCelebracao()` derivadas de `01_arquitetura.md#interface-jogo-led` e `04_logica_jogo.md#logica-modo-1/2#tratamento-resultados`; resolve `[DECIDIR]` registrado em `main.cpp`; `gameRetomarSessao()` reacende LEDs (CA-04-09)
 - `firmware/src/game/game.h` — interface publica de MOD_JOGO: `Cor`, `ParCores`, `ResultadoJogo`, `EventoJogo`, `ConfigSessao`, `GameCallback`; API publica (`gameInit`, `gameOnEvento`, `gameIniciarSessao`, `gameOnImpacto`, `gameLoop`); API de teste (`gameZonaParaCor`, `gameProximaCorA`, `gameProximaCorB`, `gameProximasDuasA`, `gameProximasDuasB`, `gameGetCorAtual`, `gameGetParAtual`)
 - `firmware/src/game/game.cpp` — implementacao de MOD_JOGO derivada de `spec/game/game.json` e `04_logica_jogo.md`; maquina de estados (OCIOSO, ESTIMULO, AVALIANDO, INTERVALO, FIM_SESSAO); Mecanismo A (Fisher-Yates por bloco de 4) e Mecanismo B (peso decrescente); logica de acerto/erro Modo 1 e Modo 2 com janela de simultaneidade; callback de resultado e fim de sessao
 - `firmware/test/test_game/test_main.cpp` — 11 testes Unity para MOD_JOGO; cobre CA-04-01 (distribuicao Mec A), CA-04-02 (variacao Mec B), CA-04-03 (pares distintos Modo 2), CA-04-04 (acerto Modo 1), CA-04-05 (erro Modo 1), CA-04-06 (acerto Modo 2 dentro da janela), CA-04-07 (erro Modo 2 fora da janela), CA-04-08 (fim de sessao), CA-04-10 (intervalo); CA-04-09 documentado como REQUER HARDWARE
 
 ### Alterado
+- `firmware/src/main.cpp` — fiacao completa dos 4 modulos: inclui `game.h` e `interface.h`; adiciona `gameInit()` e `interfaceInit()` em `setup()`; adiciona `gameLoop()` e `interfaceLoop()` em `loop()`; `sensorOnImpacto(gameOnImpacto)` conecta MOD_SENSOR a MOD_JOGO
+- `firmware/platformio.ini` — adiciona `bblanchon/ArduinoJson@^7.0.0` a `lib_deps` de `[env:esp32dev]`; derivado de `01_arquitetura.md#stack-tecnologico`
+- `system/01_arquitetura.md` — adiciona ArduinoJson >= 7.0 a tabela de stack tecnologico
+- `_governance/CODING_STANDARD.md` v0.1.1 — atualiza MOD_WIFI em `#modularidade-pode`: adiciona `<ArduinoJson.h>` as includes permitidas
 - `firmware/platformio.ini`: refatora para `[env]` base compartilhada — `build_flags = -std=gnu++17` e `lib_extra_dirs = src` movidos para secao comum; `[env:native]` estende via `${env.build_flags}`; corrige include path em `[env:esp32dev]` que nao resolvia `"game.h"` e `"sensor.h"` — derivado de `CODING_STANDARD.md#estrutura-cpp`
 - `firmware/platformio.ini`: atualiza `build_src_filter` para `+<sensor/> +<visual/> +<game/>` — inclui MOD_JOGO no build principal
 - `firmware/test/mock/Arduino.h`: adiciona mock minimo de `String` (construtor default, `const char*`, copia, atribuicao) rastreado a `ConfigSessao.nome_crianca`; adiciona declaracao de `long random(long max)` rastreada ao mecanismo de aleatoriedade de `game.cpp`
