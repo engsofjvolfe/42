@@ -9,6 +9,12 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Nao lancado]
 
+### Adicionado
+- `TODO.md` — lista de tarefas futuras: metadocumentos e índices de navegação por diretório (`modules/`, `spec/`, `hardware/`, `_governance/`)
+
+### Alterado
+- `README.md` — reescrito: descrição com hardware em prosa derivada de `00_conceito.md` v0.1.0 e `01_arquitetura.md` v0.1.0; status V-model atualizado para v0.3.0 (38/38 testes); removidas seções duplicadas (hardware, módulos, protocolo) que vivem nos documentos fonte; índice de documentação inclui `_governance/`
+
 ---
 
 ## [0.3.0] — 2026-06-28
