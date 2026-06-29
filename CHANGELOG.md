@@ -9,6 +9,10 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Nao lancado]
 
+---
+
+## [0.3.0] — 2026-06-28
+
 ### Corrigido
 - `spec/firmware_constants.json` DM-02: `adc_atten_t`/`ADC_ATTEN_DB_11` (ESP-IDF direto) corrigido para `adc_attenuation_t`/`ADC_11db` (camada Arduino ESP32 3.x / IDF5)
 - `_governance/CODING_STANDARD.md` secao 7: tabela DM-02 regenerada automaticamente — reflete tipo correto `adc_attenuation_t`
@@ -136,5 +140,4 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
 | Tag | Conteudo |
 |---|---|
-| v0.3.0 | Firmware MVP — todos os modulos implementados (ETAPA 7) |
 | v1.0.0 | V-model fechado — validacao completa (ETAPA 8) |
