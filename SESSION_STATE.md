@@ -7,8 +7,8 @@ CONTEXTO: continuando projeto Instrumento Ludico-Pedagogico ESP32 — 2026-06-28
 Processo: V-Model (ISO 26262 / IEC 61508 / IEC 62304)
 Estado verificado em 2026-06-28: run_all.py → TODOS OS CHECKS PASSARAM (47 constantes, 6 seções, 4 _config.h em sync)
 
-Camada atual: DERIVAÇÃO
-Fase V-Model atual: ETAPA 7 — Firmware (todos os 4 módulos implementados)
+Camada atual: VALIDAÇÃO
+Fase V-Model atual: ETAPA 8 — Validação com hardware físico
 
 Fases concluídas e aprovadas:
   [x] Fase 1 — Requisitos          (concept/00_conceito.md v0.1.0 APROVADO)
@@ -17,13 +17,14 @@ Fases concluídas e aprovadas:
   [x] Fase 4 — Arquitetura Firmware (modules/02–07 v0.1.0 APROVADO)
   [x] GATE Formalização             (spec/power, spec/sensor, spec/visual, spec/game, spec/interface MERGEADOS em develop — tag v0.2.0)
   [x] GATE pré-ETAPA 7              (CODING_STANDARD.md v0.1.0 + firmware_constants.json + _config.h gerados — mergeados em develop)
-  [ ] Fase 5 — Testes de Módulos
+  [x] ETAPA 7 — Firmware MVP        (MOD_SENSOR, MOD_LED, MOD_JOGO, MOD_WIFI — feat/interface mergeado em develop — tag v0.3.0 — 38/38 PASSED)
+  [ ] Fase 5 — Testes de Módulos    (requer hardware físico)
   [ ] Fase 6 — Validação de Hardware
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: feat/interface (commit HEAD: 2308d61 feat(interface): implementa MOD_WIFI)
-Próxima ação: pio test -e native → confirmar 38/38 PASSED; depois merge feat/interface → develop; tag v0.3.0
+Branch ativa: develop (HEAD: ad0dea3 — tag v0.3.0)
+Próxima ação: ETAPA 8 — montar hardware e executar CAs com hardware físico
 
 Ordem de implementação dos módulos (ETAPA 7):
   1. MOD_SENSOR  [CONCLUÍDO — feat/sensor] ← commits: a2d2fef, 59b25ea, 9d313ac
@@ -31,11 +32,11 @@ Ordem de implementação dos módulos (ETAPA 7):
   3. MOD_JOGO    [CONCLUÍDO — feat/game]   ← commits: 51246f3, 89fac38
   4. MOD_WIFI    [CONCLUÍDO — feat/interface] ← commit: 2308d61
 
-Gate ETAPA 7 — estado atual:
+Gate ETAPA 7 — CONCLUÍDO (2026-06-28):
   [x] Todos os módulos implementados (SENSOR, LED, JOGO, WIFI)
-  [?] pio test -e native → 38/38 PASSED (validado em sessão anterior; re-confirmar com novo main.cpp)
+  [x] pio test -e native → 38/38 PASSED (confirmado 2026-06-28 com firmware completo)
   [x] pio run → SUCCESS (0 errors, 0 warnings — 2026-06-28; RAM 13.6%, Flash 65.4%)
-  [ ] tag v0.3.0
+  [x] tag v0.3.0 — criada em develop (ad0dea3)
 
 MOD_WIFI — artefatos criados (branch feat/interface):
   - _governance/WEB_STANDARD.md v0.1.0: governanca HTML/CSS/JS embutido; MD3 offline; zero magic numbers; cenarios CA-07-01..11
