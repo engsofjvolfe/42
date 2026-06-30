@@ -14,6 +14,13 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Alterado
 - `README.md` — reescrito: descrição com hardware em prosa derivada de `00_conceito.md` v0.1.0 e `01_arquitetura.md` v0.1.0; status V-model atualizado para v0.3.0 (38/38 testes); removidas seções duplicadas (hardware, módulos, protocolo) que vivem nos documentos fonte; índice de documentação inclui `_governance/`
+- `modules/power/05_alimentacao.md` v0.1.0 → v0.2.0: adiciona nota em `#cadeia-alimentacao` declarando que AMS1117-3.3 é o regulador linear integrado ao ESP32 DevKit (E01), não componente externo; cascata obrigatória em 6 documentos dependentes
+- `modules/sensor/02_sensor_impacto.md` v0.1.0 → v0.1.1: atualiza `depende_de` — `05_alimentacao.md` v0.1.0 → v0.2.0
+- `modules/visual/03_saida_visual.md` v0.1.0 → v0.1.1: atualiza `depende_de` — `05_alimentacao.md` v0.1.0 → v0.2.0
+- `hardware/08_bom.md` v0.1.0 → v0.2.0: adiciona nota em E01 (AMS1117-3.3 onboard); atualiza `depende_de` (02 v0.1.1, 03 v0.1.1, 05 v0.2.0)
+- `hardware/09_conexoes.md` v0.1.0 → v0.2.0: adiciona nota em `#visao-geral` declarando AMS1117-3.3 como regulador onboard do DevKit; atualiza `depende_de` (02 v0.1.1, 03 v0.1.1, 05 v0.2.0, 08 v0.2.0)
+- `hardware/10_cablagem.md` v0.1.0 → v0.1.1: atualiza `depende_de` — `09_conexoes.md` v0.1.0 → v0.2.0
+- `hardware/11_montagem.md` v0.1.0 → v0.2.0: adiciona nota em `#instalacao-devkit` declarando ausência de etapa de instalação do AMS1117; atualiza `depende_de` (08 v0.2.0, 09 v0.2.0, 10 v0.1.1)
 
 ---
 

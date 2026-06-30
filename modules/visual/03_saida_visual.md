@@ -1,13 +1,13 @@
 ---
 documento:    03_saida_visual.md
-versão:       0.1.0
+versão:       0.1.1
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
   - 01_arquitetura.md v0.1.0 [BLOQUEADOR]
-  - 05_alimentacao.md v0.1.0 [BLOQUEADOR]
+  - 05_alimentacao.md v0.2.0 [BLOQUEADOR]
 impacta:
   - 08_bom.md                [OBRIGATÓRIO]
   - 09_conexoes.md           [OBRIGATÓRIO]
@@ -22,7 +22,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 03_saida_visual.md |
-| Versão | 0.1.0 |
+| Versão | 0.1.1 |
 | Status | APROVADO |
 | Módulo firmware | MOD_LED — [VER: 01_arquitetura.md#mod-led] |
 | GPIO de dados | 5 — [VER: 01_arquitetura.md#mapeamento-gpios] |
@@ -148,6 +148,7 @@ Especificação no BOM: [VER: 08_bom.md#passivos]
 | Versão | Data | Seção | Mudança | Impacto em dependentes |
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero com âncoras, _PADRAO v0.1.0, derivada de 00_conceito v0.1.0, 01_arquitetura v0.1.0, 05_alimentacao v0.1.0 | 04, 08, 09 |
+| 0.1.1 | 2026-06-30 | depende_de | Atualiza referência 05_alimentacao.md de v0.1.0 para v0.2.0 (nota AMS1117 onboard) | — |
 
 ---
 
@@ -158,7 +159,7 @@ Especificação no BOM: [VER: 08_bom.md#passivos]
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #indicadores-led, #modos-operacao, #zonas-impacto, #feedback, #estado-boot |
 | Pai | 01_arquitetura.md | 0.1.0 | BLOQUEADOR | #mod-led, #mapeamento-gpios, #interface-jogo-led, #stack-tecnologico, #requisitos-nao-funcionais |
-| Pai | 05_alimentacao.md | 0.1.0 | BLOQUEADOR | #restricao-led, #decoupling |
+| Pai | 05_alimentacao.md | 0.2.0 | BLOQUEADOR | #restricao-led, #decoupling |
 | Filho | 08_bom.md | — | OBRIGATÓRIO | #componente-led, #decoupling-led |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #mapeamento-led, #decoupling-led |
 ---

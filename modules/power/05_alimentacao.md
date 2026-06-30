@@ -1,6 +1,6 @@
 ---
 documento:    05_alimentacao.md
-versão:       0.1.0
+versão:       0.2.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
@@ -23,7 +23,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 05_alimentacao.md |
-| Versão | 0.1.0 |
+| Versão | 0.2.0 |
 | Status | APROVADO |
 | Pré-requisito | Deve estar APROVADO antes da criação de 02, 03, 08 e 09 |
 
@@ -45,6 +45,8 @@ flowchart LR
     AMS -->|"3.3V rail"| ESP["ESP32\nchip"]
     AMS -->|"3.3V rail"| LEDS["3× WS2812B"]
 ```
+
+**Nota sobre o AMS1117-3.3:** o regulador 5V → 3.3V representado acima é o CI integrado ao ESP32 DevKit (E01). Não é um componente externo — não consta no BOM e não requer etapa de instalação. Ao alimentar o pino VIN do DevKit com 5V, o AMS1117 onboard produz automaticamente o rail 3.3V. Qualquer documento que mencione AMS1117 está descrevendo este CI já soldado na placa do DevKit.
 
 **Dois estágios de regulação:**
 - **Estágio 1 — LM2596 (chaveado):** eficiência ~85–90%, converte 12V → 5V
@@ -178,6 +180,7 @@ Total de capacitores cerâmicos 100nF/50V: **5 unidades** (1 saída LM2596 + 1 V
 | Versão | Data | Seção | Mudança | Impacto em dependentes |
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero com âncoras, _PADRAO v0.1.0, derivada de 00_conceito v0.1.0 e 01_arquitetura v0.1.0 | 02, 03, 08, 09 [OBRIGATÓRIO] |
+| 0.2.0 | 2026-06-30 | #cadeia-alimentacao | Adiciona nota explícita: AMS1117-3.3 é o regulador onboard do DevKit (E01), não componente externo; não consta no BOM nem em etapas de montagem | 02, 03, 08, 09 [PATCH depende_de] |
 
 ---
 

@@ -1,15 +1,15 @@
 ---
 documento:    08_bom.md
-versão:       0.1.0
+versão:       0.2.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
   - 01_arquitetura.md v0.1.0 [BLOQUEADOR]
-  - 02_sensor_impacto.md v0.1.0 [BLOQUEADOR]
-  - 03_saida_visual.md v0.1.0   [BLOQUEADOR]
-  - 05_alimentacao.md v0.1.0    [BLOQUEADOR]
+  - 02_sensor_impacto.md v0.1.1 [BLOQUEADOR]
+  - 03_saida_visual.md v0.1.1   [BLOQUEADOR]
+  - 05_alimentacao.md v0.2.0    [BLOQUEADOR]
 impacta:
   - 09_conexoes.md           [OBRIGATÓRIO]
   - 11_montagem.md           [OBRIGATÓRIO]
@@ -24,7 +24,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 08_bom.md |
-| Versão | 0.1.0 |
+| Versão | 0.2.0 |
 | Status | APROVADO |
 | Escopo | Todos os componentes necessários para uma unidade do projeto |
 
@@ -40,7 +40,7 @@ Listar todos os componentes eletrônicos, cabos e materiais estruturais necessá
 
 | ID | Componente | Especificação | Qtd | Referência |
 |---|---|---|---|---|
-| E01 | ESP32 DevKit | ESP32-WROOM-32U, 38 pinos | 1 | [VER: 01_arquitetura.md#hardware] |
+| E01 | ESP32 DevKit | ESP32-WROOM-32U, 38 pinos — inclui AMS1117-3.3 onboard (regulador 5V→3.3V integrado à placa; não é componente externo) | 1 | [VER: 01_arquitetura.md#hardware] |
 | E02 | Shield de expansão | Compatível com ESP32 38 pinos | 1 | [VER: 01_arquitetura.md#hardware] |
 | E03 | LED WS2812B | RGB endereçável individual (não fita), 3.3V | 3 | [VER: 03_saida_visual.md#componente-led] |
 | E04 | Disco piezoelétrico | 27mm, sem PCB, 2 fios soldados | 4 | [VER: 02_sensor_impacto.md#componente-piezo] |
@@ -129,6 +129,7 @@ Fonte (A01) não contabilizada — já disponível.
 | Versão | Data | Seção | Mudança | Impacto em dependentes |
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero com âncoras, _PADRAO v0.1.0 | 09, 10, 11 |
+| 0.2.0 | 2026-06-30 | #eletronicos-ativos | Adiciona nota em E01: AMS1117-3.3 integrado ao DevKit, não componente externo; atualiza depende_de (02 v0.1.1, 03 v0.1.1, 05 v0.2.0) | 09, 11 [PATCH depende_de] |
 
 ---
 
@@ -139,9 +140,9 @@ Fonte (A01) não contabilizada — já disponível.
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #componentes-fisicos |
 | Pai | 01_arquitetura.md | 0.1.0 | BLOQUEADOR | #hardware, #mapeamento-gpios |
-| Pai | 02_sensor_impacto.md | 0.1.0 | BLOQUEADOR | #componente-piezo, #componentes-protecao |
-| Pai | 03_saida_visual.md | 0.1.0 | BLOQUEADOR | #componente-led, #decoupling-led |
-| Pai | 05_alimentacao.md | 0.1.0 | BLOQUEADOR | #decoupling, #alimentacao |
+| Pai | 02_sensor_impacto.md | 0.1.1 | BLOQUEADOR | #componente-piezo, #componentes-protecao |
+| Pai | 03_saida_visual.md | 0.1.1 | BLOQUEADOR | #componente-led, #decoupling-led |
+| Pai | 05_alimentacao.md | 0.2.0 | BLOQUEADOR | #decoupling, #alimentacao |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #eletronicos-ativos, #passivos |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | todo este documento |
 ---

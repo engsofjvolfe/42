@@ -1,16 +1,16 @@
 ---
 documento:    09_conexoes.md
-versão:       0.1.0
+versão:       0.2.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0           [BLOQUEADOR]
   - 00_conceito.md v0.1.0       [BLOQUEADOR]
   - 01_arquitetura.md v0.1.0    [BLOQUEADOR]
-  - 02_sensor_impacto.md v0.1.0 [BLOQUEADOR]
-  - 03_saida_visual.md v0.1.0   [BLOQUEADOR]
-  - 05_alimentacao.md v0.1.0    [BLOQUEADOR]
-  - 08_bom.md v0.1.0            [BLOQUEADOR]
+  - 02_sensor_impacto.md v0.1.1 [BLOQUEADOR]
+  - 03_saida_visual.md v0.1.1   [BLOQUEADOR]
+  - 05_alimentacao.md v0.2.0    [BLOQUEADOR]
+  - 08_bom.md v0.2.0            [BLOQUEADOR]
 impacta:
   - 10_cablagem.md              [OBRIGATÓRIO]
   - 11_montagem.md              [OBRIGATÓRIO]
@@ -25,7 +25,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 09_conexoes.md |
-| Versão | 0.1.0 |
+| Versão | 0.2.0 |
 | Status | APROVADO |
 | Escopo | Conexões elétricas completas — alimentação, sensores, LEDs, shield |
 
@@ -79,6 +79,8 @@ flowchart TD
     LED0 -->|DOUT→DIN| LED1["WS2812B\nLED[1] Central"]
     LED1 -->|DOUT→DIN| LED2["WS2812B\nLED[2] Direito"]
 ```
+
+**Nota sobre o AMS1117-3.3:** o nó representado no diagrama acima é o regulador linear integrado ao ESP32 DevKit (E01) — não é um componente externo. Não consta no BOM e não há etapa de instalação: o AMS1117 já está soldado na placa do DevKit. Ao encaixar o DevKit no shield e alimentar VIN com 5V, o rail 3.3V é produzido automaticamente. [VER: 05_alimentacao.md#cadeia-alimentacao]
 
 ---
 
@@ -173,6 +175,7 @@ R300Ω em série na linha de dados: protege GPIO5 e atenua reflexões no cabo.
 | Versão | Data | Seção | Mudança | Impacto em dependentes |
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero com âncoras, _PADRAO v0.1.0 | 10, 11 |
+| 0.2.0 | 2026-06-30 | #visao-geral | Adiciona nota: AMS1117-3.3 é regulador onboard do DevKit (E01), não componente externo; atualiza depende_de (02 v0.1.1, 03 v0.1.1, 05 v0.2.0, 08 v0.2.0) | 10, 11 [PATCH depende_de] |
 
 ---
 
@@ -183,10 +186,10 @@ R300Ω em série na linha de dados: protege GPIO5 e atenua reflexões no cabo.
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #componentes-fisicos |
 | Pai | 01_arquitetura.md | 0.1.0 | BLOQUEADOR | #hardware, #mapeamento-gpios |
-| Pai | 02_sensor_impacto.md | 0.1.0 | BLOQUEADOR | #esquema-protecao, #mapeamento-gpios-sensor |
-| Pai | 03_saida_visual.md | 0.1.0 | BLOQUEADOR | #mapeamento-led, #decoupling-led |
-| Pai | 05_alimentacao.md | 0.1.0 | BLOQUEADOR | #cadeia-alimentacao, #decoupling, #conexao-fisica |
-| Pai | 08_bom.md | 0.1.0 | BLOQUEADOR | #eletronicos-ativos, #passivos |
+| Pai | 02_sensor_impacto.md | 0.1.1 | BLOQUEADOR | #esquema-protecao, #mapeamento-gpios-sensor |
+| Pai | 03_saida_visual.md | 0.1.1 | BLOQUEADOR | #mapeamento-led, #decoupling-led |
+| Pai | 05_alimentacao.md | 0.2.0 | BLOQUEADOR | #cadeia-alimentacao, #decoupling, #conexao-fisica |
+| Pai | 08_bom.md | 0.2.0 | BLOQUEADOR | #eletronicos-ativos, #passivos |
 | Filho | 10_cablagem.md | — | OBRIGATÓRIO | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | todo este documento |
 ---
