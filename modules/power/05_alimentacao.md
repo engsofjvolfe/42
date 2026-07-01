@@ -1,12 +1,12 @@
 ---
 documento:    05_alimentacao.md
-versão:       0.2.1
+versão:       0.2.2
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.2.0 [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.1 [BLOQUEADOR]
 impacta:
   - 02_sensor_impacto.md    [OBRIGATÓRIO]
   - 03_saida_visual.md      [OBRIGATÓRIO]
@@ -40,13 +40,13 @@ Especificar a cadeia completa de alimentação derivada de [VER: 00_conceito.md#
 ```mermaid
 flowchart LR
     FONTE["Fonte AC/DC\n12V 2.5A 30W\nNBS30G-120250VB"] -->|"12V CC\nsoldado direto"| LM["Módulo LM2596\nBuck DC-DC\n12V → 5V"]
-    LM -->|"5V ± 0.1V\n≤ 3A"| VIN["ESP32 DevKit\nVIN pin"]
+    LM -->|"5V ± 0.1V\n≤ 3A"| VIN["ESP32 DevKitC V4\npino 5V"]
     VIN -->|"5V → AMS1117\nonboard"| AMS["AMS1117-3.3\nLinear\nonboard DevKit"]
     AMS -->|"3.3V rail"| ESP["ESP32\nchip"]
     AMS -->|"3.3V rail"| LEDS["3× WS2812B"]
 ```
 
-**Nota sobre o AMS1117-3.3:** o regulador 5V → 3.3V representado acima é o CI integrado ao ESP32 DevKit (E01). Não é um componente externo — não consta no BOM e não requer etapa de instalação. Ao alimentar o pino VIN do DevKit com 5V, o AMS1117 onboard produz automaticamente o rail 3.3V. Qualquer documento que mencione AMS1117 está descrevendo este CI já soldado na placa do DevKit.
+**Nota sobre o AMS1117-3.3:** o regulador 5V → 3.3V representado acima é o CI integrado ao ESP32 DevKit (E01). Não é um componente externo — não consta no BOM e não requer etapa de instalação. Ao alimentar o pino **5V** do DevKitC V4 com 5V (este pino é equivalente funcional ao VIN de outros DevKits), o AMS1117 onboard produz automaticamente o rail 3.3V. Qualquer documento que mencione AMS1117 está descrevendo este CI já soldado na placa do DevKit.
 
 **Dois estágios de regulação:**
 - **Estágio 1 — LM2596 (chaveado):** eficiência ~85–90%, converte 12V → 5V
@@ -115,12 +115,12 @@ Disponível = 2500mA → margem 14.3×
 | Entrada LM2596 (12V) | 100μF / 25V | Eletrolítico | Bulk — absorve transitórios da fonte |
 | Saída LM2596 (5V) | 470μF / 10V | Eletrolítico | Bulk — reduz ripple de chaveamento |
 | Saída LM2596 (5V) | 100nF / 50V | Cerâmico | HF — filtra ruído de chaveamento |
-| VIN do DevKit | 10μF / 16V | Eletrolítico | Bulk local para transitórios do WiFi |
-| VIN do DevKit | 100nF / 50V | Cerâmico | HF local |
+| Pino 5V do DevKitC V4 | 10μF / 16V | Eletrolítico | Bulk local para transitórios do WiFi |
+| Pino 5V do DevKitC V4 | 100nF / 50V | Cerâmico | HF local |
 | VDD de cada WS2812B (×3) | 10μF / 16V | Eletrolítico | Estabiliza pico ao acender |
 | VDD de cada WS2812B (×3) | 100nF / 50V | Cerâmico | HF — filtra transitórios de corrente |
 
-Total de capacitores cerâmicos 100nF/50V: **5 unidades** (1 saída LM2596 + 1 VIN + 3 por LED).
+Total de capacitores cerâmicos 100nF/50V: **5 unidades** (1 saída LM2596 + 1 pino 5V + 3 por LED).
 
 ---
 
@@ -131,7 +131,7 @@ Total de capacitores cerâmicos 100nF/50V: **5 unidades** (1 saída LM2596 + 1 V
 | Fonte → LM2596 | Soldagem direta — sem conector intermediário |
 | Saída LM2596 | 2 fios (+ e −) para barramento de distribuição 5V |
 | Barramento | Especificação de fios: [VER: 10_cablagem.md#tabela-fios] |
-| Barramento → ESP32 VIN | Via shield ou fio direto: [VER: 09_conexoes.md#cadeia-alimentacao-ascii] |
+| Barramento → pino 5V DevKitC V4 | Via shield ou fio direto: [VER: 09_conexoes.md#cadeia-alimentacao-ascii] |
 
 ---
 
@@ -155,7 +155,7 @@ Total de capacitores cerâmicos 100nF/50V: **5 unidades** (1 saída LM2596 + 1 V
 - Todos os capacitores de [VER: #decoupling] devem constar no BOM
 
 ### 8.4 Para 09_conexoes.md <a id="restricao-conexoes"></a>
-- Cadeia: 12V → LM2596 → 5V → VIN DevKit → AMS1117 → 3.3V
+- Cadeia: 12V → LM2596 → 5V → pino 5V DevKitC V4 → AMS1117 → 3.3V
 - Fonte soldada diretamente ao LM2596 — sem conector intermediário
 - [VER: 09_conexoes.md#visao-geral]
 
@@ -182,6 +182,7 @@ Total de capacitores cerâmicos 100nF/50V: **5 unidades** (1 saída LM2596 + 1 V
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero com âncoras, _PADRAO v0.1.0, derivada de 00_conceito v0.1.0 e 01_arquitetura v0.1.0 | 02, 03, 08, 09 [OBRIGATÓRIO] |
 | 0.2.0 | 2026-06-30 | #cadeia-alimentacao | Adiciona nota explícita: AMS1117-3.3 é o regulador onboard do DevKit (E01), não componente externo; não consta no BOM nem em etapas de montagem | 02, 03, 08, 09 [PATCH depende_de] |
 | 0.2.1 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo) | 02, 03, 08, 09 |
+| 0.2.2 | 2026-07-01 | #cadeia-alimentacao, #decoupling, #conexao-fisica, #restricao-conexoes | Substitui rótulo "VIN" por "pino 5V" — ESP32 DevKitC V4 rotula o pino de entrada 5V como "5V", não "VIN"; atualiza depende_de 01_arquitetura.md v0.2.0→v0.2.1 | 02, 03, 08, 09 |
 
 ---
 
@@ -191,7 +192,7 @@ Total de capacitores cerâmicos 100nF/50V: **5 unidades** (1 saída LM2596 + 1 V
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #energizacao |
-| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #hardware, #requisitos-nao-funcionais |
+| Pai | 01_arquitetura.md | 0.2.1 | BLOQUEADOR | #hardware, #requisitos-nao-funcionais |
 | Filho | 02_sensor_impacto.md | — | OBRIGATÓRIO | #restricao-sensor |
 | Filho | 03_saida_visual.md | — | OBRIGATÓRIO | #restricao-led |
 | Filho | 08_bom.md | — | OBRIGATÓRIO | #restricao-bom |
