@@ -1,14 +1,14 @@
 ---
 documento:    11_montagem.md
-versão:       0.2.2
+versão:       0.2.3
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
-  - 08_bom.md v0.2.1         [BLOQUEADOR]
-  - 09_conexoes.md v0.2.2    [BLOQUEADOR]
-  - 10_cablagem.md v0.1.3    [BLOQUEADOR]
+  - 08_bom.md v0.2.2         [BLOQUEADOR]
+  - 09_conexoes.md v0.2.3    [BLOQUEADOR]
+  - 10_cablagem.md v0.1.4    [BLOQUEADOR]
 impacta: []
 ---
 
@@ -231,22 +231,22 @@ Após cura completa, conforme [VER: 10_cablagem.md#tabela-fios] e [VER: 10_cabla
 
 ## 10. Fase 5 — Conjunto ESP32 + Shield <a id="fase-esp32"></a>
 
-**Objetivo:** ESP32 instalado no shield, capacitores de VIN soldados, pronto para conectar periféricos.
+**Objetivo:** ESP32 DevKitC V4 instalado no shield, capacitores do pino 5V soldados, pronto para conectar periféricos.
 
 ### 10.1 Instalação do DevKit no shield <a id="instalacao-devkit"></a>
 
-> **Nota:** o AMS1117-3.3 está integrado ao DevKit (E01) — não há componente externo a instalar para regulação 3.3V. Ao encaixar o DevKit no shield e alimentar VIN com 5V (etapa 10.2), o rail 3.3V fica disponível automaticamente no pino 3V3. [VER: 09_conexoes.md#cadeia-alimentacao-ascii]
+> **Nota:** o AMS1117-3.3 está integrado ao DevKit (E01) — não há componente externo a instalar para regulação 3.3V. Ao encaixar o DevKitC V4 no shield e alimentar o pino **5V** com 5V (etapa 10.2), o rail 3.3V fica disponível automaticamente no pino 3V3. [VER: 09_conexoes.md#cadeia-alimentacao-ascii]
 
 1. Encaixar ESP32-WROOM-32U (E01) no shield de expansão (E02) — verificar alinhamento dos 38 pinos
-2. Soldar capacitor P05 (10μF/16V) entre VIN e GND do shield
-3. Soldar capacitor P06 (100nF/50V) entre VIN e GND do shield, próximo ao P05
+2. Soldar capacitor P05 (10μF/16V) entre o pino 5V e GND do shield
+3. Soldar capacitor P06 (100nF/50V) entre o pino 5V e GND do shield, próximo ao P05
 
 ### 10.2 Conexão do barramento de alimentação <a id="conexao-barramento"></a>
 
 Conforme [VER: 09_conexoes.md#mapeamento-shield] e fios [VER: 10_cablagem.md#tabela-fios]:
 
 1. Conectar F03 (LM2596 OUT+ → barramento 5V+) e F04 (LM2596 OUT− → barramento 5V−)
-2. Conectar F05 (barramento 5V+ → shield VIN) e F06 (barramento 5V− → shield GND)
+2. Conectar F05 (barramento 5V+ → shield pino 5V) e F06 (barramento 5V− → shield GND)
 3. Conectar fonte 12V e medir 3.3V no pino 3V3 do shield
 
 **Critério CA-09-01** — [VER: 09_conexoes.md#criterios-aceitacao]: 3.3V ± 5% no rail. **Não avançar sem aprovação.**
@@ -468,6 +468,7 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 | 0.2.0 | 2026-06-30 | #instalacao-devkit | Adiciona nota: AMS1117-3.3 integrado ao DevKit (E01), não há etapa de instalação para regulação 3.3V; atualiza depende_de (08 v0.2.0, 09 v0.2.0, 10 v0.1.1) | — |
 | 0.2.1 | 2026-07-01 | depende_de | Atualiza referência 10_cablagem.md de v0.1.1 para v0.1.2 (cascata da correção Mermaid em 09_conexoes) | — |
 | 0.2.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 08_bom.md v0.2.0→v0.2.1, 09_conexoes.md v0.2.1→v0.2.2, 10_cablagem.md v0.1.2→v0.1.3 (cascata bump MINOR retroativo de 01_arquitetura) | — |
+| 0.2.3 | 2026-07-01 | #instalacao-devkit, #energizacao-inicial | Substitui "VIN" por "pino 5V" / "DevKitC V4" em instruções de soldagem e conexão; atualiza depende_de: 08 v0.2.2, 09 v0.2.3, 10 v0.1.4 | — |
 
 ---
 
@@ -477,9 +478,9 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #componentes-fisicos, #martelos, #indicadores-led |
-| Pai | 08_bom.md | 0.2.1 | BLOQUEADOR | todo o documento |
-| Pai | 09_conexoes.md | 0.2.2 | BLOQUEADOR | todo o documento |
-| Pai | 10_cablagem.md | 0.1.3 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
+| Pai | 08_bom.md | 0.2.2 | BLOQUEADOR | todo o documento |
+| Pai | 09_conexoes.md | 0.2.3 | BLOQUEADOR | todo o documento |
+| Pai | 10_cablagem.md | 0.1.4 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.
