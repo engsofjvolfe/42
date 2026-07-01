@@ -1,14 +1,14 @@
 ---
 documento:    11_montagem.md
-versão:       0.2.1
+versão:       0.2.2
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
-  - 08_bom.md v0.2.0         [BLOQUEADOR]
-  - 09_conexoes.md v0.2.1    [BLOQUEADOR]
-  - 10_cablagem.md v0.1.2    [BLOQUEADOR]
+  - 08_bom.md v0.2.1         [BLOQUEADOR]
+  - 09_conexoes.md v0.2.2    [BLOQUEADOR]
+  - 10_cablagem.md v0.1.3    [BLOQUEADOR]
 impacta: []
 ---
 
@@ -21,7 +21,7 @@ impacta: []
 | Campo | Valor |
 |---|---|
 | Documento | 11_montagem.md |
-| Versão | 0.2.1 |
+| Versão | 0.2.2 |
 | Status | APROVADO |
 | Escopo | Montagem física completa — uma unidade do instrumento |
 | Posição na cadeia | Documento final — não tem filhos |
@@ -467,6 +467,7 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 | 0.1.0 | 2026-06-26 | — | Criação — documento final da cadeia. Define S01 (MDF 61×61cm). Derivado de 00_conceito v0.1.0, 08_bom v0.1.0, 09_conexoes v0.1.0, 10_cablagem v0.1.0. | — |
 | 0.2.0 | 2026-06-30 | #instalacao-devkit | Adiciona nota: AMS1117-3.3 integrado ao DevKit (E01), não há etapa de instalação para regulação 3.3V; atualiza depende_de (08 v0.2.0, 09 v0.2.0, 10 v0.1.1) | — |
 | 0.2.1 | 2026-07-01 | depende_de | Atualiza referência 10_cablagem.md de v0.1.1 para v0.1.2 (cascata da correção Mermaid em 09_conexoes) | — |
+| 0.2.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 08_bom.md v0.2.0→v0.2.1, 09_conexoes.md v0.2.1→v0.2.2, 10_cablagem.md v0.1.2→v0.1.3 (cascata bump MINOR retroativo de 01_arquitetura) | — |
 
 ---
 
@@ -476,9 +477,9 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #componentes-fisicos, #martelos, #indicadores-led |
-| Pai | 08_bom.md | 0.2.0 | BLOQUEADOR | todo o documento |
-| Pai | 09_conexoes.md | 0.2.1 | BLOQUEADOR | todo o documento |
-| Pai | 10_cablagem.md | 0.1.2 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
+| Pai | 08_bom.md | 0.2.1 | BLOQUEADOR | todo o documento |
+| Pai | 09_conexoes.md | 0.2.2 | BLOQUEADOR | todo o documento |
+| Pai | 10_cablagem.md | 0.1.3 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.

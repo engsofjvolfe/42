@@ -1,12 +1,12 @@
 ---
 documento:    TESTING_STANDARD.md
-versão:       0.1.1
+versão:       0.1.2
 status:       APROVADO
 data:         2026-06-28
 depende_de:
   - _PADRAO.md v0.1.0           [BLOQUEADOR]
-  - CODING_STANDARD.md v0.1.1   [BLOQUEADOR]
-  - 01_arquitetura.md v0.1.0    [BLOQUEADOR]
+  - CODING_STANDARD.md v0.2.0   [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.0    [BLOQUEADOR]
 impacta: firmware/test/ (test_main.cpp de cada modulo — nao sao .md)
 ---
 
@@ -21,10 +21,10 @@ impacta: firmware/test/ (test_main.cpp de cada modulo — nao sao .md)
 | Campo | Valor |
 |---|---|
 | Documento | TESTING_STANDARD.md |
-| Versão | 0.1.1 |
+| Versão | 0.1.2 |
 | Status | APROVADO |
 | Escopo | Todos os arquivos de teste em `firmware/test/` |
-| Pais | _PADRAO.md v0.1.0, CODING_STANDARD.md v0.1.1, 01_arquitetura.md v0.1.0 |
+| Pais | _PADRAO.md v0.1.0, CODING_STANDARD.md v0.2.0, 01_arquitetura.md v0.2.0 |
 
 ---
 
@@ -328,8 +328,9 @@ Resultado esperado: todos os testes passam, zero falhas.
 
 | Versão | Data | Seção | Mudança | Impacto em dependentes |
 |---|---|---|---|---|
-| 0.1.1 | 2026-06-28 | 9.1 | Corrige configuração `[env:native]`: adiciona `lib_extra_dirs = src` obrigatório para PlatformIO 6.x; `build_src_filter` sozinho não inclui `src/` em test builds | firmware/platformio.ini |
 | 0.1.0 | 2026-06-28 | — | Criação: padrão genérico de testes derivados — zero magic numbers, mock declare→define, constantes T_, rastreabilidade de CAs | firmware/test/ |
+| 0.1.1 | 2026-06-28 | 9.1 | Corrige configuração `[env:native]`: adiciona `lib_extra_dirs = src` obrigatório para PlatformIO 6.x; `build_src_filter` sozinho não inclui `src/` em test builds | firmware/platformio.ini |
+| 0.1.2 | 2026-07-01 | depende_de, Rastreabilidade, #identificacao | Atualiza referências: CODING_STANDARD.md v0.1.1→v0.2.0, 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo de 01) | — |
 
 ---
 
@@ -338,8 +339,8 @@ Resultado esperado: todos os testes passam, zero falhas.
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | CODING_STANDARD.md | 0.1.1 | BLOQUEADOR | #constantes-zero-magic-numbers, #estrutura-arquivo, #nomenclatura |
-| Pai | 01_arquitetura.md | 0.1.0 | BLOQUEADOR | #modulos-firmware |
+| Pai | CODING_STANDARD.md | 0.2.0 | BLOQUEADOR | #constantes-zero-magic-numbers, #estrutura-arquivo, #nomenclatura |
+| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #modulos-firmware |
 | Governa | firmware/test/ | — | OBRIGATÓRIO | — |
 ---
 

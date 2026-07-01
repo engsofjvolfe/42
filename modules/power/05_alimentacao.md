@@ -1,12 +1,12 @@
 ---
 documento:    05_alimentacao.md
-versão:       0.2.0
+versão:       0.2.1
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.1.0 [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.0 [BLOQUEADOR]
 impacta:
   - 02_sensor_impacto.md    [OBRIGATÓRIO]
   - 03_saida_visual.md      [OBRIGATÓRIO]
@@ -23,7 +23,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 05_alimentacao.md |
-| Versão | 0.2.0 |
+| Versão | 0.2.1 |
 | Status | APROVADO |
 | Pré-requisito | Deve estar APROVADO antes da criação de 02, 03, 08 e 09 |
 
@@ -181,6 +181,7 @@ Total de capacitores cerâmicos 100nF/50V: **5 unidades** (1 saída LM2596 + 1 V
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero com âncoras, _PADRAO v0.1.0, derivada de 00_conceito v0.1.0 e 01_arquitetura v0.1.0 | 02, 03, 08, 09 [OBRIGATÓRIO] |
 | 0.2.0 | 2026-06-30 | #cadeia-alimentacao | Adiciona nota explícita: AMS1117-3.3 é o regulador onboard do DevKit (E01), não componente externo; não consta no BOM nem em etapas de montagem | 02, 03, 08, 09 [PATCH depende_de] |
+| 0.2.1 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo) | 02, 03, 08, 09 |
 
 ---
 
@@ -190,7 +191,7 @@ Total de capacitores cerâmicos 100nF/50V: **5 unidades** (1 saída LM2596 + 1 V
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #energizacao |
-| Pai | 01_arquitetura.md | 0.1.0 | BLOQUEADOR | #hardware, #requisitos-nao-funcionais |
+| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #hardware, #requisitos-nao-funcionais |
 | Filho | 02_sensor_impacto.md | — | OBRIGATÓRIO | #restricao-sensor |
 | Filho | 03_saida_visual.md | — | OBRIGATÓRIO | #restricao-led |
 | Filho | 08_bom.md | — | OBRIGATÓRIO | #restricao-bom |

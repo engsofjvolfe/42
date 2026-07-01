@@ -1,11 +1,11 @@
 ---
 documento:    10_cablagem.md
-versão:       0.1.2
+versão:       0.1.3
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 09_conexoes.md v0.2.1    [BLOQUEADOR]
+  - 09_conexoes.md v0.2.2    [BLOQUEADOR]
 impacta:
   - 11_montagem.md           [OBRIGATÓRIO]
 ---
@@ -19,7 +19,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 10_cablagem.md |
-| Versão | 0.1.2 |
+| Versão | 0.1.3 |
 | Status | APROVADO |
 | Escopo | Todos os fios do sistema — bitola, cor, comprimento e destino |
 
@@ -134,6 +134,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero com âncoras, _PADRAO v0.1.0, derivada de 09_conexoes v0.1.0 | 11_montagem.md |
 | 0.1.1 | 2026-06-30 | depende_de | Atualiza referência 09_conexoes.md de v0.1.0 para v0.2.0 (nota AMS1117 onboard) | — |
 | 0.1.2 | 2026-07-01 | depende_de | Atualiza referência 09_conexoes.md de v0.2.0 para v0.2.1 (correção Mermaid) | — |
+| 0.1.3 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 09_conexoes.md v0.2.1→v0.2.2 (cascata bump MINOR retroativo de 01_arquitetura) | 11_montagem.md |
 
 ---
 
@@ -142,7 +143,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 09_conexoes.md | 0.2.1 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
+| Pai | 09_conexoes.md | 0.2.2 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | #tabela-fios, #regras-montagem |
 ---
 

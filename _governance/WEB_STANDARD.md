@@ -1,12 +1,12 @@
 ---
 documento:    WEB_STANDARD.md
-versão:       0.1.0
+versão:       0.1.1
 status:       APROVADO
 data:         2026-06-28
 depende_de:
   - _PADRAO.md v0.1.0                [BLOQUEADOR]
-  - 01_arquitetura.md v0.1.0         [BLOQUEADOR]
-  - 07_interface_pedagogo.md v0.1.0  [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.0         [BLOQUEADOR]
+  - 07_interface_pedagogo.md v0.1.1  [BLOQUEADOR]
 impacta:
   - firmware/src/interface/ (interface.cpp — arquivo HTML/CSS/JS embutido)
 ---
@@ -22,10 +22,10 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | WEB_STANDARD.md |
-| Versão | 0.1.0 |
+| Versão | 0.1.1 |
 | Status | APROVADO |
 | Escopo | HTML/CSS/JS embutido no firmware como string literal em interface.cpp |
-| Pais | _PADRAO.md v0.1.0, 01_arquitetura.md v0.1.0, 07_interface_pedagogo.md v0.1.0 |
+| Pais | _PADRAO.md v0.1.0, 01_arquitetura.md v0.2.0, 07_interface_pedagogo.md v0.1.1 |
 
 ---
 
@@ -477,6 +477,7 @@ Verificação manual no browser após flash do firmware.
 | Versão | Data | Seção | Mudança | Impacto em dependentes |
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-28 | — | Criação: padrão de UI web embutida — MD3 offline, zero magic numbers JS/CSS, estrutura HTML, máquina de estados, nomenclatura de funções | firmware/src/interface/interface.cpp |
+| 0.1.1 | 2026-07-01 | depende_de, Rastreabilidade, #identificacao | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo), 07_interface_pedagogo.md v0.1.0→v0.1.1 | — |
 
 ---
 
@@ -485,8 +486,8 @@ Verificação manual no browser após flash do firmware.
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 01_arquitetura.md | 0.1.0 | BLOQUEADOR | #requisitos-nao-funcionais, #stack-tecnologico |
-| Pai | 07_interface_pedagogo.md | 0.1.0 | BLOQUEADOR | #estados-interface, #feedback-sonoro, #websocket, #armazenamento-dados, #exportacao-csv, #tela-feedback |
+| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #requisitos-nao-funcionais, #stack-tecnologico |
+| Pai | 07_interface_pedagogo.md | 0.1.1 | BLOQUEADOR | #estados-interface, #feedback-sonoro, #websocket, #armazenamento-dados, #exportacao-csv, #tela-feedback |
 | Governa | firmware/src/interface/ | — | OBRIGATÓRIO | interface.cpp (HTML/CSS/JS embutido) |
 
 ---

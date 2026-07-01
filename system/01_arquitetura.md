@@ -1,6 +1,6 @@
 ---
 documento:    01_arquitetura.md
-versão:       0.1.0
+versão:       0.2.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
@@ -25,7 +25,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 01_arquitetura.md |
-| Versão | 0.1.0 |
+| Versão | 0.2.0 |
 | Status | APROVADO |
 | Escopo | Decisões de sistema que todos os módulos devem seguir |
 
@@ -225,7 +225,7 @@ stateDiagram-v2
 | Versão | Data | Seção | Mudança | Impacto em dependentes |
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero derivada de 00_conceito v0.1.0 com âncoras e _PADRAO v0.1.0 | Todos os módulos filhos |
-| 0.1.0 | 2026-06-28 | 3 | Adiciona ArduinoJson ≥ 7.0 à tabela de stack — parsing JSON de mensagens WebSocket em MOD_WIFI | CODING_STANDARD.md |
+| 0.2.0 | 2026-06-28 | #stack-tecnologico | Adiciona ArduinoJson ≥ 7.0 à tabela de stack — parsing JSON de mensagens WebSocket em MOD_WIFI | CODING_STANDARD, WEB_STANDARD, TESTING_STANDARD, 02, 03, 04, 05, 07, 08, 09 |
 
 ---
 

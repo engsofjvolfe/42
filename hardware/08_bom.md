@@ -1,15 +1,15 @@
 ---
 documento:    08_bom.md
-versão:       0.2.0
+versão:       0.2.1
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.1.0 [BLOQUEADOR]
-  - 02_sensor_impacto.md v0.1.1 [BLOQUEADOR]
-  - 03_saida_visual.md v0.1.1   [BLOQUEADOR]
-  - 05_alimentacao.md v0.2.0    [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.0 [BLOQUEADOR]
+  - 02_sensor_impacto.md v0.1.2 [BLOQUEADOR]
+  - 03_saida_visual.md v0.1.2   [BLOQUEADOR]
+  - 05_alimentacao.md v0.2.1    [BLOQUEADOR]
 impacta:
   - 09_conexoes.md           [OBRIGATÓRIO]
   - 11_montagem.md           [OBRIGATÓRIO]
@@ -24,7 +24,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 08_bom.md |
-| Versão | 0.2.0 |
+| Versão | 0.2.1 |
 | Status | APROVADO |
 | Escopo | Todos os componentes necessários para uma unidade do projeto |
 
@@ -130,6 +130,7 @@ Fonte (A01) não contabilizada — já disponível.
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero com âncoras, _PADRAO v0.1.0 | 09, 10, 11 |
 | 0.2.0 | 2026-06-30 | #eletronicos-ativos | Adiciona nota em E01: AMS1117-3.3 integrado ao DevKit, não componente externo; atualiza depende_de (02 v0.1.1, 03 v0.1.1, 05 v0.2.0) | 09, 11 [PATCH depende_de] |
+| 0.2.1 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0, 02 v0.1.1→v0.1.2, 03 v0.1.1→v0.1.2, 05 v0.2.0→v0.2.1 (bump MINOR retroativo de 01) | 09, 11 |
 
 ---
 
@@ -139,10 +140,10 @@ Fonte (A01) não contabilizada — já disponível.
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #componentes-fisicos |
-| Pai | 01_arquitetura.md | 0.1.0 | BLOQUEADOR | #hardware, #mapeamento-gpios |
-| Pai | 02_sensor_impacto.md | 0.1.1 | BLOQUEADOR | #componente-piezo, #componentes-protecao |
-| Pai | 03_saida_visual.md | 0.1.1 | BLOQUEADOR | #componente-led, #decoupling-led |
-| Pai | 05_alimentacao.md | 0.2.0 | BLOQUEADOR | #decoupling, #alimentacao |
+| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #hardware, #mapeamento-gpios |
+| Pai | 02_sensor_impacto.md | 0.1.2 | BLOQUEADOR | #componente-piezo, #componentes-protecao |
+| Pai | 03_saida_visual.md | 0.1.2 | BLOQUEADOR | #componente-led, #decoupling-led |
+| Pai | 05_alimentacao.md | 0.2.1 | BLOQUEADOR | #decoupling, #alimentacao |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #eletronicos-ativos, #passivos |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | todo este documento |
 ---

@@ -26,6 +26,19 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `hardware/09_conexoes.md` v0.2.0 → v0.2.1: corrige sintaxe Mermaid em `#visao-geral` — labels de aresta com parênteses envolvidos em aspas (`|"Piezo(+)"|`); sem aspas o `(` era interpretado como início de nó stadium
 - `hardware/10_cablagem.md` v0.1.1 → v0.1.2: atualiza `depende_de` — `09_conexoes.md` v0.2.0 → v0.2.1 (cascata PATCH)
 - `hardware/11_montagem.md` v0.2.0 → v0.2.1: atualiza `depende_de` — `10_cablagem.md` v0.1.1 → v0.1.2 (cascata PATCH)
+- `system/01_arquitetura.md` v0.1.0 → v0.2.0: bump MINOR retroativo — entrada de 2026-06-28 (ArduinoJson em `#stack-tecnologico`) estava registrada como v0.1.0 (adição deveria ter bumped MINOR para v0.2.0)
+- `_governance/CODING_STANDARD.md` v0.1.1 → v0.2.0: bump MINOR retroativo — entrada de 2026-06-28 (ArduinoJson em `#8.1`) estava duplicada em v0.1.1 (adição deveria ter bumped MINOR para v0.2.0); atualiza `depende_de` 01_arquitetura v0.1.0→v0.2.0
+- `modules/sensor/02_sensor_impacto.md` v0.1.1 → v0.1.2: cascata — atualiza `depende_de` 01_arquitetura v0.1.0→v0.2.0, 05_alimentacao v0.2.0→v0.2.1
+- `modules/visual/03_saida_visual.md` v0.1.1 → v0.1.2: cascata — atualiza `depende_de` 01_arquitetura v0.1.0→v0.2.0, 05_alimentacao v0.2.0→v0.2.1
+- `modules/game/04_logica_jogo.md` v0.1.0 → v0.1.1: cascata — atualiza `depende_de` 01_arquitetura v0.1.0→v0.2.0
+- `modules/power/05_alimentacao.md` v0.2.0 → v0.2.1: cascata — atualiza `depende_de` 01_arquitetura v0.1.0→v0.2.0
+- `modules/interface/07_interface_pedagogo.md` v0.1.0 → v0.1.1: cascata — atualiza `depende_de` 01_arquitetura v0.1.0→v0.2.0; rastreabilidade 04_logica_jogo v0.1.0→v0.1.1
+- `hardware/08_bom.md` v0.2.0 → v0.2.1: cascata — atualiza `depende_de` 01 v0.1.0→v0.2.0, 02 v0.1.1→v0.1.2, 03 v0.1.1→v0.1.2, 05 v0.2.0→v0.2.1
+- `_governance/WEB_STANDARD.md` v0.1.0 → v0.1.1: cascata — atualiza `depende_de` 01_arquitetura v0.1.0→v0.2.0, 07_interface_pedagogo v0.1.0→v0.1.1
+- `_governance/TESTING_STANDARD.md` v0.1.1 → v0.1.2: cascata — atualiza `depende_de` CODING_STANDARD v0.1.1→v0.2.0, 01_arquitetura v0.1.0→v0.2.0
+- `hardware/09_conexoes.md` v0.2.1 → v0.2.2: cascata — atualiza `depende_de` 01 v0.1.0→v0.2.0, 02 v0.1.1→v0.1.2, 03 v0.1.1→v0.1.2, 05 v0.2.0→v0.2.1, 08 v0.2.0→v0.2.1
+- `hardware/10_cablagem.md` v0.1.2 → v0.1.3: cascata — atualiza `depende_de` 09_conexoes v0.2.1→v0.2.2
+- `hardware/11_montagem.md` v0.2.1 → v0.2.2: cascata — atualiza `depende_de` 08 v0.2.0→v0.2.1, 09 v0.2.1→v0.2.2, 10 v0.1.2→v0.1.3
 
 ---
 
