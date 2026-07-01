@@ -1,11 +1,11 @@
 ---
 documento:    10_cablagem.md
-versão:       0.1.3
+versão:       0.1.4
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 09_conexoes.md v0.2.2    [BLOQUEADOR]
+  - 09_conexoes.md v0.2.3    [BLOQUEADOR]
 impacta:
   - 11_montagem.md           [OBRIGATÓRIO]
 ---
@@ -90,7 +90,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | F02 | Fonte 12V (−) | LM2596 IN− | AWG 22 | Preto | soldado fixo | — |
 | F03 | LM2596 OUT+ | Barramento 5V (+) | AWG 22 | Vermelho | 15cm | — |
 | F04 | LM2596 OUT− | Barramento 5V (−) | AWG 22 | Preto | 15cm | — |
-| F05 | Barramento 5V (+) | Shield VIN | AWG 22 | Vermelho | 20cm | — |
+| F05 | Barramento 5V (+) | Shield pino 5V | AWG 22 | Vermelho | 20cm | — |
 | F06 | Barramento 5V (−) | Shield GND | AWG 22 | Preto | 20cm | — |
 | F07 | Shield 3V3 | Cap. decoupling VDD LED[0] | AWG 24 | Vermelho | 15cm | — |
 | F08 | Shield 3V3 | Cap. decoupling VDD LED[1] | AWG 24 | Vermelho | 15cm | — |
@@ -135,6 +135,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | 0.1.1 | 2026-06-30 | depende_de | Atualiza referência 09_conexoes.md de v0.1.0 para v0.2.0 (nota AMS1117 onboard) | — |
 | 0.1.2 | 2026-07-01 | depende_de | Atualiza referência 09_conexoes.md de v0.2.0 para v0.2.1 (correção Mermaid) | — |
 | 0.1.3 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 09_conexoes.md v0.2.1→v0.2.2 (cascata bump MINOR retroativo de 01_arquitetura) | 11_montagem.md |
+| 0.1.4 | 2026-07-01 | #tabela-fios, depende_de, Rastreabilidade | F05: "Shield VIN" → "Shield pino 5V" — DevKitC V4 rotula o pino como "5V"; atualiza depende_de: 09_conexoes.md v0.2.2→v0.2.3 | 11_montagem.md |
 
 ---
 
@@ -143,7 +144,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 09_conexoes.md | 0.2.2 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
+| Pai | 09_conexoes.md | 0.2.3 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | #tabela-fios, #regras-montagem |
 ---
 
