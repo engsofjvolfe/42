@@ -1,15 +1,15 @@
 ---
 documento:    08_bom.md
-versão:       0.2.1
+versão:       0.2.2
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.2.0 [BLOQUEADOR]
-  - 02_sensor_impacto.md v0.1.2 [BLOQUEADOR]
-  - 03_saida_visual.md v0.1.2   [BLOQUEADOR]
-  - 05_alimentacao.md v0.2.1    [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.1 [BLOQUEADOR]
+  - 02_sensor_impacto.md v0.1.3 [BLOQUEADOR]
+  - 03_saida_visual.md v0.1.3   [BLOQUEADOR]
+  - 05_alimentacao.md v0.2.2    [BLOQUEADOR]
 impacta:
   - 09_conexoes.md           [OBRIGATÓRIO]
   - 11_montagem.md           [OBRIGATÓRIO]
@@ -40,7 +40,7 @@ Listar todos os componentes eletrônicos, cabos e materiais estruturais necessá
 
 | ID | Componente | Especificação | Qtd | Referência |
 |---|---|---|---|---|
-| E01 | ESP32 DevKit | ESP32-WROOM-32U, 38 pinos — inclui AMS1117-3.3 onboard (regulador 5V→3.3V integrado à placa; não é componente externo) | 1 | [VER: 01_arquitetura.md#hardware] |
+| E01 | ESP32 DevKitC V4 | Módulo ESP32-WROOM-32U, 38 pinos — pino de entrada 5V rotulado **"5V"** (não "VIN"); inclui AMS1117-3.3 onboard (regulador 5V→3.3V integrado à placa; não é componente externo) | 1 | [VER: 01_arquitetura.md#hardware] |
 | E02 | Shield de expansão | Compatível com ESP32 38 pinos | 1 | [VER: 01_arquitetura.md#hardware] |
 | E03 | LED WS2812B | RGB endereçável individual (não fita), 3.3V | 3 | [VER: 03_saida_visual.md#componente-led] |
 | E04 | Disco piezoelétrico | 27mm, sem PCB, 2 fios soldados | 4 | [VER: 02_sensor_impacto.md#componente-piezo] |
@@ -57,8 +57,8 @@ Listar todos os componentes eletrônicos, cabos e materiais estruturais necessá
 | P02 | Resistor 300Ω | 1/4W, ±5% | 1 | [VER: 03_saida_visual.md#mapeamento-led] — série na linha de dados LED |
 | P03 | Cap. eletrolítico 100μF/25V | Entrada LM2596 | 1 | [VER: 05_alimentacao.md#decoupling] |
 | P04 | Cap. eletrolítico 470μF/10V | Saída LM2596 | 1 | [VER: 05_alimentacao.md#decoupling] |
-| P05 | Cap. eletrolítico 10μF/16V | VIN DevKit + VDD por LED | 4 | [VER: 05_alimentacao.md#decoupling] — 1 VIN + 3 LEDs |
-| P06 | Cap. cerâmico 100nF/50V | Saída LM2596 + VIN + LEDs | 5 | [VER: 05_alimentacao.md#decoupling] — 1+1+3 |
+| P05 | Cap. eletrolítico 10μF/16V | Pino 5V DevKitC V4 + VDD por LED | 4 | [VER: 05_alimentacao.md#decoupling] — 1 pino 5V + 3 LEDs |
+| P06 | Cap. cerâmico 100nF/50V | Saída LM2596 + pino 5V + LEDs | 5 | [VER: 05_alimentacao.md#decoupling] — 1+1+3 |
 
 ---
 
@@ -131,6 +131,7 @@ Fonte (A01) não contabilizada — já disponível.
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero com âncoras, _PADRAO v0.1.0 | 09, 10, 11 |
 | 0.2.0 | 2026-06-30 | #eletronicos-ativos | Adiciona nota em E01: AMS1117-3.3 integrado ao DevKit, não componente externo; atualiza depende_de (02 v0.1.1, 03 v0.1.1, 05 v0.2.0) | 09, 11 [PATCH depende_de] |
 | 0.2.1 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0, 02 v0.1.1→v0.1.2, 03 v0.1.1→v0.1.2, 05 v0.2.0→v0.2.1 (bump MINOR retroativo de 01) | 09, 11 |
+| 0.2.2 | 2026-07-01 | #eletronicos-ativos, #passivos | Especifica E01 como DevKitC V4 e esclarece rótulo "5V" do pino de entrada; atualiza P05/P06: "VIN" → "pino 5V"; atualiza depende_de: 01 v0.2.1, 02 v0.1.3, 03 v0.1.3, 05 v0.2.2 | 09, 11 |
 
 ---
 
@@ -140,10 +141,10 @@ Fonte (A01) não contabilizada — já disponível.
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #componentes-fisicos |
-| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #hardware, #mapeamento-gpios |
-| Pai | 02_sensor_impacto.md | 0.1.2 | BLOQUEADOR | #componente-piezo, #componentes-protecao |
-| Pai | 03_saida_visual.md | 0.1.2 | BLOQUEADOR | #componente-led, #decoupling-led |
-| Pai | 05_alimentacao.md | 0.2.1 | BLOQUEADOR | #decoupling, #alimentacao |
+| Pai | 01_arquitetura.md | 0.2.1 | BLOQUEADOR | #hardware, #mapeamento-gpios |
+| Pai | 02_sensor_impacto.md | 0.1.3 | BLOQUEADOR | #componente-piezo, #componentes-protecao |
+| Pai | 03_saida_visual.md | 0.1.3 | BLOQUEADOR | #componente-led, #decoupling-led |
+| Pai | 05_alimentacao.md | 0.2.2 | BLOQUEADOR | #decoupling, #alimentacao |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #eletronicos-ativos, #passivos |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | todo este documento |
 ---
