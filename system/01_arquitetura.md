@@ -1,6 +1,6 @@
 ---
 documento:    01_arquitetura.md
-versão:       0.2.0
+versão:       0.2.1
 status:       APROVADO
 data:         2026-06-26
 depende_de:
@@ -57,7 +57,7 @@ Nenhuma biblioteca fora desta lista pode ser adicionada sem atualizar este docum
 
 | Componente | Especificação | Fixo? |
 |---|---|---|
-| Microcontrolador | ESP32-WROOM-32U, 38 pinos | Sim |
+| Microcontrolador | ESP32 DevKitC V4 (módulo ESP32-WROOM-32U, 38 pinos) — pino de entrada de 5V rotulado **"5V"** nesta placa (equivalente funcional ao VIN de outros DevKits) | Sim |
 | Shield | Placa de expansão compatível com ESP32 38 pinos | Sim |
 | LEDs | 3× WS2812B individuais (não fita) | Sim |
 | Sensores | 4× disco piezoelétrico 27mm, sem PCB | Sim |
@@ -226,6 +226,7 @@ stateDiagram-v2
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero derivada de 00_conceito v0.1.0 com âncoras e _PADRAO v0.1.0 | Todos os módulos filhos |
 | 0.2.0 | 2026-06-28 | #stack-tecnologico | Adiciona ArduinoJson ≥ 7.0 à tabela de stack — parsing JSON de mensagens WebSocket em MOD_WIFI | CODING_STANDARD, WEB_STANDARD, TESTING_STANDARD, 02, 03, 04, 05, 07, 08, 09 |
+| 0.2.1 | 2026-07-01 | #hardware | Especifica modelo da placa como ESP32 DevKitC V4 e esclarece que o pino de entrada 5V é rotulado "5V" (não "VIN") neste DevKit | 02, 03, 04, 05, 07, 08, 09, CODING_STANDARD, WEB_STANDARD, TESTING_STANDARD |
 
 ---
 
