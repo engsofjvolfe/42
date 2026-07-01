@@ -31,9 +31,9 @@ que é rastreável ao documento de conceito.
 [x] Arquitetura          → system/01_arquitetura.md
 [x] Especificacao modulos → modules/*
 [x] Especificacao hardware → hardware/*
-[ ] JSON Spec + Schema   → spec/* (a criar)
-[ ] Firmware             → firmware/* (a criar)
-[ ] Testes               → tests/* (a criar)
+[x] JSON Spec + Schema   → spec/* (a criar)
+[x] Firmware             → firmware/* (a criar)
+[x] Testes               → tests/* (a criar)
 [ ] Validacao            → fecha o V-model
 ```
 
