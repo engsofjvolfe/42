@@ -22,6 +22,11 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `hardware/10_cablagem.md` v0.1.0 → v0.1.1: atualiza `depende_de` — `09_conexoes.md` v0.1.0 → v0.2.0
 - `hardware/11_montagem.md` v0.1.0 → v0.2.0: adiciona nota em `#instalacao-devkit` declarando ausência de etapa de instalação do AMS1117; atualiza `depende_de` (08 v0.2.0, 09 v0.2.0, 10 v0.1.1)
 
+### Corrigido
+- `hardware/09_conexoes.md` v0.2.0 → v0.2.1: corrige sintaxe Mermaid em `#visao-geral` — labels de aresta com parênteses envolvidos em aspas (`|"Piezo(+)"|`); sem aspas o `(` era interpretado como início de nó stadium
+- `hardware/10_cablagem.md` v0.1.1 → v0.1.2: atualiza `depende_de` — `09_conexoes.md` v0.2.0 → v0.2.1 (cascata PATCH)
+- `hardware/11_montagem.md` v0.2.0 → v0.2.1: atualiza `depende_de` — `10_cablagem.md` v0.1.1 → v0.1.2 (cascata PATCH)
+
 ---
 
 ## [0.3.0] — 2026-06-28

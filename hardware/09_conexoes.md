@@ -1,6 +1,6 @@
 ---
 documento:    09_conexoes.md
-versão:       0.2.0
+versão:       0.2.1
 status:       APROVADO
 data:         2026-06-26
 depende_de:
@@ -25,7 +25,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 09_conexoes.md |
-| Versão | 0.2.0 |
+| Versão | 0.2.1 |
 | Status | APROVADO |
 | Escopo | Conexões elétricas completas — alimentação, sensores, LEDs, shield |
 
@@ -70,10 +70,10 @@ flowchart TD
     RAIL33 -->|GPIO32| PROT3
     RAIL33 -->|GPIO33| PROT4
 
-    PROT1 -->|Piezo(+)| PZ1["Piezo Laranja"]
-    PROT2 -->|Piezo(+)| PZ2["Piezo Azul"]
-    PROT3 -->|Piezo(+)| PZ3["Piezo Amarelo"]
-    PROT4 -->|Piezo(+)| PZ4["Piezo Roxo"]
+    PROT1 -->|"Piezo(+)"| PZ1["Piezo Laranja"]
+    PROT2 -->|"Piezo(+)"| PZ2["Piezo Azul"]
+    PROT3 -->|"Piezo(+)"| PZ3["Piezo Amarelo"]
+    PROT4 -->|"Piezo(+)"| PZ4["Piezo Roxo"]
 
     RAIL33 -->|"GPIO5 → R300Ω"| LED0["WS2812B\nLED[0] Esquerdo"]
     LED0 -->|DOUT→DIN| LED1["WS2812B\nLED[1] Central"]
@@ -176,6 +176,7 @@ R300Ω em série na linha de dados: protege GPIO5 e atenua reflexões no cabo.
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero com âncoras, _PADRAO v0.1.0 | 10, 11 |
 | 0.2.0 | 2026-06-30 | #visao-geral | Adiciona nota: AMS1117-3.3 é regulador onboard do DevKit (E01), não componente externo; atualiza depende_de (02 v0.1.1, 03 v0.1.1, 05 v0.2.0, 08 v0.2.0) | 10, 11 [PATCH depende_de] |
+| 0.2.1 | 2026-07-01 | #visao-geral | Corrige sintaxe Mermaid: labels de aresta com parênteses envolvidos em aspas (`|"Piezo(+)"|`) | 10, 11 [PATCH depende_de] |
 
 ---
 
