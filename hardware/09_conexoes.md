@@ -1,16 +1,16 @@
 ---
 documento:    09_conexoes.md
-versão:       0.2.2
+versão:       0.2.3
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0           [BLOQUEADOR]
   - 00_conceito.md v0.1.0       [BLOQUEADOR]
-  - 01_arquitetura.md v0.2.0    [BLOQUEADOR]
-  - 02_sensor_impacto.md v0.1.2 [BLOQUEADOR]
-  - 03_saida_visual.md v0.1.2   [BLOQUEADOR]
-  - 05_alimentacao.md v0.2.1    [BLOQUEADOR]
-  - 08_bom.md v0.2.1            [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.1    [BLOQUEADOR]
+  - 02_sensor_impacto.md v0.1.3 [BLOQUEADOR]
+  - 03_saida_visual.md v0.1.3   [BLOQUEADOR]
+  - 05_alimentacao.md v0.2.2    [BLOQUEADOR]
+  - 08_bom.md v0.2.2            [BLOQUEADOR]
 impacta:
   - 10_cablagem.md              [OBRIGATÓRIO]
   - 11_montagem.md              [OBRIGATÓRIO]
@@ -52,8 +52,8 @@ flowchart TD
         AMS["AMS1117-3.3\nonboard"]
         ESP["ESP32-WROOM-32U"]
         RAIL33["Rail 3.3V"]
-        LM -->|"5V → VIN"| SHIELD
-        SHIELD -->|"VIN → AMS1117"| AMS
+        LM -->|"5V → pino 5V"| SHIELD
+        SHIELD -->|"pino 5V → AMS1117"| AMS
         AMS --> RAIL33
         RAIL33 --> ESP
     end
@@ -80,7 +80,7 @@ flowchart TD
     LED1 -->|DOUT→DIN| LED2["WS2812B\nLED[2] Direito"]
 ```
 
-**Nota sobre o AMS1117-3.3:** o nó representado no diagrama acima é o regulador linear integrado ao ESP32 DevKit (E01) — não é um componente externo. Não consta no BOM e não há etapa de instalação: o AMS1117 já está soldado na placa do DevKit. Ao encaixar o DevKit no shield e alimentar VIN com 5V, o rail 3.3V é produzido automaticamente. [VER: 05_alimentacao.md#cadeia-alimentacao]
+**Nota sobre o AMS1117-3.3:** o nó representado no diagrama acima é o regulador linear integrado ao ESP32 DevKit (E01) — não é um componente externo. Não consta no BOM e não há etapa de instalação: o AMS1117 já está soldado na placa do DevKit. Ao encaixar o DevKitC V4 no shield e alimentar o pino **5V** com 5V, o rail 3.3V é produzido automaticamente. [VER: 05_alimentacao.md#cadeia-alimentacao]
 
 ---
 
@@ -90,7 +90,7 @@ flowchart TD
 Fonte 12V ──(soldado)──► LM2596 OUT+ ──► Barramento 5V (+)
                           LM2596 OUT− ──► Barramento 5V (−)
 
-Barramento 5V (+) ──► Shield VIN ──► ESP32 DevKit VIN
+Barramento 5V (+) ──► Shield pino 5V ──► ESP32 DevKitC V4 pino 5V
                                       │
                                       ├──► AMS1117-3.3 (onboard)
                                       │         │
@@ -113,7 +113,7 @@ WS2812B VDD:  10μF/16V + 100nF/50V (por LED) — [VER: 05_alimentacao.md#decoup
 
 | Pino Shield | Sinal | Destino | Referência |
 |---|---|---|---|
-| VIN | 5V entrada | Barramento LM2596 saída | [VER: 05_alimentacao.md#conexao-fisica] |
+| 5V (rótulo no DevKitC V4) | 5V entrada | Barramento LM2596 saída | [VER: 05_alimentacao.md#conexao-fisica] |
 | GND | GND | Barramento GND | — |
 | GPIO 34 | ADC1 — Laranja | Perfboard saída Zona 1 | [VER: 01_arquitetura.md#mapeamento-gpios] |
 | GPIO 35 | ADC1 — Azul | Perfboard saída Zona 2 | [VER: 01_arquitetura.md#mapeamento-gpios] |
@@ -161,7 +161,7 @@ R300Ω em série na linha de dados: protege GPIO5 e atenua reflexões no cabo.
 
 | # | Teste | Condição de aprovação |
 |---|---|---|
-| CA-09-01 | Continuidade alimentação | VIN shield → saída AMS1117: 3.3V ± 5% sem ESP32 conectado |
+| CA-09-01 | Continuidade alimentação | Pino 5V shield → saída AMS1117: 3.3V ± 5% sem ESP32 conectado |
 | CA-09-02 | Isolamento 12V→5V | Sem curto entre entrada e saída LM2596 |
 | CA-09-03 | Tensão GPIO em repouso | Todos os GPIOs de piezo leem 0V em repouso |
 | CA-09-04 | Proteção Zener | GPIO não ultrapassa 3.3V com impacto forte |
@@ -178,6 +178,7 @@ R300Ω em série na linha de dados: protege GPIO5 e atenua reflexões no cabo.
 | 0.2.0 | 2026-06-30 | #visao-geral | Adiciona nota: AMS1117-3.3 é regulador onboard do DevKit (E01), não componente externo; atualiza depende_de (02 v0.1.1, 03 v0.1.1, 05 v0.2.0, 08 v0.2.0) | 10, 11 [PATCH depende_de] |
 | 0.2.1 | 2026-07-01 | #visao-geral | Corrige sintaxe Mermaid: labels de aresta com parênteses envolvidos em aspas (`|"Piezo(+)"|`) | 10, 11 [PATCH depende_de] |
 | 0.2.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01 v0.1.0→v0.2.0, 02 v0.1.1→v0.1.2, 03 v0.1.1→v0.1.2, 05 v0.2.0→v0.2.1, 08 v0.2.0→v0.2.1 (bump MINOR retroativo de 01) | 10, 11 |
+| 0.2.3 | 2026-07-01 | #visao-geral, #cadeia-alimentacao-ascii, #mapeamento-shield, #criterios-aceitacao | Substitui rótulo "VIN" por "pino 5V" / "5V" — DevKitC V4 rotula o pino de entrada como "5V"; atualiza depende_de: 01 v0.2.1, 02 v0.1.3, 03 v0.1.3, 05 v0.2.2, 08 v0.2.2 | 10, 11 |
 
 ---
 
@@ -187,11 +188,11 @@ R300Ω em série na linha de dados: protege GPIO5 e atenua reflexões no cabo.
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #componentes-fisicos |
-| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #hardware, #mapeamento-gpios |
-| Pai | 02_sensor_impacto.md | 0.1.2 | BLOQUEADOR | #esquema-protecao, #mapeamento-gpios-sensor |
-| Pai | 03_saida_visual.md | 0.1.2 | BLOQUEADOR | #mapeamento-led, #decoupling-led |
-| Pai | 05_alimentacao.md | 0.2.1 | BLOQUEADOR | #cadeia-alimentacao, #decoupling, #conexao-fisica |
-| Pai | 08_bom.md | 0.2.1 | BLOQUEADOR | #eletronicos-ativos, #passivos |
+| Pai | 01_arquitetura.md | 0.2.1 | BLOQUEADOR | #hardware, #mapeamento-gpios |
+| Pai | 02_sensor_impacto.md | 0.1.3 | BLOQUEADOR | #esquema-protecao, #mapeamento-gpios-sensor |
+| Pai | 03_saida_visual.md | 0.1.3 | BLOQUEADOR | #mapeamento-led, #decoupling-led |
+| Pai | 05_alimentacao.md | 0.2.2 | BLOQUEADOR | #cadeia-alimentacao, #decoupling, #conexao-fisica |
+| Pai | 08_bom.md | 0.2.2 | BLOQUEADOR | #eletronicos-ativos, #passivos |
 | Filho | 10_cablagem.md | — | OBRIGATÓRIO | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | todo este documento |
 ---
