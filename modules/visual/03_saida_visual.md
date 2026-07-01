@@ -1,13 +1,13 @@
 ---
 documento:    03_saida_visual.md
-versão:       0.1.2
+versão:       0.1.3
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.2.0 [BLOQUEADOR]
-  - 05_alimentacao.md v0.2.1 [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.1 [BLOQUEADOR]
+  - 05_alimentacao.md v0.2.2 [BLOQUEADOR]
 impacta:
   - 08_bom.md                [OBRIGATÓRIO]
   - 09_conexoes.md           [OBRIGATÓRIO]
@@ -150,6 +150,7 @@ Especificação no BOM: [VER: 08_bom.md#passivos]
 | 0.1.0 | 2026-06-26 | — | Criação — reescrita do zero com âncoras, _PADRAO v0.1.0, derivada de 00_conceito v0.1.0, 01_arquitetura v0.1.0, 05_alimentacao v0.1.0 | 04, 08, 09 |
 | 0.1.1 | 2026-06-30 | depende_de | Atualiza referência 05_alimentacao.md de v0.1.0 para v0.2.0 (nota AMS1117 onboard) | — |
 | 0.1.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo), 05_alimentacao.md v0.2.0→v0.2.1 | — |
+| 0.1.3 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4), 05_alimentacao.md v0.2.1→v0.2.2 (VIN→pino 5V) | — |
 
 ---
 
@@ -159,8 +160,8 @@ Especificação no BOM: [VER: 08_bom.md#passivos]
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #indicadores-led, #modos-operacao, #zonas-impacto, #feedback, #estado-boot |
-| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #mod-led, #mapeamento-gpios, #interface-jogo-led, #stack-tecnologico, #requisitos-nao-funcionais |
-| Pai | 05_alimentacao.md | 0.2.1 | BLOQUEADOR | #restricao-led, #decoupling |
+| Pai | 01_arquitetura.md | 0.2.1 | BLOQUEADOR | #mod-led, #mapeamento-gpios, #interface-jogo-led, #stack-tecnologico, #requisitos-nao-funcionais |
+| Pai | 05_alimentacao.md | 0.2.2 | BLOQUEADOR | #restricao-led, #decoupling |
 | Filho | 08_bom.md | — | OBRIGATÓRIO | #componente-led, #decoupling-led |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #mapeamento-led, #decoupling-led |
 ---

@@ -1,12 +1,12 @@
 ---
 documento:    07_interface_pedagogo.md
-versão:       0.1.1
+versão:       0.1.2
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.2.0 [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.1 [BLOQUEADOR]
 impacta: []
 ---
 
@@ -303,6 +303,7 @@ function exportarCSV() {
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — derivada de 00_conceito v0.1.0 e 01_arquitetura v0.1.0 com âncoras e _PADRAO v0.1.0 | — |
 | 0.1.1 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo), 04_logica_jogo.md v0.1.0→v0.1.1 | — |
+| 0.1.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4), 04_logica_jogo.md v0.1.1→v0.1.2 | — |
 
 ---
 
@@ -312,8 +313,8 @@ function exportarCSV() {
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #conectividade, #configuracao-pre-sessao, #desconexao, #feedback-acerto, #feedback-erro, #feedback-fim-sessao, #armazenamento, #exportacao, #responsabilidade-dados |
-| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #mod-wifi, #interface-jogo-wifi, #stack-tecnologico, #requisitos-nao-funcionais |
-| Pai | 04_logica_jogo.md | 0.1.1 | CONDICIONAL: #gestao-score | #gestao-score |
+| Pai | 01_arquitetura.md | 0.2.1 | BLOQUEADOR | #mod-wifi, #interface-jogo-wifi, #stack-tecnologico, #requisitos-nao-funcionais |
+| Pai | 04_logica_jogo.md | 0.1.2 | CONDICIONAL: #gestao-score | #gestao-score |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.

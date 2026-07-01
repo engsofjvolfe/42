@@ -1,12 +1,12 @@
 ---
 documento:    TESTING_STANDARD.md
-versão:       0.1.2
+versão:       0.1.3
 status:       APROVADO
 data:         2026-06-28
 depende_de:
   - _PADRAO.md v0.1.0           [BLOQUEADOR]
-  - CODING_STANDARD.md v0.2.0   [BLOQUEADOR]
-  - 01_arquitetura.md v0.2.0    [BLOQUEADOR]
+  - CODING_STANDARD.md v0.2.1   [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.1    [BLOQUEADOR]
 impacta: firmware/test/ (test_main.cpp de cada modulo — nao sao .md)
 ---
 
@@ -331,6 +331,7 @@ Resultado esperado: todos os testes passam, zero falhas.
 | 0.1.0 | 2026-06-28 | — | Criação: padrão genérico de testes derivados — zero magic numbers, mock declare→define, constantes T_, rastreabilidade de CAs | firmware/test/ |
 | 0.1.1 | 2026-06-28 | 9.1 | Corrige configuração `[env:native]`: adiciona `lib_extra_dirs = src` obrigatório para PlatformIO 6.x; `build_src_filter` sozinho não inclui `src/` em test builds | firmware/platformio.ini |
 | 0.1.2 | 2026-07-01 | depende_de, Rastreabilidade, #identificacao | Atualiza referências: CODING_STANDARD.md v0.1.1→v0.2.0, 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo de 01) | — |
+| 0.1.3 | 2026-07-01 | depende_de | Atualiza referências: CODING_STANDARD.md v0.2.0→v0.2.1, 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4) | — |
 
 ---
 

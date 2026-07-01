@@ -1,12 +1,12 @@
 ---
 documento:    WEB_STANDARD.md
-versão:       0.1.1
+versão:       0.1.2
 status:       APROVADO
 data:         2026-06-28
 depende_de:
   - _PADRAO.md v0.1.0                [BLOQUEADOR]
-  - 01_arquitetura.md v0.2.0         [BLOQUEADOR]
-  - 07_interface_pedagogo.md v0.1.1  [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.1         [BLOQUEADOR]
+  - 07_interface_pedagogo.md v0.1.2  [BLOQUEADOR]
 impacta:
   - firmware/src/interface/ (interface.cpp — arquivo HTML/CSS/JS embutido)
 ---
@@ -478,6 +478,7 @@ Verificação manual no browser após flash do firmware.
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-28 | — | Criação: padrão de UI web embutida — MD3 offline, zero magic numbers JS/CSS, estrutura HTML, máquina de estados, nomenclatura de funções | firmware/src/interface/interface.cpp |
 | 0.1.1 | 2026-07-01 | depende_de, Rastreabilidade, #identificacao | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo), 07_interface_pedagogo.md v0.1.0→v0.1.1 | — |
+| 0.1.2 | 2026-07-01 | depende_de | Atualiza referências: 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4), 07_interface_pedagogo.md v0.1.1→v0.1.2 | — |
 
 ---
 

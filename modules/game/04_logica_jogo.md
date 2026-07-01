@@ -1,12 +1,12 @@
 ---
 documento:    04_logica_jogo.md
-versão:       0.1.1
+versão:       0.1.2
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.2.0 [BLOQUEADOR]
+  - 01_arquitetura.md v0.2.1 [BLOQUEADOR]
 impacta:
   - 07_interface_pedagogo.md [CONDICIONAL: #gestao-score]
 ---
@@ -298,6 +298,7 @@ O mapeamento é 1:1 por design — cada cor identifica unicamente uma zona físi
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — derivada de 00_conceito v0.1.0 e 01_arquitetura v0.1.0 com âncoras e _PADRAO v0.1.0 | 07_interface_pedagogo.md |
 | 0.1.1 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo) | 07_interface_pedagogo.md |
+| 0.1.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4) | 07_interface_pedagogo.md |
 
 ---
 
@@ -307,7 +308,7 @@ O mapeamento é 1:1 por design — cada cor identifica unicamente uma zona físi
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #glossario, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #aleatoriedade, #timings, #intervalo-interacoes, #contagem-score, #armazenamento |
-| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #mod-jogo, #interfaces-modulos, #diagrama-estados, #requisitos-nao-funcionais |
+| Pai | 01_arquitetura.md | 0.2.1 | BLOQUEADOR | #mod-jogo, #interfaces-modulos, #diagrama-estados, #requisitos-nao-funcionais |
 | Filho | 07_interface_pedagogo.md | — | CONDICIONAL: #gestao-score | #gestao-score |
 ---
 
