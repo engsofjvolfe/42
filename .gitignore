@@ -14,6 +14,7 @@ venv/
 # PlatformIO
 firmware/.pio/
 firmware/.pioenvs/
+firmware/diag/.pio/
 
 # Credenciais (nunca commitar)
 firmware/include/credentials.h
