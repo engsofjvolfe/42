@@ -27,13 +27,13 @@ Branch ativa: develop (fix/ca-07-01 MERGEADA em develop via fast-forward em
 2026-07-02 — commits 34007bd build(ci) + 9b8b2de chore/SESSION_STATE; fecha o
 ciclo fix→re-teste do CA-07-01 na ETAPA 8. Os 14 commits da investigação
 antiga seguem preservados só na tag backup/fix-ca-07-01-abandonado-20260702)
-Próxima ação: DESBLOQUEADO em 2026-07-02 — causa raiz do boot loop encontrada
-e corrigida FISICAMENTE, sem osciloscópio (ver "Investigação boot loop CA-07-01
-— RESOLVIDA" abaixo). Pendências: (1) diagnosticar LEDs que não acendem
-(MOD_LED nunca comprovado em hardware real — ver seção); (2) retomar validação
-CA-07-01/ETAPA 8; (3) remover artefatos temporários de diagnóstico;
-(4) cascata de documentação de hardware (procedimento de verificação de
-bornes/serigrafia) quando autorizada.
+Próxima ação: gravar o firmware real (`pio run -d firmware -e esp32dev -t
+upload`) e verificar de ponta a ponta: animação de boot nos 3 LEDs, AP BMI,
+estímulo do jogo. Depois: validação formal dos CAs da ETAPA 8 (checklist
+PASSOU/FALHOU por CA). Pendências físicas: marcar o borne falso-GND (CMD)
+como proibido; auditar TODOS os rótulos do shield contra a serigrafia do
+DevKitC. Pendência de docs (cascata quando autorizada): rotulagem de bornes +
+fragilidade dos clipes da cadeia LED → 09_conexoes/10_cablagem/11_montagem.
 
 ---
 
@@ -99,27 +99,34 @@ Osciloscópio não é mais necessário para este caso.
 - PENDENTE físico: marcar o borne falso-GND (CMD) como proibido; auditar TODOS
   os rótulos do shield contra a serigrafia do DevKitC, pino a pino.
 
-### Problema novo em aberto: LEDs não acendem (2026-07-02)
+### LEDs não acendiam — RESOLVIDO (2026-07-02)
 
-- Boot, WiFi e jogo funcionam; LEDs jamais acenderam nesta sessão (animação de
-  boot não visível). Verificado: caminho do dado íntegro GPIO5 → borne →
-  resistor série (medido 299 Ω) → clipe → DIN do LED1; VDD presente nos 3 LEDs;
-  LEDs acenderam em setups antigos. MOD_LED nunca foi comprovado vivo em
-  hardware com este firmware (14 testes rodaram contra mock do FastLED).
-- Sketch de diagnóstico `ledtest` foi compilado mas NUNCA EXECUTADO na placa:
-  o upload gravou o ambiente errado (provável `pio run -t upload` sem
-  `-e ledtest`, que grava esp32dev primeiro — evidência: AP BMI no ar e serial
-  sem nenhuma linha "LED_HW_TEST:"). Próxima ação: regravar com
-  `pio run -e ledtest -t upload` (+ botões BOOT/EN se o auto-download falhar,
-  que é recorrente nesta placa).
+- Causa: contato marginal dos CLIPES da cadeia WS2812B. Sem nenhuma mudança
+  de código, o manuseio/re-assentamento dos conectores fez LED1 e LED2
+  acenderem; o trecho LED2→LED3 resolvido re-assentando o clipe. 3/3 LEDs
+  funcionando com o sketch de diagnóstico (ciclo de cores completo).
+- Antes disso, verificado: caminho do dado íntegro GPIO5 → borne → resistor
+  série (medido 299 Ω) → clipe → DIN do LED1; VDD presente nos 3 LEDs.
+  MOD_LED comprovado vivo em hardware pela primeira vez (14 testes anteriores
+  rodavam contra mock do FastLED).
+- Pendência de projeto (cascata futura): conexão por clipe é frágil para o
+  contexto de uso (instrumento para crianças de 5 anos, impactos constantes)
+  — endereçar em 10_cablagem.md/11_montagem.md quando a cascata for
+  autorizada.
+- Nota de procedimento: um primeiro upload do sketch gravou o ambiente errado
+  (`pio run -t upload` sem `-e ledtest` grava esp32dev primeiro); o
+  diagnóstico só começou de fato com `pio run -e ledtest -t upload`.
 
-### Artefatos temporários desta sessão (remover após diagnóstico do LED)
+### Kit de diagnóstico de bancada — consolidado em firmware/diag/ (2026-07-02)
 
-- `firmware/src/led_hw_test.cpp` — sketch de diagnóstico (todo guardado por
-  `#ifdef LED_HW_TEST`; não compila nos ambientes normais).
-- `[env:ledtest]` em `firmware/platformio.ini` — ambiente do sketch.
-- `firmware/platformio.ini` upload_port COM8→COM9 — correção real (porta atual
-  da placa); MANTER.
+Os artefatos temporários da investigação foram consolidados em
+`firmware/diag/` — projeto PlatformIO SEPARADO com README próprio (uso,
+truque BOOT/EN, lições de hardware). Fora do V-model (nada deriva de spec) e
+fora dos builds normais do firmware. Conteúdo: sketch de teste da cadeia
+WS2812B (onda quadrada p/ multímetro + ciclo de cores) e `monitor_serial.py`
+(timestamps por linha + reset via RTS). Os temporários do projeto principal
+(`firmware/src/led_hw_test.cpp` e `[env:ledtest]`, nunca commitados) foram
+removidos — projeto principal de volta ao estado limpo.
 
 ---
 
