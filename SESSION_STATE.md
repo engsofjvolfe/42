@@ -3,9 +3,9 @@
 # Atualizar ao encerrar cada sessão. Enviar junto com arquivo2 ao retomar.
 ---
 
-CONTEXTO: continuando projeto Instrumento Ludico-Pedagogico ESP32 — 2026-06-28
+CONTEXTO: continuando projeto Instrumento Ludico-Pedagogico ESP32 — 2026-07-02
 Processo: V-Model (ISO 26262 / IEC 61508 / IEC 62304)
-Estado verificado em 2026-06-28: run_all.py → TODOS OS CHECKS PASSARAM (47 constantes, 6 seções, 4 _config.h em sync)
+Estado verificado em 2026-07-02: run_all.py → TODOS OS CHECKS PASSARAM (47 constantes, 6 seções, 4 _config.h em sync)
 
 Camada atual: VALIDAÇÃO
 Fase V-Model atual: ETAPA 8 — Validação com hardware físico
@@ -23,8 +23,182 @@ Fases concluídas e aprovadas:
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: develop (HEAD: ad0dea3 — tag v0.3.0)
-Próxima ação: ETAPA 8 — montar hardware e executar CAs com hardware físico
+Branch ativa: fix/ca-07-01 (HEAD: 7fe6738 — resetada para o ponto de divergência
+de develop; TODOS os 14 commits da investigação de boot loop abaixo foram
+abandonados e estão preservados só na tag backup/fix-ca-07-01-abandonado-20260702)
+Próxima ação: DESBLOQUEADO em 2026-07-02 — causa raiz do boot loop encontrada
+e corrigida FISICAMENTE, sem osciloscópio (ver "Investigação boot loop CA-07-01
+— RESOLVIDA" abaixo). Pendências: (1) diagnosticar LEDs que não acendem
+(MOD_LED nunca comprovado em hardware real — ver seção); (2) retomar validação
+CA-07-01/ETAPA 8; (3) remover artefatos temporários de diagnóstico;
+(4) cascata de documentação de hardware (procedimento de verificação de
+bornes/serigrafia) quando autorizada.
+
+---
+
+## Investigação boot loop CA-07-01 — RESOLVIDA (2026-07-02)
+
+**CAUSA RAIZ ENCONTRADA E CORRIGIDA FISICAMENTE — sem osciloscópio.**
+
+### Causa raiz
+
+A serigrafia do shield marca "GND" num borne cuja posição no soquete corresponde
+ao pino **CMD (GPIO11)** do DevKitC — o **chip select da flash SPI** interna do
+WROOM-32 (posição entre SD3 e 5V na coluna). O fio do barramento de terra de
+TODO o sistema (piezos, LEDs, fonte) e o negativo do eletrolítico de 1000 µF do
+5V estavam parafusados nesse borne: o "terra" do sistema estava amarrado na
+linha CS da flash.
+
+Mecanismo: com o CS carregado, a flash não responde — toda leitura devolve 0xFF
+(`invalid header: 0xffffffff`, `flash read err, 988`). Contato marginal explica
+a intermitência histórica: quando a carga no CS era fraca, a placa bootava e a
+flash só falhava sob o tráfego pesado do init do WiFi (leitura de calibração
+RF) — produzindo o `TG1WDT_SYS_RESET` registrado como sintoma original.
+Confirmado por inspeção: serigrafia "GND" do shield vs serigrafia "CMD" do
+DevKitC na mesma posição. CS em repouso é dirigido em nível alto (3.3V), o que
+explica as medições anômalas (3V3↔borne "GND" = <1V; 5V↔borne ≈ 2V).
+
+### Cadeia de evidência (2026-07-02 — multímetro + monitor serial, sem osciloscópio)
+
+1. Firmware íntegro (HEAD 7fe6738, zero chamadas `disable*WDT` em src/) na
+   bancada: boot limpo, AP BMI no ar.
+2. No shield (configuração completa): ROM bootloader NÃO LÊ a flash desde o
+   primeiro boot (`rst:0x1 POWERON_RESET` → `invalid header` imediato) — falha
+   PRÉ-firmware. WiFi/NVS/firmware nunca foram a causa. Leituras parciais
+   morriam no meio da carga (`load:0x3fff0030,len:1184` OK →
+   `load:0xffffff0f,len:-1`).
+3. Mesma imagem de flash, shield pelado (zero fios/componentes nos bornes):
+   boot limpo + AP no ar → a flash NUNCA esteve corrompida; soquete e PCB do
+   shield inocentados.
+4. Bisseção: LM2596+fonte removidos → crash continuou (eliminados). Só
+   capacitores nos bornes → crash voltou. Negativo do eletrolítico do 5V movido
+   do borne falso-GND para GND verdadeiro → boot limpo. Remontagem completa
+   passo a passo (terra → piezos → dado do LED → LM2596 + fonte 12V) → boot
+   limpo em TODOS os passos, AP no ar, modo iniciado via celular.
+
+### Fechamento das 20 hipóteses
+
+Todas as hipóteses da tabela histórica (mantida abaixo como registro) são
+explicadas pela causa raiz: os testes por jumper fora do shield (12, 15) eram
+limpos porque usavam o GND real da placa; tudo que passava pelo barramento de
+terra do shield herdava o CS da flash como "terra". A pista aberta "rodar sem
+disable*WDT" foi coberta pelo item 1 (HEAD não tem nenhuma chamada).
+Osciloscópio não é mais necessário para este caso.
+
+### Correções físicas aplicadas (hardware; cascata de docs ainda NÃO executada)
+
+- Fio do barramento de terra movido para borne GND verdadeiro (entre GPIO12 e
+  GPIO13; continuidade com pino GND do DevKitC verificada antes do aperto).
+- Negativo do eletrolítico 1000 µF do 5V movido para GND verdadeiro.
+- Capacitor removido do pino de DADOS (GPIO5) — estava alterando o strapping
+  (`boot:0x12` em vez de `0x13`); decoupling correto é no VDD da cadeia, junto
+  ao primeiro LED, quando houver espaço físico.
+- VDD da cadeia WS2812B de volta a 3V3 conforme decisão de spec (mudança para
+  5V do teste 11 revertida; em 5V o dado de 3.3V viola VIH ≥ 0.7·VDD).
+- PENDENTE físico: marcar o borne falso-GND (CMD) como proibido; auditar TODOS
+  os rótulos do shield contra a serigrafia do DevKitC, pino a pino.
+
+### Problema novo em aberto: LEDs não acendem (2026-07-02)
+
+- Boot, WiFi e jogo funcionam; LEDs jamais acenderam nesta sessão (animação de
+  boot não visível). Verificado: caminho do dado íntegro GPIO5 → borne →
+  resistor série (medido 299 Ω) → clipe → DIN do LED1; VDD presente nos 3 LEDs;
+  LEDs acenderam em setups antigos. MOD_LED nunca foi comprovado vivo em
+  hardware com este firmware (14 testes rodaram contra mock do FastLED).
+- Sketch de diagnóstico `ledtest` foi compilado mas NUNCA EXECUTADO na placa:
+  o upload gravou o ambiente errado (provável `pio run -t upload` sem
+  `-e ledtest`, que grava esp32dev primeiro — evidência: AP BMI no ar e serial
+  sem nenhuma linha "LED_HW_TEST:"). Próxima ação: regravar com
+  `pio run -e ledtest -t upload` (+ botões BOOT/EN se o auto-download falhar,
+  que é recorrente nesta placa).
+
+### Artefatos temporários desta sessão (remover após diagnóstico do LED)
+
+- `firmware/src/led_hw_test.cpp` — sketch de diagnóstico (todo guardado por
+  `#ifdef LED_HW_TEST`; não compila nos ambientes normais).
+- `[env:ledtest]` em `firmware/platformio.ini` — ambiente do sketch.
+- `firmware/platformio.ini` upload_port COM8→COM9 — correção real (porta atual
+  da placa); MANTER.
+
+---
+
+### Histórico da investigação original (registro — tudo explicado pela causa raiz)
+
+### Sintoma
+
+Firmware funciona indefinidamente fora do shield (USB, bancada). Ao conectar
+o DevKitC ao shield — mesmo sem energizar a fonte externa 12V/LM2596, só USB
+já é suficiente — trava imediatamente:
+
+```
+[XX][E][esp32-hal-misc.c:143] disableCore1WDT(): Failed to remove Core 1 IDLE task from WDT
+rst:0x8 (TG1WDT_SYS_RESET)  [as vezes rst:0x7 TG0WDT_SYS_RESET nos ciclos seguintes]
+invalid header: 0xffffffff  (repete, cascateando em "flash read err, 988")
+```
+
+`TG1WDT_SYS_RESET` = Interrupt Watchdog (Timer Group 1) — dispara quando
+interrupções ficam desabilitadas tempo demais em algum core. A causa mais
+provável é uma operação de flash/NVS do driver WiFi (que exige interrupções
+desabilitadas nos dois cores) sendo interrompida no meio, corrompendo a
+imagem — daí o `invalid header` e a cascata de resets subsequentes.
+
+O `disableCore1WDT(): Failed to remove...` que aparece em TODO boot (inclusive
+os que funcionam) é um aviso benigno — a idle task do Core 1 provavelmente
+nunca esteve inscrita no TWDT nesta config; não é a causa.
+
+### Hipóteses testadas e ELIMINADAS (com evidência, não suposição)
+
+| # | Hipótese | Teste | Resultado |
+|---|---|---|---|
+| 1 | Escrita NVS de credenciais WiFi durante init | `WiFi.persistent(false)` | Sem mudança |
+| 2 | Task WDT (TG0) com timeout curto | `esp_task_wdt_init(30s)` | TG0 parou de disparar primeiro, mas TG1 continuou — não resolve |
+| 3 | Brownout/subtensão real no pico RF | Medição direta com multímetro no instante do crash, múltiplas vezes | Tensão nunca cai; chegou a medir 5.06V (fora de spec alto, não baixo) |
+| 4 | Capacitor insuficiente no 5V | 1000μF no pino 5V do DevKitC | Sem mudança |
+| 5 | Capacitor insuficiente no 3V3 | 1000μF no pino 3V3 (além do 5V) | Sem mudança |
+| 6 | LM2596 descalibrado | Recalibrado de 5.06V para 5.00V exato | Sem mudança |
+| 7 | Fonte externa fraca | LM2596/12V ligado direto no DevKitC, testado sozinho fora do shield | Funciona limpo — fonte não é o gargalo |
+| 8 | GPIO0 tocado pelo shield (entrada em download mode) | Verificado — foi botão físico pressionado manualmente | Descartado |
+| 9 | GPIO12 (strapping, tensão da flash) em conflito | Conferido no mapeamento de GPIOs do projeto (34,35,32,33,5) | Não usado, descartado |
+| 10 | Curto GPIO5↔GPIO34 | Multímetro em **resistência** mostrou valor finito | **Falso alarme** — resistência sempre mostra algo finito via diodos ESD internos de qualquer GPIO; **continuidade** (teste correto) não apitou. Sem curto real |
+| 11 | Rail de alimentação do LED (3.3V, abaixo do spec do WS2812B) vs 5V | VDD do LED movido de 3V3 para 5V | Sem mudança |
+| 12 | Cadeia de 3 LEDs (capacitância/volume) vs 1 LED | 1 LED avulso por jumper fora do shield: limpo. 3 LEDs em cadeia por jumper fora do shield: limpo | Nenhum reproduziu fora do shield |
+| 13 | Borne de parafuso do shield com mau contato | Continuidade + tensão testadas ponta a ponta, aperto cuidadoso | Conexão boa, não é isso |
+| 14 | GPIO5 é pino de strapping, soquete do shield com contato ruim nesse pino específico | Dado do LED movido de GPIO5 para GPIO18 (sem strapping, sem restrição) | Travou igual — não é o pino específico |
+| 15 | LED em si (qualquer rail, qualquer pino) é necessário pro crash | Cadeia de LED **removida completamente** (nem dado nem energia conectados) — só sensor+game+interface | Travou igual — LED nunca foi a causa |
+| 16 | `sensorInit()` (ADC1 real nos piezos, fiação real do shield) sozinho | `sensorInit()` + `interfaceInit()`, sem visual/game | Travou igual |
+| 17 | Ordem/tempo de chamada — WiFi chamado tarde demais | `interfaceInit()` sozinho + `delay(50)` antes: travou. `interfaceInit()` chamado PRIMEIRO no firmware completo (sensor/visual/game depois): travou igual, no mesmo timestamp que sempre foi limpo quando isolado | Não é sobre ordem — binário maior (mesmo não executado ainda) muda a duração da seção crítica dentro do WiFi init |
+| 18 | Biblioteca Arduino `WiFi.h` vs `esp_wifi` puro do IDF | Reescrito com `esp_wifi_init/set_mode/set_config/start`, replicando config de IP do netif, handlers de evento, e a mitigação de brownout (DM-05) do interfaceInit() original | Travou igual — não é a biblioteca |
+| 19 | Placa física específica com defeito | Testado em 2 unidades diferentes de DevKitC/shield | Mesmo resultado nas duas |
+| 20 | Flash suja de crashes anteriores confundindo os testes | Usuário confirmou: faz `erase_flash` completo antes de CADA upload, sempre | Não é confusão de estado — resultados são reais |
+
+### Pistas em aberto da época (OBSOLETAS — supersedidas pela causa raiz)
+
+Osciloscópio no 3V3, teste sem `disable*WDT` e sonda SPI ficaram
+desnecessários: a falha era o CS da flash amarrado ao "terra" do sistema via
+borne com serigrafia errada. Ironia registrada: a pista "sonda direta nas
+linhas SPI da flash (CS/CLK)" apontava literalmente para o ponto defeituoso.
+
+### Estado do código
+
+Branch `fix/ca-07-01` resetada para `7fe6738` (ponto de divergência de
+`develop`, antes de qualquer alteração desta investigação). Todo o histórico
+anterior (commits reais + toda a exploração desta sessão) preservado na tag
+`backup/fix-ca-07-01-abandonado-20260702` — usar `git show
+backup/fix-ca-07-01-abandonado-20260702` ou `git log
+backup/fix-ca-07-01-abandonado-20260702` pra recuperar qualquer coisa
+específica, incluindo os commits da sessão anterior (6h, antes desta) que já
+tinham tentado: `WiFi.setTxPower` limitado a 8.5dBm, brownout desabilitado
+durante `WiFi.mode()`, `board_build.partitions = no_ota.csv`, `disableLoopWDT()`
+antes de `interfaceInit()` — nenhuma dessas resolveu o problema de fato (o
+sintoma só sumia às vezes por acaso de timing/estado de flash, não por a causa
+raiz estar corrigida — só percebemos isso nesta sessão ao isolar variável por
+variável).
+
+**Antes de retomar**: a causa raiz está corrigida fisicamente. Não
+re-investigar nada desta seção histórica; o trabalho restante está em
+"Problema novo em aberto: LEDs não acendem" e nas pendências do topo.
+
+---
 
 Ordem de implementação dos módulos (ETAPA 7):
   1. MOD_SENSOR  [CONCLUÍDO — feat/sensor] ← commits: a2d2fef, 59b25ea, 9d313ac
