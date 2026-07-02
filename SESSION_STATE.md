@@ -23,9 +23,10 @@ Fases concluídas e aprovadas:
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: fix/ca-07-01 (HEAD: 7fe6738 — resetada para o ponto de divergência
-de develop; TODOS os 14 commits da investigação de boot loop abaixo foram
-abandonados e estão preservados só na tag backup/fix-ca-07-01-abandonado-20260702)
+Branch ativa: develop (fix/ca-07-01 MERGEADA em develop via fast-forward em
+2026-07-02 — commits 34007bd build(ci) + 9b8b2de chore/SESSION_STATE; fecha o
+ciclo fix→re-teste do CA-07-01 na ETAPA 8. Os 14 commits da investigação
+antiga seguem preservados só na tag backup/fix-ca-07-01-abandonado-20260702)
 Próxima ação: DESBLOQUEADO em 2026-07-02 — causa raiz do boot loop encontrada
 e corrigida FISICAMENTE, sem osciloscópio (ver "Investigação boot loop CA-07-01
 — RESOLVIDA" abaixo). Pendências: (1) diagnosticar LEDs que não acendem
