@@ -1,14 +1,14 @@
 ---
 documento:    11_montagem.md
-versão:       0.2.3
+versão:       0.3.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
-  - 08_bom.md v0.2.2         [BLOQUEADOR]
-  - 09_conexoes.md v0.2.3    [BLOQUEADOR]
-  - 10_cablagem.md v0.1.4    [BLOQUEADOR]
+  - 08_bom.md v0.3.0         [BLOQUEADOR]
+  - 09_conexoes.md v0.3.0    [BLOQUEADOR]
+  - 10_cablagem.md v0.2.0    [BLOQUEADOR]
 impacta: []
 ---
 
@@ -21,7 +21,7 @@ impacta: []
 | Campo | Valor |
 |---|---|
 | Documento | 11_montagem.md |
-| Versão | 0.2.2 |
+| Versão | 0.3.0 |
 | Status | APROVADO |
 | Escopo | Montagem física completa — uma unidade do instrumento |
 | Posição na cadeia | Documento final — não tem filhos |
@@ -150,20 +150,26 @@ Verificar espessura ≥ 5mm conforme [VER: 02_sensor_impacto.md#isolamento-zonas
 ### 7.1 Montagem do LM2596 <a id="montagem-lm2596"></a>
 
 1. **Não conectar ESP32 ainda**
-2. Soldar capacitores externos ao módulo conforme [VER: 09_conexoes.md#cadeia-alimentacao-ascii]:
-   - P03 (100μF/25V) na entrada 12V
-   - P04 (470μF/10V) + P06 (100nF/50V) na saída 5V
+2. Conferir capacitores conforme [VER: 09_conexoes.md#cadeia-alimentacao-ascii]:
+   - P03 (100μF/25V) na entrada 12V e P04 (470μF/10V) na saída — já soldados no
+     módulo pré-montado; apenas conferir presença
+   - P06 (100nF/50V) na saída 3.3V — soldar se ausente
 3. Soldar F01 e F02 (soldado fixo) da fonte ao LM2596 IN+ e IN−
 4. Conectar fonte 12V
 
 ### 7.2 Ajuste de tensão <a id="ajuste-tensao"></a>
 
-1. Medir tensão na saída do LM2596 com multímetro
-2. Girar potenciômetro do módulo até medir **5.0V ± 0.1V**
-3. Desconectar fonte antes de continuar
+1. Medir tensão na saída do LM2596 com multímetro — **saída desconectada de
+   qualquer borne** (em vazio)
+2. Girar potenciômetro do módulo até medir **3.30V ± 0.05V**
+3. Travar/marcar o trimpot (esmalte) após o ajuste
+4. Desconectar fonte antes de continuar
+
+**PROIBIDO conectar a saída ao pino 3V3 acima de 3.6V** — máximo absoluto do
+ESP32; excedê-lo destrói o chip sem aviso.
 
 **Critério CA-05-01** — [VER: 05_alimentacao.md#criterios-aceitacao]:
-Saída LM2596 em vazio: 5.0V ± 0.1V. **Não avançar sem aprovação.**
+Saída LM2596 em vazio: 3.30V ± 0.05V. **Não avançar sem aprovação.**
 
 ---
 
@@ -231,25 +237,33 @@ Após cura completa, conforme [VER: 10_cablagem.md#tabela-fios] e [VER: 10_cabla
 
 ## 10. Fase 5 — Conjunto ESP32 + Shield <a id="fase-esp32"></a>
 
-**Objetivo:** ESP32 DevKitC V4 instalado no shield, capacitores do pino 5V soldados, pronto para conectar periféricos.
+**Objetivo:** ESP32 DevKitC V4 instalado no shield, capacitores do pino 3V3 soldados, pronto para conectar periféricos.
 
 ### 10.1 Instalação do DevKit no shield <a id="instalacao-devkit"></a>
 
-> **Nota:** o AMS1117-3.3 está integrado ao DevKit (E01) — não há componente externo a instalar para regulação 3.3V. Ao encaixar o DevKitC V4 no shield e alimentar o pino **5V** com 5V (etapa 10.2), o rail 3.3V fica disponível automaticamente no pino 3V3. [VER: 09_conexoes.md#cadeia-alimentacao-ascii]
+> **Nota:** o rail 3.3V é alimentado DIRETO pelo LM2596 no pino **3V3** —
+> o AMS1117-3.3 onboard do DevKit está fora do caminho de potência de operação
+> ([VER: 05_alimentacao.md#cadeia-alimentacao]) e atua somente na gravação via
+> USB. [VER: 09_conexoes.md#cadeia-alimentacao-ascii]
 
-1. Encaixar ESP32-WROOM-32U (E01) no shield de expansão (E02) — verificar alinhamento dos 38 pinos
-2. Soldar capacitor P05 (10μF/16V) entre o pino 5V e GND do shield
-3. Soldar capacitor P06 (100nF/50V) entre o pino 5V e GND do shield, próximo ao P05
+1. **Executar a verificação de serigrafia do shield ANTES de qualquer conexão**
+   — [VER: 09_conexoes.md#verificacao-serigrafia]: conferir cada rótulo contra
+   a serigrafia do DevKitC, testar continuidade borne↔pino, marcar como
+   PROIBIDOS os bornes da flash (CLK/CMD/SD0–SD3) e o falso-GND (CA-09-07)
+2. Encaixar ESP32-WROOM-32U (E01) no shield de expansão (E02) — verificar alinhamento dos 38 pinos
+3. Soldar capacitor P07 (1000μF/≥10V) entre o pino 3V3 e GND do shield
+4. Soldar capacitor P06 (100nF/50V) entre o pino 3V3 e GND do shield, próximo ao P07
 
 ### 10.2 Conexão do barramento de alimentação <a id="conexao-barramento"></a>
 
 Conforme [VER: 09_conexoes.md#mapeamento-shield] e fios [VER: 10_cablagem.md#tabela-fios]:
 
-1. Conectar F03 (LM2596 OUT+ → barramento 5V+) e F04 (LM2596 OUT− → barramento 5V−)
-2. Conectar F05 (barramento 5V+ → shield pino 5V) e F06 (barramento 5V− → shield GND)
-3. Conectar fonte 12V e medir 3.3V no pino 3V3 do shield
+1. Conferir o ajuste do LM2596: 3.30V ± 0.05V em vazio ([VER: #ajuste-tensao]) — re-medir se o trimpot puder ter sido tocado
+2. Conectar F03 (LM2596 OUT+ → barramento 3.3V+) e F04 (LM2596 OUT− → barramento 3.3V−)
+3. Conectar F05 (barramento 3.3V+ → shield pino 3V3) e F06 (barramento 3.3V− → shield GND)
+4. Conectar fonte 12V e medir 3.30V no pino 3V3 do shield
 
-**Critério CA-09-01** — [VER: 09_conexoes.md#criterios-aceitacao]: 3.3V ± 5% no rail. **Não avançar sem aprovação.**
+**Critério CA-09-01** — [VER: 09_conexoes.md#criterios-aceitacao]: 3.30V ± 0.05V no pino 3V3. **Não avançar sem aprovação.**
 
 ---
 
@@ -411,21 +425,24 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 
 | CA | Descrição | Fonte |
 |---|---|---|
-| CA-05-01 | Saída LM2596: 5.0V ± 0.1V | [VER: 05_alimentacao.md#criterios-aceitacao] |
-| CA-05-02 | Rail 5V sob carga: 5.0V ± 5% em 60min | [VER: 05_alimentacao.md#criterios-aceitacao] |
-| CA-05-03 | Rail 3.3V: 3.3V ± 5% em 60min | [VER: 05_alimentacao.md#criterios-aceitacao] |
+| CA-05-01 | Saída LM2596 em vazio: 3.30V ± 0.05V | [VER: 05_alimentacao.md#criterios-aceitacao] |
+| CA-05-02 | Saída LM2596 sob carga: 3.3V ± 5% em 60min | [VER: 05_alimentacao.md#criterios-aceitacao] |
+| CA-05-03 | Pino 3V3 sob carga: 3.3V ± 5% em 60min | [VER: 05_alimentacao.md#criterios-aceitacao] |
 | CA-05-05 | Temperatura LM2596 < 70°C após 30min | [VER: 05_alimentacao.md#criterios-aceitacao] |
+| CA-05-08 | 10 boots consecutivos com init WiFi sem brownout | [VER: 05_alimentacao.md#criterios-aceitacao] |
 
 ### 16.2 CAs de conexões e cablagem <a id="ca-conexoes"></a>
 
 | CA | Descrição | Fonte |
 |---|---|---|
-| CA-09-01 | Rail 3.3V ± 5% no shield | [VER: 09_conexoes.md#criterios-aceitacao] |
+| CA-09-01 | 3.30V ± 0.05V no pino 3V3 | [VER: 09_conexoes.md#criterios-aceitacao] |
 | CA-09-04 | GPIO não ultrapassa 3.3V com impacto forte | [VER: 09_conexoes.md#criterios-aceitacao] |
 | CA-09-06 | Resistência ∞ entre sinais ADC | [VER: 09_conexoes.md#criterios-aceitacao] |
+| CA-09-07 | Serigrafia do shield verificada; bornes proibidos marcados | [VER: 09_conexoes.md#criterios-aceitacao] |
 | CA-10-01 | Continuidade: todos os 26 fios < 1Ω | [VER: 10_cablagem.md#criterios-aceitacao] |
 | CA-10-04 | Comprimentos respeitados | [VER: 10_cablagem.md#criterios-aceitacao] |
 | CA-10-05 | Heat shrink: sem cobre exposto | [VER: 10_cablagem.md#criterios-aceitacao] |
+| CA-10-06 | Junções da cadeia LED soldadas/travadas (sem clipe de pressão) | [VER: 10_cablagem.md#criterios-aceitacao] |
 
 ### 16.3 CAs de sensores <a id="ca-sensores"></a>
 
@@ -469,6 +486,7 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 | 0.2.1 | 2026-07-01 | depende_de | Atualiza referência 10_cablagem.md de v0.1.1 para v0.1.2 (cascata da correção Mermaid em 09_conexoes) | — |
 | 0.2.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 08_bom.md v0.2.0→v0.2.1, 09_conexoes.md v0.2.1→v0.2.2, 10_cablagem.md v0.1.2→v0.1.3 (cascata bump MINOR retroativo de 01_arquitetura) | — |
 | 0.2.3 | 2026-07-01 | #instalacao-devkit, #energizacao-inicial | Substitui "VIN" por "pino 5V" / "DevKitC V4" em instruções de soldagem e conexão; atualiza depende_de: 08 v0.2.2, 09 v0.2.3, 10 v0.1.4 | — |
+| 0.3.0 | 2026-07-03 | #montagem-lm2596, #ajuste-tensao, #fase-esp32, #criterios-aceitacao-final, depende_de | Cascata 05/08/09/10 (arquitetura 3.3V direta): ajuste do LM2596 para 3.30V ± 0.05V com trava de trimpot e proibição >3.6V; verificação de serigrafia como passo 1 da instalação; P07 (1000μF) no pino 3V3; barramento 3.3V; checklist final com CA-05-08, CA-09-07, CA-10-06; atualiza depende_de 08 v0.3.0, 09 v0.3.0, 10 v0.2.0 | — |
 
 ---
 
@@ -478,9 +496,9 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #componentes-fisicos, #martelos, #indicadores-led |
-| Pai | 08_bom.md | 0.2.2 | BLOQUEADOR | todo o documento |
-| Pai | 09_conexoes.md | 0.2.3 | BLOQUEADOR | todo o documento |
-| Pai | 10_cablagem.md | 0.1.4 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
+| Pai | 08_bom.md | 0.3.0 | BLOQUEADOR | todo o documento |
+| Pai | 09_conexoes.md | 0.3.0 | BLOQUEADOR | todo o documento |
+| Pai | 10_cablagem.md | 0.2.0 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.
