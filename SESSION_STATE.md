@@ -27,13 +27,17 @@ Branch ativa: develop (fix/ca-07-01 MERGEADA em develop via fast-forward em
 2026-07-02 — commits 34007bd build(ci) + 9b8b2de chore/SESSION_STATE; fecha o
 ciclo fix→re-teste do CA-07-01 na ETAPA 8. Os 14 commits da investigação
 antiga seguem preservados só na tag backup/fix-ca-07-01-abandonado-20260702)
-Próxima ação: gravar o firmware real (`pio run -d firmware -e esp32dev -t
-upload`) e verificar de ponta a ponta: animação de boot nos 3 LEDs, AP BMI,
-estímulo do jogo. Depois: validação formal dos CAs da ETAPA 8 (checklist
-PASSOU/FALHOU por CA). Pendências físicas: marcar o borne falso-GND (CMD)
-como proibido; auditar TODOS os rótulos do shield contra a serigrafia do
-DevKitC. Pendência de docs (cascata quando autorizada): rotulagem de bornes +
-fragilidade dos clipes da cadeia LED → 09_conexoes/10_cablagem/11_montagem.
+Próxima ação: CASCATA DE DOCUMENTAÇÃO AUTORIZADA E EM EXECUÇÃO (branch
+docs/cascata-alimentacao-3v3): sementes = arquitetura de alimentação 3.3V
+direta (dono: 05_alimentacao, bump MAJOR), verificação de serigrafia de
+bornes (09_conexoes + nota E02 em 08_bom), robustez de conexões da cadeia
+LED (10_cablagem + 11_montagem); recursão via campo impacta; re-derivação de
+spec/power. Depois da cascata: checklist formal de CAs da ETAPA 8
+(PASSOU/FALHOU por CA). Pendente para outra sessão: branch fix do EXPORT CSV
+(defeito conhecido, CA-07-*). NÃO TAGUEAR v1.0.0 até TODOS os CAs passarem —
+gate do protocolo. Pendências físicas: marcar borne falso-GND (CMD) como
+proibido; auditar todos os rótulos do shield contra a serigrafia do DevKitC;
+travar/marcar o trimpot do LM2596 em 3.30V.
 
 ---
 
@@ -116,6 +120,40 @@ Osciloscópio não é mais necessário para este caso.
 - Nota de procedimento: um primeiro upload do sketch gravou o ambiente errado
   (`pio run -t upload` sem `-e ledtest` grava esp32dev primeiro); o
   diagnóstico só começou de fato com `pio run -e ledtest -t upload`.
+
+### Brownout no init do rádio — AMS1117 condenado; arquitetura 3.3V direta (2026-07-02)
+
+- Com os LEDs finalmente funcionais, o firmware real entrou em loop de
+  brownout (`Brownout detector was triggered` → `rst:0xc SW_CPU_RESET`) no
+  instante da ligada do rádio WiFi — localizado por breadcrumbs do
+  `wifi_test` do kit diag (morte sempre no "passo 1 — WiFi.mode(WIFI_AP)").
+- Eliminados com evidência: firmware (src byte-idêntico ao tag v0.3.0; a
+  mensagem vem de comparador analógico do chip), cabo/porta USB (carregador
+  de parede + cabo diferente → mesmo resultado), LEDs (VDD desconectado →
+  mesmo resultado), fonte externa (LM2596 medindo 4.96V no pino 5V durante o
+  loop).
+- CONDENADO: o AMS1117 (5V→3.3V) do DevKitC — sustenta cargas leves, colapsa
+  no pico da ligada do rádio. Prova: LM2596 recalibrado para 3.30V
+  alimentando o rail 3V3 DIRETO (contornando o AMS1117) → AP no ar, placa
+  viva. Nota: de manhã o mesmo boot passava; o regulador degradou ao longo
+  do dia (possível estresse residual da era do falso-GND).
+- ARQUITETURA NOVA (validada fisicamente; cascata de docs em execução):
+  12V → LM2596 @ 3.30V → rail 3V3 direto. Rail 5V sem função operacional
+  (borne esvaziado). USB somente para gravação (gravação não usa WiFi).
+  Consequência operacional: USB-only com WiFi = brownout SEMPRE nesta placa;
+  bancada de WiFi exige fonte ligada.
+- Segurança (vai para a cascata): medir 3.30V na saída do LM2596 ANTES de
+  conectar ao borne 3V3 (máx. absoluto do ESP32: 3.6V); travar/marcar o
+  trimpot.
+- Capacitores: LM2596 intocado (100µF entrada / 470µF saída, soldados no
+  módulo); borne 3V3 mantém eletrolítico 1000µF + cerâmico (1000µF é
+  EXTRA-SPEC consciente, relíquia útil da investigação — valor definitivo
+  decidido na cascata do 05); borne 5V esvaziado.
+- SISTEMA COMPLETO FUNCIONANDO DE PONTA A PONTA (2026-07-03): boot +
+  animação nos 3 LEDs + AP BMI + interface. Primeira vez na história do
+  projeto com todos os subsistemas vivos simultaneamente.
+- Defeito conhecido em aberto: EXPORT CSV da interface (CA-07-*) — branch
+  fix em sessão futura; bloqueia o gate v1.0.0.
 
 ### Kit de diagnóstico de bancada — consolidado em firmware/diag/ (2026-07-02)
 
