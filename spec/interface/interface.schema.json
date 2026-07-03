@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "interface.schema.json",
-  "title": "Interface Spec — derivado de 07_interface_pedagogo.md v0.2.0",
+  "title": "Interface Spec — derivado de 07_interface_pedagogo.md v0.3.0",
   "type": "object",
   "required": [
     "meta", "access_point", "servidor_http", "websocket",
     "protocolo_mensagens", "configuracao_ui", "estados_interface",
     "feedback_visual", "feedback_sonoro", "armazenamento",
-    "exportacao_csv", "criterios_aceitacao"
+    "exportacao_csv", "exportacao_ui", "exportacao_pdf", "criterios_aceitacao"
   ],
   "additionalProperties": false,
 
@@ -256,10 +256,110 @@
       }
     },
 
+    "exportacao_ui": {
+      "type": "object",
+      "required": ["formatos", "formato_padrao", "pre_visualizacao", "confirmacao_obrigatoria", "baixar_desabilitado_vazio"],
+      "additionalProperties": false,
+      "properties": {
+        "formatos": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {"type": "string", "enum": ["CSV", "PDF"]}
+        },
+        "formato_padrao":            {"type": "string", "const": "CSV"},
+        "pre_visualizacao":          {"type": "boolean", "const": true},
+        "confirmacao_obrigatoria":   {"type": "boolean", "const": true},
+        "baixar_desabilitado_vazio": {"type": "boolean", "const": true}
+      }
+    },
+
+    "exportacao_pdf": {
+      "type": "object",
+      "required": ["nome_arquivo", "tipo_mime", "versao_pdf", "titulo", "encoding",
+                   "formato_data_geracao", "fontes", "pagina", "altura_linha_pt",
+                   "espaco_pos_titulo_pt", "espaco_pos_meta_pt",
+                   "linhas_dados_por_pagina", "colunas", "exporta_todos"],
+      "additionalProperties": false,
+      "properties": {
+        "nome_arquivo":         {"type": "string", "pattern": "\\.pdf$"},
+        "tipo_mime":            {"type": "string", "const": "application/pdf"},
+        "versao_pdf":           {"type": "string", "const": "1.4"},
+        "titulo":               {"type": "string", "minLength": 1},
+        "encoding":             {"type": "string", "const": "WinAnsiEncoding"},
+        "formato_data_geracao": {"type": "string", "const": "dd/mm/aaaa hh:mm"},
+        "fontes": {
+          "type": "object",
+          "required": ["titulo", "metadados", "tabela"],
+          "additionalProperties": false,
+          "properties": {
+            "titulo": {
+              "type": "object",
+              "required": ["nome", "tamanho_pt"],
+              "additionalProperties": false,
+              "properties": {
+                "nome":       {"type": "string", "const": "Helvetica-Bold"},
+                "tamanho_pt": {"type": "integer", "const": 16}
+              }
+            },
+            "metadados": {
+              "type": "object",
+              "required": ["nome", "tamanho_pt"],
+              "additionalProperties": false,
+              "properties": {
+                "nome":       {"type": "string", "const": "Helvetica"},
+                "tamanho_pt": {"type": "integer", "const": 10}
+              }
+            },
+            "tabela": {
+              "type": "object",
+              "required": ["nome", "tamanho_pt", "largura_char_fator"],
+              "additionalProperties": false,
+              "properties": {
+                "nome":               {"type": "string", "const": "Courier"},
+                "tamanho_pt":         {"type": "integer", "const": 8},
+                "largura_char_fator": {"type": "number", "const": 0.6}
+              }
+            }
+          }
+        },
+        "pagina": {
+          "type": "object",
+          "required": ["largura_pt", "altura_pt", "margem_pt"],
+          "additionalProperties": false,
+          "properties": {
+            "largura_pt": {"type": "integer", "const": 842},
+            "altura_pt":  {"type": "integer", "const": 595},
+            "margem_pt":  {"type": "integer", "const": 40}
+          }
+        },
+        "altura_linha_pt":         {"type": "integer", "const": 12},
+        "espaco_pos_titulo_pt":    {"type": "integer", "const": 20},
+        "espaco_pos_meta_pt":      {"type": "integer", "const": 24},
+        "linhas_dados_por_pagina": {"type": "integer", "const": 35},
+        "colunas": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "items": {
+            "type": "object",
+            "required": ["campo", "titulo", "largura_chars"],
+            "additionalProperties": false,
+            "properties": {
+              "campo":         {"type": "string", "minLength": 1},
+              "titulo":        {"type": "string", "minLength": 1},
+              "largura_chars": {"type": "integer", "minimum": 4}
+            }
+          }
+        },
+        "exporta_todos": {"type": "boolean", "const": true}
+      }
+    },
+
     "criterios_aceitacao": {
       "type": "array",
-      "minItems": 11,
-      "maxItems": 11,
+      "minItems": 13,
+      "maxItems": 13,
       "items": {
         "type": "object",
         "required": ["id"],
