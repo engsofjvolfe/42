@@ -1,6 +1,6 @@
 ---
 documento:    07_interface_pedagogo.md
-versão:       0.2.0
+versão:       0.3.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
@@ -19,7 +19,7 @@ impacta: []
 | Campo | Valor |
 |---|---|
 | Documento | 07_interface_pedagogo.md |
-| Versão | 0.2.0 |
+| Versão | 0.3.0 |
 | Status | APROVADO |
 | Módulo firmware | MOD_WIFI — [VER: 01_arquitetura.md#mod-wifi] |
 | Stack | HTML + CSS + JS puro, sem framework — [VER: 01_arquitetura.md#stack-tecnologico] |
@@ -28,7 +28,7 @@ impacta: []
 
 ## 2. Objetivo do Documento <a id="objetivo"></a>
 
-Especificar MOD_WIFI (firmware) e a interface HTML do pedagogo: Access Point, servidor HTTP, protocolo WebSocket, estados da interface no browser, feedback visual e sonoro, armazenamento localStorage e exportação CSV. Derive de [VER: 00_conceito.md#interface-pedagogo], [VER: 00_conceito.md#feedback] e [VER: 00_conceito.md#gestao-dados]. As interfaces C++ entre MOD_WIFI e MOD_JOGO são definidas em [VER: 01_arquitetura.md#interface-jogo-wifi] e **não se repetem aqui**.
+Especificar MOD_WIFI (firmware) e a interface HTML do pedagogo: Access Point, servidor HTTP, protocolo WebSocket, estados da interface no browser, feedback visual e sonoro, armazenamento localStorage e exportação de dados (CSV e PDF, com pré-visualização e confirmação). Derive de [VER: 00_conceito.md#interface-pedagogo], [VER: 00_conceito.md#feedback] e [VER: 00_conceito.md#gestao-dados]. As interfaces C++ entre MOD_WIFI e MOD_JOGO são definidas em [VER: 01_arquitetura.md#interface-jogo-wifi] e **não se repetem aqui**.
 
 ---
 
@@ -171,7 +171,7 @@ Campos exibidos:
 - Acertos / total de interações
 - Taxa de acerto (%)
 - Duração da sessão (minutos:segundos)
-- Botão: **Exportar CSV** → aciona [VER: #exportacao-csv]
+- Botão: **Exportar** → abre a pré-visualização de exportação [VER: #pre-visualizacao]; nenhum download é iniciado neste clique
 - Botão: **Nova Sessão** → retorna a CONFIGURANDO e persiste registro em [VER: #armazenamento-dados]
 
 Score **não é exibido à criança** — tela somente visível no dispositivo do pedagogo. Fundamentação em [VER: 00_conceito.md#feedback-fim-sessao].
@@ -249,9 +249,11 @@ Derivado de [VER: 00_conceito.md#armazenamento] e estrutura de [VER: 04_logica_j
 
 ---
 
-## 8. Exportação CSV <a id="exportacao-csv"></a>
+## 8. Exportação <a id="exportacao-csv"></a>
 
-Derivado de [VER: 00_conceito.md#exportacao]. Acionado manualmente pelo pedagogo na tela de resultados ou em tela de histórico. Exporta **todos** os registros em `localStorage`.
+O formato CSV deriva de [VER: 00_conceito.md#exportacao]. A pré-visualização com confirmação ([VER: #pre-visualizacao]) e o formato PDF ([VER: #exportacao-pdf]) originam-se da validação de sistema (ETAPA 8 — melhorias M2/M3 do TODO.md), mesmo trâmite do defeito D1.
+
+Fluxo de exportação: botão **Exportar** na tela de resultados → pré-visualização dos dados → escolha do formato (CSV ou PDF) → confirmação → download. Exporta **todos** os registros em `localStorage`, em qualquer formato.
 
 **Cabeçalho e colunas** (na mesma ordem dos campos de [VER: #armazenamento-dados]):
 
@@ -324,6 +326,84 @@ function exportarCSV() {
 
 `CSV_DATA_URI_PREFIX` é composto de `data:` + tipo MIME + `;charset=` + charset + `,` — valores derivados de `spec/interface/interface.json#exportacao_csv` (`tipo_mime`, `charset`). `CSV_BOM` deriva de `spec/interface/interface.json#exportacao_csv.bom` (valor `"\uFEFF"` — requisito CSV-01). Nenhum destes valores é hardcoded no firmware.
 
+A exportação PDF usa o **mesmo mecanismo** (âncora com `download` anexada ao DOM, `data:` URI), com uma diferença: o conteúdo é binário e vai codificado em **base64** (`data:application/pdf;base64,`), o encoding canônico do RFC 2397 para dados binários — requisito PDF-06 em [VER: #exportacao-pdf].
+
+### 8.3 Pré-visualização e confirmação <a id="pre-visualizacao"></a>
+
+Derivado da melhoria M2 (validação ETAPA 8): o pedagogo confere os dados antes de baixar. Nenhum download inicia sem confirmação explícita.
+
+| # | Requisito | Valor | Justificativa |
+|---|---|---|---|
+| PRE-01 | Gatilho | Botão **Exportar** na tela de resultados abre a pré-visualização; nenhum download é iniciado neste momento | M2 — conferência antes do download |
+| PRE-02 | Conteúdo | Tabela HTML com as mesmas 10 colunas de [VER: #armazenamento-dados], na mesma ordem, com **todos** os registros do `localStorage` — exatamente os dados que serão exportados | M2 — a prévia e o arquivo não podem divergir |
+| PRE-03 | Escolha de formato | Seletor com exatamente dois formatos: `CSV` e `PDF`; padrão `CSV` | M3 — CSV para planilha, PDF para leitura |
+| PRE-04 | Confirmação | Botão **Baixar** inicia o download no formato selecionado e fecha a pré-visualização; botão **Cancelar** fecha sem qualquer download | M2 — confirmação subsequente |
+| PRE-05 | Sem dados | Com `localStorage` vazio: a pré-visualização exibe aviso de ausência de registros e o botão **Baixar** fica desabilitado | Condição não-ideal obrigatória — exportar vazio não tem efeito útil |
+
+A pré-visualização é um overlay sobre a tela de resultados — não é um novo estado da máquina de [VER: #estados-interface]: o estado permanece `RESULTADOS` enquanto o overlay está visível.
+
+### 8.4 Exportação PDF <a id="exportacao-pdf"></a>
+
+Derivado da melhoria M3 (validação ETAPA 8): relatório legível para leitura humana, complementar ao CSV (que é para planilha).
+
+```
+DECISAO: gerar o PDF no browser em JS puro — PDF 1.4, fontes base-14
+  (Helvetica-Bold para título, Helvetica para metadados, Courier para a
+  tabela), texto em WinAnsiEncoding, página A4 paisagem com paginação —
+  baixado por data: URI base64 em âncora anexada ao DOM.
+JUSTIFICATIVA: RNF-04 (offline total) e RNF-07 (sem framework) proíbem
+  biblioteca externa (jsPDF/pdfmake). Fontes base-14 dispensam embutir
+  fonte (ISO 32000-1 §9.6.2.2) e WinAnsiEncoding cobre a acentuação
+  pt-BR (ISO 32000-1 Annex D.2). Courier tem métrica fixa (600/1000 da
+  unidade da fonte), tornando o layout da tabela aritmético e
+  verificável sem medição de glifos. O mecanismo de download é o mesmo
+  já validado para o CSV ([VER: #mecanismo-download]), com base64 por
+  o PDF ser binário.
+FASE V-MODEL: Fase 8 — melhoria derivada da validação de sistema (M3).
+VALIDACAO: CA-07-13 — [VER: #criterios-aceitacao]; pré-validação da
+  estrutura do arquivo (cabeçalho %PDF, offsets da xref byte-exatos,
+  %%EOF, conteúdo das linhas) executando o JS embutido em Node.
+ANALISE DE FALHA: caractere fora do WinAnsi (ex: emoji no nome) é
+  substituído por '?' apenas no PDF — o dado original permanece íntegro
+  no localStorage e no CSV (UTF-8). Exceção JS durante a geração não
+  inicia download e não altera o localStorage.
+ALTERNATIVA: window.print() + "salvar como PDF" — descartada: não
+  produz download direto e depende do diálogo de impressão do browser,
+  inexistente/inconsistente em WebViews Android (mesma classe de falha
+  do D1). Biblioteca externa — descartada: viola RNF-04/RNF-07.
+  Relatório HTML baixável — descartada: não atende ao requisito de PDF.
+```
+
+**Requisitos do arquivo PDF:**
+
+| # | Requisito | Valor | Justificativa |
+|---|---|---|---|
+| PDF-01 | Formato | PDF 1.4, fontes base-14 (`Helvetica-Bold`, `Helvetica`, `Courier`), sem fontes embutidas | Leitor universal; zero dependência externa (RNF-04/RNF-07) |
+| PDF-02 | Codificação de texto | `WinAnsiEncoding` (ISO 32000-1 Annex D.2); caractere sem representação WinAnsi substituído por `?` | Cobre a acentuação pt-BR sem embutir fonte |
+| PDF-03 | Conteúdo | Título do relatório; linha de metadados com data/hora de geração (formato `dd/mm/aaaa hh:mm`, relógio do dispositivo do pedagogo), total de sessões e `Página N de M`; tabela com **todas** as sessões e **todas** as 10 colunas de [VER: #armazenamento-dados] | M3 — indicador da geração com data/hora e todos os dados de sessão |
+| PDF-04 | Layout | A4 paisagem `842 × 595 pt` (ISO 216 em pontos, arredondado), margem `40 pt`, título `16 pt`, metadados `10 pt`, tabela Courier `8 pt` (passo horizontal `4.8 pt = 0.6 × 8`), altura de linha `12 pt`, `35` linhas de dados por página, paginação automática | Tabela de 10 colunas não cabe em retrato; valores fixos tornam o layout determinístico |
+| PDF-05 | Escaping e truncamento | `\`, `(` e `)` escapados com `\` (ISO 32000-1 §7.3.4.2); campo mais largo que a coluna truncado em `largura − 2` caracteres + `…` | String PDF válida; largura de coluna nunca estoura |
+| PDF-06 | Mecanismo de download | [VER: #mecanismo-download] com conteúdo em base64: `data:application/pdf;base64,` | PDF é binário — percent-encoding de texto corromperia os bytes |
+
+**Derivação das 35 linhas de dados por página:** o cabeçalho ocupa do topo `margem (40) + título (16) + espaço pós-título (20) + metadados (10) + espaço pós-metadados (24) = 110 pt`; da área restante `595 − 110 − 40 (margem inferior) = 445 pt`, cabem `floor(445 / 12) = 37` linhas, das quais 2 são o cabeçalho da tabela (títulos das colunas + linha separadora) → **35 linhas de dados**.
+
+**Colunas da tabela** (largura em caracteres Courier; soma 139 ≤ `floor((842 − 2×40) / 4.8) = 158`):
+
+| Campo | Título da coluna | Largura (chars) |
+|---|---|---|
+| `id` | `Id` | 14 |
+| `nome` | `Nome` | 40 |
+| `timestamp_inicio` | `Início` | 25 |
+| `modo` | `Modo` | 14 |
+| `mecanismo` | `Mecanismo` | 10 |
+| `n_configurado` | `N` | 4 |
+| `acertos` | `Acertos` | 8 |
+| `erros` | `Erros` | 6 |
+| `taxa_pct` | `Taxa %` | 8 |
+| `duracao_s` | `Dur. s` | 10 |
+
+Todos os valores acima (nome de arquivo, MIME, versão PDF, fontes, dimensões, espaçamentos, colunas) são campos de `spec/interface/interface.json#exportacao_pdf` — nenhum é hardcoded no firmware.
+
 ---
 
 ## 9. Critérios de Aceitação <a id="criterios-aceitacao"></a>
@@ -338,9 +418,11 @@ function exportarCSV() {
 | CA-07-06 | Feedback erro | Tela vermelha + som neutro em < 200ms após impacto errado; mantida até próximo evento |
 | CA-07-07 | Tela de resultados | Ao receber FIM_SESSAO: exibe nome, acertos/total, taxa%, duração |
 | CA-07-08 | Persistência localStorage | Confirmar Nova Sessão: registro aparece no localStorage com todos os campos |
-| CA-07-09 | Exportação CSV | Botão gera download com cabeçalho correto e dados de todas as sessões armazenadas; campo contendo vírgula/aspas/quebra preservado em coluna única (RFC 4180 — [VER: #requisitos-csv]); acentuação correta ao abrir em planilha (UTF-8 BOM) |
+| CA-07-09 | Exportação CSV | Selecionar `CSV` na pré-visualização e confirmar com **Baixar**: download com cabeçalho correto e dados de todas as sessões armazenadas; campo contendo vírgula/aspas/quebra preservado em coluna única (RFC 4180 — [VER: #requisitos-csv]); acentuação correta ao abrir em planilha (UTF-8 BOM) |
 | CA-07-10 | Desconexão e retomada | WiFi pedagogo desligado: ESP32 pausa; reconectar: interface retoma sessão do ponto de pausa |
 | CA-07-11 | Offline total | Interface funciona sem acesso à internet em todas as etapas |
+| CA-07-12 | Pré-visualização e confirmação | Com ≥ 2 registros: clicar **Exportar** exibe tabela com todos os registros e as 10 colunas idênticos ao localStorage, sem iniciar download; **Cancelar** fecha sem download; com localStorage vazio: aviso exibido e **Baixar** desabilitado ([VER: #pre-visualizacao]) |
+| CA-07-13 | Exportação PDF | Selecionar `PDF` na pré-visualização e confirmar: download de `bmi_sessoes.pdf` que abre sem erro em leitor de PDF; contém título, data/hora de geração, `Página N de M` e tabela com todas as sessões e todas as colunas; acentos corretos; com > 35 registros: segunda página com numeração correta ([VER: #exportacao-pdf]) |
 
 ---
 
@@ -352,6 +434,7 @@ function exportarCSV() {
 | 0.1.1 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo), 04_logica_jogo.md v0.1.0→v0.1.1 | — |
 | 0.1.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4), 04_logica_jogo.md v0.1.1→v0.1.2 | — |
 | 0.2.0 | 2026-07-03 | #exportacao-csv, #criterios-aceitacao, #identificacao | Re-especifica exportação CSV a partir do defeito D1 (validação ETAPA 8): mecanismo `data:` URI + âncora anexada ao DOM substitui blob + revokeObjectURL síncrono (falha silenciosa em Firefox/WebView); novos requisitos CSV-01..04 (UTF-8 BOM, escaping RFC 4180, charset explícito); CA-07-09 estendido; corrige versão desatualizada na tabela de Identificação (0.1.1) | WEB_STANDARD.md, spec/interface/interface.json, spec/interface/interface.schema.json, firmware/src/interface/interface.cpp |
+| 0.3.0 | 2026-07-03 | #exportacao-csv (§8 reestruturada), #pre-visualizacao, #exportacao-pdf, #tela-resultados, #criterios-aceitacao, #objetivo, #identificacao | Melhorias M2/M3 (validação ETAPA 8): pré-visualização com confirmação obrigatória antes de qualquer download (PRE-01..05); escolha de formato CSV/PDF; exportação PDF gerada em JS puro — PDF 1.4, fontes base-14, WinAnsiEncoding, A4 paisagem, paginação (PDF-01..06, DECISAO formal); botão da tela de resultados passa de "Exportar CSV" para "Exportar" (abre prévia); CA-07-09 ajustado ao novo fluxo; CA-07-12 e CA-07-13 novos | WEB_STANDARD.md, spec/interface/interface.json, spec/interface/interface.schema.json, firmware/src/interface/interface.cpp |
 
 ---
 
