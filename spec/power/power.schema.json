@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "power.schema.json",
-  "title": "Power Spec — derivado de 05_alimentacao.md v0.1.0",
+  "title": "Power Spec — derivado de 05_alimentacao.md v0.3.0",
   "type": "object",
   "required": ["meta", "fonte_ac_dc", "regulador_buck", "regulador_linear", "rails", "orcamento_corrente", "margens", "decoupling", "restricoes_filhos", "criterios_aceitacao"],
   "additionalProperties": false,
@@ -46,7 +46,7 @@
 
     "regulador_buck": {
       "type": "object",
-      "required": ["componente", "tipo", "tensao_entrada_v", "tensao_saida_alvo_v", "tolerancia_saida_v", "corrente_maxima_a", "eficiencia_min_pct", "eficiencia_max_pct", "eficiencia_calculo", "ci_isolado"],
+      "required": ["componente", "tipo", "tensao_entrada_v", "tensao_saida_alvo_v", "tolerancia_saida_v", "tensao_maxima_conexao_v", "corrente_maxima_a", "eficiencia_min_pct", "eficiencia_max_pct", "eficiencia_calculo", "ci_isolado"],
       "additionalProperties": false,
       "properties": {
         "componente":          {"type": "string"},
@@ -54,6 +54,7 @@
         "tensao_entrada_v":    {"type": "number", "exclusiveMinimum": 0},
         "tensao_saida_alvo_v": {"type": "number", "exclusiveMinimum": 0},
         "tolerancia_saida_v":  {"type": "number", "exclusiveMinimum": 0},
+        "tensao_maxima_conexao_v": {"type": "number", "exclusiveMinimum": 0},
         "corrente_maxima_a":   {"type": "number", "exclusiveMinimum": 0},
         "eficiencia_min_pct":  {"type": "number", "minimum": 0, "maximum": 100},
         "eficiencia_max_pct":  {"type": "number", "minimum": 0, "maximum": 100},
@@ -75,39 +76,30 @@
 
     "regulador_linear": {
       "type": "object",
-      "required": ["componente", "tensao_entrada_v", "tensao_saida_v", "corrente_maxima_ma", "psrr_db", "atenuacao_ripple_lm2596"],
+      "required": ["componente", "em_caminho_potencia", "uso_restante", "tensao_entrada_v", "tensao_saida_v", "corrente_maxima_ma"],
       "additionalProperties": false,
       "properties": {
-        "componente":              {"type": "string"},
-        "tensao_entrada_v":        {"type": "number", "exclusiveMinimum": 0},
-        "tensao_saida_v":          {"type": "number", "exclusiveMinimum": 0},
-        "corrente_maxima_ma":      {"type": "number", "exclusiveMinimum": 0},
-        "psrr_db":                 {"type": "number"},
-        "atenuacao_ripple_lm2596": {"type": "number", "minimum": 1}
+        "componente":          {"type": "string"},
+        "em_caminho_potencia": {"type": "boolean"},
+        "uso_restante":        {"type": "string", "enum": ["gravacao_usb"]},
+        "tensao_entrada_v":    {"type": "number", "exclusiveMinimum": 0},
+        "tensao_saida_v":      {"type": "number", "exclusiveMinimum": 0},
+        "corrente_maxima_ma":  {"type": "number", "exclusiveMinimum": 0}
       }
     },
 
     "rails": {
       "type": "object",
-      "required": ["r5v", "r3v3"],
+      "required": ["r3v3"],
       "additionalProperties": false,
       "properties": {
-        "r5v": {
+        "r3v3": {
           "type": "object",
           "required": ["tensao_nominal_v", "tolerancia_v", "regulador"],
           "additionalProperties": false,
           "properties": {
             "tensao_nominal_v": {"type": "number", "exclusiveMinimum": 0},
             "tolerancia_v":     {"type": "number", "exclusiveMinimum": 0},
-            "regulador":        {"type": "string"}
-          }
-        },
-        "r3v3": {
-          "type": "object",
-          "required": ["tensao_nominal_v", "regulador"],
-          "additionalProperties": false,
-          "properties": {
-            "tensao_nominal_v": {"type": "number", "exclusiveMinimum": 0},
             "regulador":        {"type": "string"}
           }
         }
@@ -150,27 +142,26 @@
 
     "margens": {
       "type": "object",
-      "required": ["lm2596_sobre_pico", "ams1117_sobre_pico", "fonte_sobre_entrada_pico"],
+      "required": ["lm2596_sobre_pico", "fonte_sobre_entrada_pico"],
       "additionalProperties": false,
       "properties": {
         "lm2596_sobre_pico":        {"type": "number", "minimum": 1},
-        "ams1117_sobre_pico":       {"type": "number", "minimum": 1},
         "fonte_sobre_entrada_pico": {"type": "number", "minimum": 1}
       }
     },
 
     "decoupling": {
       "type": "object",
-      "required": ["lm2596_in", "lm2596_out", "lm2596_out_hf", "vin_devkit", "vin_devkit_hf", "vdd_ws2812b", "vdd_ws2812b_hf"],
+      "required": ["lm2596_in", "lm2596_out", "lm2596_out_hf", "pino_3v3_devkit", "pino_3v3_devkit_hf", "vdd_ws2812b", "vdd_ws2812b_hf"],
       "additionalProperties": false,
       "properties": {
-        "lm2596_in":     {"$ref": "#/definitions/capacitor"},
-        "lm2596_out":    {"$ref": "#/definitions/capacitor"},
-        "lm2596_out_hf": {"$ref": "#/definitions/capacitor"},
-        "vin_devkit":    {"$ref": "#/definitions/capacitor"},
-        "vin_devkit_hf": {"$ref": "#/definitions/capacitor"},
-        "vdd_ws2812b":   {"$ref": "#/definitions/capacitor"},
-        "vdd_ws2812b_hf":{"$ref": "#/definitions/capacitor"}
+        "lm2596_in":          {"$ref": "#/definitions/capacitor"},
+        "lm2596_out":         {"$ref": "#/definitions/capacitor"},
+        "lm2596_out_hf":      {"$ref": "#/definitions/capacitor"},
+        "pino_3v3_devkit":    {"$ref": "#/definitions/capacitor"},
+        "pino_3v3_devkit_hf": {"$ref": "#/definitions/capacitor"},
+        "vdd_ws2812b":        {"$ref": "#/definitions/capacitor"},
+        "vdd_ws2812b_hf":     {"$ref": "#/definitions/capacitor"}
       }
     },
 
@@ -189,13 +180,13 @@
 
     "criterios_aceitacao": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 8,
+      "maxItems": 8,
       "items": {
         "type": "object",
         "required": ["id"],
         "properties": {
-          "id":                  {"type": "string", "pattern": "^CA-05-0[1-7]$"},
+          "id":                  {"type": "string", "pattern": "^CA-05-0[1-8]$"},
           "nominal_v":           {"type": "number"},
           "tolerancia_v":        {"type": "number", "minimum": 0},
           "tolerancia_pct":      {"type": "number", "minimum": 0},
@@ -203,7 +194,10 @@
           "resets_maximos":      {"type": "integer", "minimum": 0},
           "temperatura_maxima_c":{"type": "number"},
           "apos_min":            {"type": "integer", "minimum": 0},
-          "ripple_maximo_mv_pp": {"type": "number", "minimum": 0}
+          "ripple_maximo_mv_pp": {"type": "number", "minimum": 0},
+          "obsoleto":            {"type": "boolean"},
+          "boots_consecutivos":  {"type": "integer", "minimum": 1},
+          "brownouts_maximos":   {"type": "integer", "minimum": 0}
         },
         "additionalProperties": false
       }
