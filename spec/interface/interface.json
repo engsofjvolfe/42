@@ -1,7 +1,7 @@
 {
   "meta": {
     "documento_fonte": "07_interface_pedagogo.md",
-    "versao_fonte": "0.1.0",
+    "versao_fonte": "0.2.0",
     "depende_de": ["spec/game/game.json"]
   },
 
@@ -157,10 +157,13 @@
   },
 
   "exportacao_csv": {
-    "cabecalho":     "id,nome,timestamp_inicio,modo,mecanismo,n_configurado,acertos,erros,taxa_pct,duracao_s",
-    "nome_arquivo":  "bmi_sessoes.csv",
-    "tipo_mime":     "text/csv",
-    "exporta_todos": true
+    "cabecalho":        "id,nome,timestamp_inicio,modo,mecanismo,n_configurado,acertos,erros,taxa_pct,duracao_s",
+    "nome_arquivo":     "bmi_sessoes.csv",
+    "tipo_mime":        "text/csv",
+    "charset":          "utf-8",
+    "bom":              "\uFEFF",
+    "escaping_rfc4180": true,
+    "exporta_todos":    true
   },
 
   "criterios_aceitacao": [
@@ -172,7 +175,7 @@
     {"id": "CA-07-06", "descricao_tecnica": "feedback_erro",                    "evento": "ERRO",    "latencia_max_ms": 200, "dura_ate_proximo_evento": true},
     {"id": "CA-07-07", "descricao_tecnica": "tela_resultados",                  "campos_exibidos": ["nome", "acertos", "total", "taxa_pct", "duracao_s"]},
     {"id": "CA-07-08", "descricao_tecnica": "persistencia_localstorage",        "campos_localstorage": ["id", "nome", "timestamp_inicio", "modo", "mecanismo", "n_configurado", "acertos", "erros", "taxa_pct", "duracao_s"]},
-    {"id": "CA-07-09", "descricao_tecnica": "exportacao_csv",                   "cabecalho_csv": "id,nome,timestamp_inicio,modo,mecanismo,n_configurado,acertos,erros,taxa_pct,duracao_s"},
+    {"id": "CA-07-09", "descricao_tecnica": "exportacao_csv",                   "cabecalho_csv": "id,nome,timestamp_inicio,modo,mecanismo,n_configurado,acertos,erros,taxa_pct,duracao_s", "campo_com_virgula_em_coluna_unica": true, "acentos_corretos_em_planilha": true},
     {"id": "CA-07-10", "descricao_tecnica": "desconexao_e_retomada",            "desconexao_pausa": true, "reconexao_retoma": true},
     {"id": "CA-07-11", "descricao_tecnica": "operacao_offline",                 "offline_total": true}
   ]

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "interface.schema.json",
-  "title": "Interface Spec — derivado de 07_interface_pedagogo.md v0.1.0",
+  "title": "Interface Spec — derivado de 07_interface_pedagogo.md v0.2.0",
   "type": "object",
   "required": [
     "meta", "access_point", "servidor_http", "websocket",
@@ -243,13 +243,16 @@
 
     "exportacao_csv": {
       "type": "object",
-      "required": ["cabecalho", "nome_arquivo", "tipo_mime", "exporta_todos"],
+      "required": ["cabecalho", "nome_arquivo", "tipo_mime", "charset", "bom", "escaping_rfc4180", "exporta_todos"],
       "additionalProperties": false,
       "properties": {
-        "cabecalho":     {"type": "string", "minLength": 1},
-        "nome_arquivo":  {"type": "string", "pattern": "\\.csv$"},
-        "tipo_mime":     {"type": "string", "const": "text/csv"},
-        "exporta_todos": {"type": "boolean", "const": true}
+        "cabecalho":        {"type": "string", "minLength": 1},
+        "nome_arquivo":     {"type": "string", "pattern": "\\.csv$"},
+        "tipo_mime":        {"type": "string", "const": "text/csv"},
+        "charset":          {"type": "string", "const": "utf-8"},
+        "bom":              {"type": "string", "const": "\uFEFF"},
+        "escaping_rfc4180": {"type": "boolean", "const": true},
+        "exporta_todos":    {"type": "boolean", "const": true}
       }
     },
 
