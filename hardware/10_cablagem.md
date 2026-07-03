@@ -1,11 +1,11 @@
 ---
 documento:    10_cablagem.md
-versão:       0.2.0
+versão:       0.2.1
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 09_conexoes.md v0.3.0    [BLOQUEADOR]
+  - 09_conexoes.md v0.3.1    [BLOQUEADOR]
 impacta:
   - 11_montagem.md           [OBRIGATÓRIO]
 ---
@@ -19,7 +19,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 10_cablagem.md |
-| Versão | 0.2.0 |
+| Versão | 0.2.1 |
 | Status | APROVADO |
 | Escopo | Todos os fios do sistema — bitola, cor, comprimento e destino |
 
@@ -138,6 +138,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | 0.1.3 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 09_conexoes.md v0.2.1→v0.2.2 (cascata bump MINOR retroativo de 01_arquitetura) | 11_montagem.md |
 | 0.1.4 | 2026-07-01 | #tabela-fios, depende_de, Rastreabilidade | F05: "Shield VIN" → "Shield pino 5V" — DevKitC V4 rotula o pino como "5V"; atualiza depende_de: 09_conexoes.md v0.2.2→v0.2.3 | 11_montagem.md |
 | 0.2.0 | 2026-07-03 | #tabela-fios, #criterios-aceitacao, depende_de, Rastreabilidade | Cascata 09 v0.3.0 (arquitetura 3.3V direta): F03–F06 barramento 3.3V com destino Shield pino 3V3; CA-10-06 novo — junções da cadeia LED soldadas/travadas, clipe de pressão proibido (contato marginal comprovado 2026-07-02); atualiza depende_de 09 v0.3.0 | 11_montagem.md [OBRIGATÓRIO] |
+| 0.2.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 09_conexoes.md v0.3.0→v0.3.1 | — |
 
 ---
 
@@ -146,7 +147,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 09_conexoes.md | 0.3.0 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
+| Pai | 09_conexoes.md | 0.3.1 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | #tabela-fios, #regras-montagem |
 ---
 

@@ -1,11 +1,11 @@
 ---
 documento:    CODING_STANDARD.md
-versão:       0.2.1
+versão:       0.2.2
 status:       APROVADO
 data:         2026-06-28
 depende_de:
   - _PADRAO.md v0.1.0           [BLOQUEADOR]
-  - 01_arquitetura.md v0.2.1    [BLOQUEADOR]
+  - 01_arquitetura.md v0.3.0    [BLOQUEADOR]
 impacta:
   - TESTING_STANDARD.md         [CONDICIONAL: #constantes-zero-magic-numbers, #estrutura-arquivo, #nomenclatura]
   - firmware/src/ (arquivos .h e .cpp — nao sao .md)
@@ -22,10 +22,10 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | CODING_STANDARD.md |
-| Versão | 0.2.0 |
+| Versão | 0.2.2 |
 | Status | APROVADO |
 | Escopo | Firmware C++/Arduino no PlatformIO — todos os módulos |
-| Pais | _PADRAO.md v0.1.0, 01_arquitetura.md v0.1.0 |
+| Pais | _PADRAO.md v0.1.0, 01_arquitetura.md v0.3.0 |
 | Fonte de derivação | spec/firmware_constants.json |
 
 ---
@@ -490,6 +490,7 @@ Derivado de [VER: 01_arquitetura.md#requisitos-nao-funcionais].
 | 0.2.0 | 2026-06-28 | 8.1 | Adiciona ArduinoJson a includes e usos permitidos de MOD_WIFI — conforme 01_arquitetura.md#stack-tecnologico. Bump MINOR retroativo. | firmware/src/interface/ |
 | 0.2.0 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 01_arquitetura.md de v0.1.0 para v0.2.0 (bump MINOR retroativo) | — |
 | 0.2.1 | 2026-07-01 | depende_de | Atualiza referência 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4) | TESTING_STANDARD.md |
+| 0.2.2 | 2026-07-03 | depende_de, Rastreabilidade, #identificacao | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 01_arquitetura.md v0.2.1→v0.3.0; corrige versões desatualizadas na Identificação (0.2.0 e 01 v0.1.0) e na Rastreabilidade (01 v0.2.0) | — |
 
 ---
 
@@ -498,7 +499,7 @@ Derivado de [VER: 01_arquitetura.md#requisitos-nao-funcionais].
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #modulos-firmware, #interfaces-modulos, #stack-tecnologico, #mapeamento-gpios, #requisitos-nao-funcionais |
+| Pai | 01_arquitetura.md | 0.3.0 | BLOQUEADOR | #modulos-firmware, #interfaces-modulos, #stack-tecnologico, #mapeamento-gpios, #requisitos-nao-funcionais |
 | Fonte | spec/firmware_constants.json | — | DERIVADO | modulos, constantes, decisoes_manuais_inerentes |
 | Filho | TESTING_STANDARD.md | — | CONDICIONAL: #constantes-zero-magic-numbers, #estrutura-arquivo, #nomenclatura | — |
 | Governa | firmware/src/ | — | OBRIGATÓRIO | todos os .h e .cpp |
