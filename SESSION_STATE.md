@@ -23,24 +23,40 @@ Fases concluídas e aprovadas:
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: develop (fix/ca-07-01 MERGEADA em develop via fast-forward em
-2026-07-02 — commits 34007bd build(ci) + 9b8b2de chore/SESSION_STATE; fecha o
-ciclo fix→re-teste do CA-07-01 na ETAPA 8. Os 14 commits da investigação
-antiga seguem preservados só na tag backup/fix-ca-07-01-abandonado-20260702)
-Próxima ação: CASCATA DE ALIMENTAÇÃO 3.3V CONCLUÍDA E MERGEADA em develop
-(2026-07-03, branch docs/cascata-alimentacao-3v3, commits da1514c..3d1eed1,
-fast-forward): 05 v0.3.0 (dono; bump MAJOR adiado por decisão de projeto,
-mantido MINOR até o fechamento do V-model), 02 v0.2.0, 03 v0.1.4, 08 v0.3.0,
-09 v0.3.0 (+#verificacao-serigrafia, CA-09-07), 10 v0.2.0 (+CA-10-06),
-11 v0.3.0, spec/power re-derivada (jsonschema OK), TODO.md com D1 (export
-CSV) e M1–M5. run_all.py verde em todos os commits.
-Próximos passos, nesta ordem: (1) branch fix/export-csv — defeito D1 do
-TODO.md, BLOQUEIA o gate v1.0.0; (2) checklist formal de CAs da ETAPA 8
-(PASSOU/FALHOU por CA, incluindo CA-05-08, CA-09-07, CA-10-06 novos);
-(3) melhorias M1–M5 em branches próprias; (4) só então tag v1.0.0 e merge
-em main. Pendências físicas: marcar borne falso-GND (CMD) como proibido;
-auditar todos os rótulos do shield contra a serigrafia do DevKitC;
-travar/marcar o trimpot do LM2596 em 3.30V (CA-09-07/CA-05-01).
+Branch ativa: fix/export-csv (criada de develop em 2026-07-03 — correção do
+defeito D1: exportação CSV não funcionava, CA-07-09 reprovado na bancada em
+browser WebView Android/DuckDuckGo).
+Estado da branch — cadeia completa commitada na ordem md → json → schema →
+código, run_all.py verde e jsonschema OK em todos os commits:
+  1. docs(interface) cf97ed9 — 07 v0.2.0: §8 re-especificada — mecanismo
+     data: URI + âncora no DOM (DECISAO formal), requisitos CSV-01..04
+     (UTF-8 BOM, escaping RFC 4180, charset, mecanismo), CA-07-09 estendido
+  2. docs(padrao) 639a97b — WEB_STANDARD v0.2.0: constantes CSV_MIME/
+     CSV_CHARSET/CSV_DATA_URI_PREFIX/CSV_BOM derivadas, csvEscapar(),
+     §10.2 com proibição de blob+revoke na exportação
+  3. spec(interface) a9c198a — interface.json + schema re-derivados:
+     charset/bom/escaping_rfc4180 em exportacao_csv, versao_fonte 0.2.0
+  4. fix(interface) 3739a9d — exportarCSV() reescrita em interface.cpp:
+     data: URI + appendChild/removeChild, csvEscapar(), BOM; causa raiz
+     tripla documentada (revoke síncrono, click fora do DOM, blob: em
+     WebView). NADA hardcoded: todos os valores derivam da spec.
+Verificação já feita: pio run -e esp32dev SUCCESS sem warnings; pio test -e
+native 38/38; pré-validação em Node executando o JS real embutido (DOM
+mockado) — 11/11 checks do CA-07-09, incluindo vírgula/aspas em coluna
+única e BOM. (pio run do env native falha por design fora de pio test —
+mocks vivem em test/; condição pré-existente, não tocar.)
+Próxima ação: VALIDAÇÃO FÍSICA do CA-07-09 — flashar fix/export-csv,
+exportar com ≥2 sessões (uma com nome contendo vírgula e acento) e conferir
+o arquivo em planilha. Browser da matriz RNF-05 (Chrome/Firefox Android);
+DuckDuckGo/WebView deve funcionar com data: URI mas está fora da matriz
+formal. PASSOU → merge fast-forward em develop + baixa do D1 no TODO.md.
+FALHOU → iterar nesta branch.
+Depois, nesta ordem: (1) checklist formal de CAs da ETAPA 8 (PASSOU/FALHOU
+por CA, incluindo CA-05-08, CA-09-07, CA-10-06 novos); (2) melhorias M1–M5
+em branches próprias; (3) só então tag v1.0.0 e merge em main. Pendências
+físicas: marcar borne falso-GND (CMD) como proibido; auditar rótulos do
+shield contra a serigrafia do DevKitC; travar/marcar o trimpot do LM2596 em
+3.30V (CA-09-07/CA-05-01).
 
 ---
 
