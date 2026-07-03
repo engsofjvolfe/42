@@ -1,11 +1,11 @@
 ---
 documento:    10_cablagem.md
-versão:       0.1.4
+versão:       0.2.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 09_conexoes.md v0.2.3    [BLOQUEADOR]
+  - 09_conexoes.md v0.3.0    [BLOQUEADOR]
 impacta:
   - 11_montagem.md           [OBRIGATÓRIO]
 ---
@@ -19,7 +19,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 10_cablagem.md |
-| Versão | 0.1.3 |
+| Versão | 0.2.0 |
 | Status | APROVADO |
 | Escopo | Todos os fios do sistema — bitola, cor, comprimento e destino |
 
@@ -88,10 +88,10 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 |---|---|---|---|---|---|---|
 | F01 | Fonte 12V (+) | LM2596 IN+ | AWG 22 | Vermelho | soldado fixo | — |
 | F02 | Fonte 12V (−) | LM2596 IN− | AWG 22 | Preto | soldado fixo | — |
-| F03 | LM2596 OUT+ | Barramento 5V (+) | AWG 22 | Vermelho | 15cm | — |
-| F04 | LM2596 OUT− | Barramento 5V (−) | AWG 22 | Preto | 15cm | — |
-| F05 | Barramento 5V (+) | Shield pino 5V | AWG 22 | Vermelho | 20cm | — |
-| F06 | Barramento 5V (−) | Shield GND | AWG 22 | Preto | 20cm | — |
+| F03 | LM2596 OUT+ | Barramento 3.3V (+) | AWG 22 | Vermelho | 15cm | — |
+| F04 | LM2596 OUT− | Barramento 3.3V (−) | AWG 22 | Preto | 15cm | — |
+| F05 | Barramento 3.3V (+) | Shield pino 3V3 | AWG 22 | Vermelho | 20cm | — |
+| F06 | Barramento 3.3V (−) | Shield GND | AWG 22 | Preto | 20cm | — |
 | F07 | Shield 3V3 | Cap. decoupling VDD LED[0] | AWG 24 | Vermelho | 15cm | — |
 | F08 | Shield 3V3 | Cap. decoupling VDD LED[1] | AWG 24 | Vermelho | 15cm | — |
 | F09 | Shield 3V3 | Cap. decoupling VDD LED[2] | AWG 24 | Vermelho | 15cm | — |
@@ -124,6 +124,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | CA-10-03 | Strain relief | Tração suave no cabo piezo não transmite força ao terminal soldado |
 | CA-10-04 | Comprimentos | F13 ≤ 15cm; F14–F16 ≤ 10cm; F17, F19, F21, F23 ≤ 50cm |
 | CA-10-05 | Heat shrink | Todas as emendas e terminais cobertos, sem cobre exposto |
+| CA-10-06 | Junções da cadeia LED | F14–F16 soldados ou com conector travado — clipe de pressão PROIBIDO na montagem final (contato marginal comprovado em 2026-07-02); cadeia mantém funcionamento sob manuseio e vibração leve |
 
 ---
 
@@ -136,6 +137,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | 0.1.2 | 2026-07-01 | depende_de | Atualiza referência 09_conexoes.md de v0.2.0 para v0.2.1 (correção Mermaid) | — |
 | 0.1.3 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 09_conexoes.md v0.2.1→v0.2.2 (cascata bump MINOR retroativo de 01_arquitetura) | 11_montagem.md |
 | 0.1.4 | 2026-07-01 | #tabela-fios, depende_de, Rastreabilidade | F05: "Shield VIN" → "Shield pino 5V" — DevKitC V4 rotula o pino como "5V"; atualiza depende_de: 09_conexoes.md v0.2.2→v0.2.3 | 11_montagem.md |
+| 0.2.0 | 2026-07-03 | #tabela-fios, #criterios-aceitacao, depende_de, Rastreabilidade | Cascata 09 v0.3.0 (arquitetura 3.3V direta): F03–F06 barramento 3.3V com destino Shield pino 3V3; CA-10-06 novo — junções da cadeia LED soldadas/travadas, clipe de pressão proibido (contato marginal comprovado 2026-07-02); atualiza depende_de 09 v0.3.0 | 11_montagem.md [OBRIGATÓRIO] |
 
 ---
 
@@ -144,7 +146,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 09_conexoes.md | 0.2.3 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
+| Pai | 09_conexoes.md | 0.3.0 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | #tabela-fios, #regras-montagem |
 ---
 
