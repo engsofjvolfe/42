@@ -1,13 +1,13 @@
 ---
 documento:    03_saida_visual.md
-versão:       0.1.3
+versão:       0.1.4
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
   - 01_arquitetura.md v0.2.1 [BLOQUEADOR]
-  - 05_alimentacao.md v0.2.2 [BLOQUEADOR]
+  - 05_alimentacao.md v0.3.0 [BLOQUEADOR]
 impacta:
   - 08_bom.md                [OBRIGATÓRIO]
   - 09_conexoes.md           [OBRIGATÓRIO]
@@ -22,7 +22,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 03_saida_visual.md |
-| Versão | 0.1.2 |
+| Versão | 0.1.4 |
 | Status | APROVADO |
 | Módulo firmware | MOD_LED — [VER: 01_arquitetura.md#mod-led] |
 | GPIO de dados | 5 — [VER: 01_arquitetura.md#mapeamento-gpios] |
@@ -53,7 +53,7 @@ Decisão derivada de [VER: 05_alimentacao.md#cadeia-alimentacao]:
 
 | Parâmetro | Valor | Justificativa |
 |---|---|---|
-| Tensão VDD | **3.3V** (saída AMS1117 onboard) | WS2812B a 3.3V aceita dado ≥ 2.31V; GPIO5 emite 3.3V → compatível sem level shifter |
+| Tensão VDD | **3.3V** (rail 3.3V — saída direta do LM2596) | WS2812B a 3.3V aceita dado ≥ 2.31V; GPIO5 emite 3.3V → compatível sem level shifter |
 | Tensão dado GPIO5 | 3.3V | GPIO do ESP32 — [VER: 01_arquitetura.md#mapeamento-gpios] |
 | Level shifter | Não necessário | Eliminado pela escolha de alimentar o LED em 3.3V |
 | Corrente típica (3 LEDs) | 30mA | setBrightness(150), uma cor por LED |
@@ -151,6 +151,7 @@ Especificação no BOM: [VER: 08_bom.md#passivos]
 | 0.1.1 | 2026-06-30 | depende_de | Atualiza referência 05_alimentacao.md de v0.1.0 para v0.2.0 (nota AMS1117 onboard) | — |
 | 0.1.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo), 05_alimentacao.md v0.2.0→v0.2.1 | — |
 | 0.1.3 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4), 05_alimentacao.md v0.2.1→v0.2.2 (VIN→pino 5V) | — |
+| 0.1.4 | 2026-07-03 | #alimentacao-led, depende_de, Rastreabilidade | Corrige origem do rail 3.3V: saída direta do LM2596, não mais AMS1117 (05_alimentacao v0.3.0 — AMS1117 fora do caminho de potência); VDD e nível de dado inalterados | 08, 09 (somente depende_de) |
 
 ---
 
@@ -161,7 +162,7 @@ Especificação no BOM: [VER: 08_bom.md#passivos]
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #indicadores-led, #modos-operacao, #zonas-impacto, #feedback, #estado-boot |
 | Pai | 01_arquitetura.md | 0.2.1 | BLOQUEADOR | #mod-led, #mapeamento-gpios, #interface-jogo-led, #stack-tecnologico, #requisitos-nao-funcionais |
-| Pai | 05_alimentacao.md | 0.2.2 | BLOQUEADOR | #restricao-led, #decoupling |
+| Pai | 05_alimentacao.md | 0.3.0 | BLOQUEADOR | #restricao-led, #decoupling |
 | Filho | 08_bom.md | — | OBRIGATÓRIO | #componente-led, #decoupling-led |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #mapeamento-led, #decoupling-led |
 ---
