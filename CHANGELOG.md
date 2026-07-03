@@ -36,6 +36,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `hardware/11_montagem.md` v0.1.0 → v0.2.0: adiciona nota em `#instalacao-devkit` declarando ausência de etapa de instalação do AMS1117; atualiza `depende_de` (08 v0.2.0, 09 v0.2.0, 10 v0.1.1)
 
 ### Corrigido
+- `firmware/src/interface/interface.cpp` — corrige exportação CSV (defeito D1, CA-07-09): `exportarCSV()` passa a usar `data:` URI com âncora anexada ao DOM em vez de blob + `revokeObjectURL` síncrono em âncora fora do DOM (download nunca iniciava em Firefox/WebView Android); adiciona `csvEscapar()` (RFC 4180), prefixo BOM UTF-8 e charset explícito; constantes `CSV_MIME` reclassificada como DERIVADO e novas `CSV_CHARSET`, `CSV_BOM`, `CSV_DATA_URI_PREFIX` derivadas de `interface.json#exportacao_csv`
 - `firmware/platformio.ini` — corrige `upload_port` de COM8 para COM9 em `[env:esp32dev]`; a placa (CP210x) enumera atualmente em COM9 e COM8 deixou de existir nesta máquina, impedindo upload e monitor
 - `firmware/platformio.ini` — adiciona `upload_port = COM8` e `upload_speed = 115200` em `[env:esp32dev]`; velocidade padrão 921600 causava falha de transferência (`Packet content transfer stopped`)
 - `hardware/09_conexoes.md` v0.2.0 → v0.2.1: corrige sintaxe Mermaid em `#visao-geral` — labels de aresta com parênteses envolvidos em aspas (`|"Piezo(+)"|`); sem aspas o `(` era interpretado como início de nó stadium

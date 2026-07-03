@@ -326,8 +326,14 @@ static const char HTML_PAGE[] PROGMEM = R"rawhtml(<!DOCTYPE html>
     const MECA_PADRAO = 'A_SHUFFLE';
     // HARDCODED_WEB: intervalo de reconexao WS — detalhe de plataforma sem campo na spec
     const WS_RECONEXAO_MS = 3000;
-    // HARDCODED_WEB: tipo MIME CSV — detalhe de plataforma HTTP
+    // --- DERIVADO: spec/interface/interface.json#exportacao_csv.tipo_mime ---
     const CSV_MIME = 'text/csv';
+    // --- DERIVADO: spec/interface/interface.json#exportacao_csv.charset ---
+    const CSV_CHARSET = 'utf-8';
+    // --- DERIVADO: spec/interface/interface.json#exportacao_csv.bom (CSV-01: planilhas Windows assumem ANSI sem BOM) ---
+    const CSV_BOM = '\uFEFF';
+    // Composta — 07_interface_pedagogo.md#mecanismo-download (CSV-04)
+    const CSV_DATA_URI_PREFIX = 'data:' + CSV_MIME + ';charset=' + CSV_CHARSET + ',';
 
     // =======================================================================
     // 2. Estado de sessao — WEB_STANDARD.md#estado-sessao-js
@@ -599,20 +605,28 @@ static const char HTML_PAGE[] PROGMEM = R"rawhtml(<!DOCTYPE html>
       localStorage.setItem(LS_CHAVE, JSON.stringify(lista));
     }
 
+    // RFC 4180 §2 (CSV-02): campo com virgula, aspas ou quebra de linha vai
+    // entre aspas duplas; aspas internas duplicadas
+    function csvEscapar(campo) {
+      const s = String(campo);
+      return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    }
+
+    // Mecanismo data: URI — 07_interface_pedagogo.md#mecanismo-download (CSV-04).
+    // Proibido blob + revokeObjectURL e click() fora do DOM (causa raiz do D1).
     function exportarCSV() {
       const lista = carregarSessoes();
       const linhas = [CSV_CABECALHO].concat(lista.map(function(r) {
         return [r.id, r.nome, r.timestamp_inicio, r.modo, r.mecanismo,
                 r.n_configurado, r.acertos, r.erros, r.taxa_pct, r.duracao_s
-               ].join(',');
+               ].map(csvEscapar).join(',');
       }));
-      const blob = new Blob([linhas.join('\n')], { type: CSV_MIME });
-      const url  = URL.createObjectURL(blob);
       const a    = document.createElement('a');
-      a.href     = url;
+      a.href     = CSV_DATA_URI_PREFIX + encodeURIComponent(CSV_BOM + linhas.join('\n'));
       a.download = CSV_NOME_ARQUIVO;
+      document.body.appendChild(a);
       a.click();
-      URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     }
 
     // DRY: renderizacao de resultados recebe valores ja calculados — nao recalcula
