@@ -1,15 +1,15 @@
 ---
 documento:    08_bom.md
-versão:       0.2.2
+versão:       0.3.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
   - 01_arquitetura.md v0.2.1 [BLOQUEADOR]
-  - 02_sensor_impacto.md v0.1.3 [BLOQUEADOR]
-  - 03_saida_visual.md v0.1.3   [BLOQUEADOR]
-  - 05_alimentacao.md v0.2.2    [BLOQUEADOR]
+  - 02_sensor_impacto.md v0.2.0 [BLOQUEADOR]
+  - 03_saida_visual.md v0.1.4   [BLOQUEADOR]
+  - 05_alimentacao.md v0.3.0    [BLOQUEADOR]
 impacta:
   - 09_conexoes.md           [OBRIGATÓRIO]
   - 11_montagem.md           [OBRIGATÓRIO]
@@ -24,7 +24,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 08_bom.md |
-| Versão | 0.2.1 |
+| Versão | 0.3.0 |
 | Status | APROVADO |
 | Escopo | Todos os componentes necessários para uma unidade do projeto |
 
@@ -40,8 +40,8 @@ Listar todos os componentes eletrônicos, cabos e materiais estruturais necessá
 
 | ID | Componente | Especificação | Qtd | Referência |
 |---|---|---|---|---|
-| E01 | ESP32 DevKitC V4 | Módulo ESP32-WROOM-32U, 38 pinos — pino de entrada 5V rotulado **"5V"** (não "VIN"); inclui AMS1117-3.3 onboard (regulador 5V→3.3V integrado à placa; não é componente externo) | 1 | [VER: 01_arquitetura.md#hardware] |
-| E02 | Shield de expansão | Compatível com ESP32 38 pinos | 1 | [VER: 01_arquitetura.md#hardware] |
+| E01 | ESP32 DevKitC V4 | Módulo ESP32-WROOM-32U, 38 pinos — pino de entrada 5V rotulado **"5V"** (não "VIN"); inclui AMS1117-3.3 onboard (integrado à placa; FORA do caminho de potência de operação desde 05_alimentacao v0.3.0 — atua somente na gravação via USB) | 1 | [VER: 01_arquitetura.md#hardware] |
+| E02 | Shield de expansão | Compatível com ESP32 38 pinos. **ATENÇÃO — serigrafia não confiável:** na unidade em uso, o borne rotulado "GND" entre SD3 e 5V corresponde ao pino CMD/GPIO11 (chip select da flash — causa raiz do boot loop CA-07-01). Verificar TODO rótulo contra a serigrafia do DevKitC antes de conectar: [VER: 09_conexoes.md#verificacao-serigrafia] | 1 | [VER: 01_arquitetura.md#hardware] |
 | E03 | LED WS2812B | RGB endereçável individual (não fita), 3.3V | 3 | [VER: 03_saida_visual.md#componente-led] |
 | E04 | Disco piezoelétrico | 27mm, sem PCB, 2 fios soldados | 4 | [VER: 02_sensor_impacto.md#componente-piezo] |
 | E05 | Zener 3.3V | BZX55C3V3 ou 1N5226B | 4 | [VER: 02_sensor_impacto.md#componentes-protecao] |
@@ -57,8 +57,9 @@ Listar todos os componentes eletrônicos, cabos e materiais estruturais necessá
 | P02 | Resistor 300Ω | 1/4W, ±5% | 1 | [VER: 03_saida_visual.md#mapeamento-led] — série na linha de dados LED |
 | P03 | Cap. eletrolítico 100μF/25V | Entrada LM2596 | 1 | [VER: 05_alimentacao.md#decoupling] |
 | P04 | Cap. eletrolítico 470μF/10V | Saída LM2596 | 1 | [VER: 05_alimentacao.md#decoupling] |
-| P05 | Cap. eletrolítico 10μF/16V | Pino 5V DevKitC V4 + VDD por LED | 4 | [VER: 05_alimentacao.md#decoupling] — 1 pino 5V + 3 LEDs |
-| P06 | Cap. cerâmico 100nF/50V | Saída LM2596 + pino 5V + LEDs | 5 | [VER: 05_alimentacao.md#decoupling] — 1+1+3 |
+| P05 | Cap. eletrolítico 10μF/16V | VDD por LED | 3 | [VER: 05_alimentacao.md#decoupling] — 3 LEDs |
+| P06 | Cap. cerâmico 100nF/50V | Saída LM2596 + pino 3V3 + LEDs | 5 | [VER: 05_alimentacao.md#decoupling] — 1+1+3 |
+| P07 | Cap. eletrolítico 1000μF/≥10V | Pino 3V3 DevKitC V4 | 1 | [VER: 05_alimentacao.md#decoupling] — bulk local p/ transitório da ligada do rádio |
 
 ---
 
@@ -132,6 +133,7 @@ Fonte (A01) não contabilizada — já disponível.
 | 0.2.0 | 2026-06-30 | #eletronicos-ativos | Adiciona nota em E01: AMS1117-3.3 integrado ao DevKit, não componente externo; atualiza depende_de (02 v0.1.1, 03 v0.1.1, 05 v0.2.0) | 09, 11 [PATCH depende_de] |
 | 0.2.1 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0, 02 v0.1.1→v0.1.2, 03 v0.1.1→v0.1.2, 05 v0.2.0→v0.2.1 (bump MINOR retroativo de 01) | 09, 11 |
 | 0.2.2 | 2026-07-01 | #eletronicos-ativos, #passivos | Especifica E01 como DevKitC V4 e esclarece rótulo "5V" do pino de entrada; atualiza P05/P06: "VIN" → "pino 5V"; atualiza depende_de: 01 v0.2.1, 02 v0.1.3, 03 v0.1.3, 05 v0.2.2 | 09, 11 |
+| 0.3.0 | 2026-07-03 | #eletronicos-ativos, #passivos, depende_de | Cascata 05 v0.3.0 (arquitetura 3.3V direta): E01 nota AMS1117 fora do caminho de potência; E02 alerta de serigrafia não confiável (falso-GND = CMD/GPIO11, causa raiz CA-07-01); P05 reduzido a 3 (LEDs); P06 pino 3V3; P07 novo (1000μF pino 3V3); atualiza depende_de 02 v0.2.0, 03 v0.1.4, 05 v0.3.0 | 09, 11 [OBRIGATÓRIO] |
 
 ---
 
@@ -142,9 +144,9 @@ Fonte (A01) não contabilizada — já disponível.
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #componentes-fisicos |
 | Pai | 01_arquitetura.md | 0.2.1 | BLOQUEADOR | #hardware, #mapeamento-gpios |
-| Pai | 02_sensor_impacto.md | 0.1.3 | BLOQUEADOR | #componente-piezo, #componentes-protecao |
-| Pai | 03_saida_visual.md | 0.1.3 | BLOQUEADOR | #componente-led, #decoupling-led |
-| Pai | 05_alimentacao.md | 0.2.2 | BLOQUEADOR | #decoupling, #alimentacao |
+| Pai | 02_sensor_impacto.md | 0.2.0 | BLOQUEADOR | #componente-piezo, #componentes-protecao |
+| Pai | 03_saida_visual.md | 0.1.4 | BLOQUEADOR | #componente-led, #decoupling-led |
+| Pai | 05_alimentacao.md | 0.3.0 | BLOQUEADOR | #decoupling, #alimentacao |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #eletronicos-ativos, #passivos |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | todo este documento |
 ---
