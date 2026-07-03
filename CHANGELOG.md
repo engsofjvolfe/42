@@ -10,7 +10,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 ## [Nao lancado]
 
 ### Adicionado
-- `firmware/diag/` — kit de diagnóstico de bancada (projeto PlatformIO separado, fora do V-model e dos builds normais): sketch de teste da cadeia WS2812B (onda quadrada medível com multímetro + ciclo de cores FastLED) e `monitor_serial.py` (timestamps por linha + reset via RTS); origem: investigação CA-07-01 e diagnóstico dos LEDs (2026-07-02)
+- `firmware/diag/` — kit de diagnóstico de bancada (projeto PlatformIO separado, fora do V-model e dos builds normais): `led_test.cpp` (onda quadrada medível com multímetro + ciclo de cores FastLED), `wifi_test.cpp` (init do AP com TX reduzido + breadcrumbs — diagnóstico de brownout) e `monitor_serial.py` (timestamps por linha + reset via RTS); origem: investigação CA-07-01, diagnóstico dos LEDs e condenação do AMS1117 (2026-07-02)
 - `TODO.md` — lista de tarefas futuras: metadocumentos e índices de navegação por diretório (`modules/`, `spec/`, `hardware/`, `_governance/`)
 
 ### Alterado
