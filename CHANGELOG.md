@@ -14,6 +14,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `TODO.md` — lista de tarefas futuras: metadocumentos e índices de navegação por diretório (`modules/`, `spec/`, `hardware/`, `_governance/`)
 
 ### Alterado
+- `modules/interface/07_interface_pedagogo.md` v0.1.2 → v0.2.0: re-especifica a exportação CSV a partir do defeito D1 (validação ETAPA 8) — mecanismo `data:` URI com âncora anexada ao DOM substitui blob + `revokeObjectURL` síncrono (falha silenciosa em Firefox/WebView); novos requisitos CSV-01..04 (UTF-8 BOM, escaping RFC 4180, charset explícito, mecanismo de download); CA-07-09 estendido; corrige versão desatualizada na tabela de Identificação
 - `modules/power/05_alimentacao.md` v0.2.2 → v0.3.0: arquitetura de alimentação revisada pela Fase 6 (validação com hardware) — LM2596 ajustado a 3.30V ± 0.05V alimenta o rail 3.3V DIRETO; AMS1117 fora do caminho de potência (unidade degradada, comprovado 2026-07-02); USB somente gravação; bulk 1000µF no pino 3V3; CA-05-06 OBSOLETO, CA-05-08 novo (10 boots com rádio sem brownout); bump MAJOR adiado por decisão de projeto
 - `modules/sensor/02_sensor_impacto.md` v0.1.3 → v0.2.0: calibração do THRESHOLD obrigatória com topologia final energizada (rail sem PSRR do AMS1117); atualiza depende_de 05 v0.3.0
 - `modules/visual/03_saida_visual.md` v0.1.3 → v0.1.4: corrige origem do rail 3.3V (saída direta do LM2596); VDD e nível de dado inalterados; atualiza depende_de 05 v0.3.0

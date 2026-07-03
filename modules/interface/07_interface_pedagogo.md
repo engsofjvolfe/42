@@ -1,6 +1,6 @@
 ---
 documento:    07_interface_pedagogo.md
-versão:       0.1.2
+versão:       0.2.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
@@ -19,7 +19,7 @@ impacta: []
 | Campo | Valor |
 |---|---|
 | Documento | 07_interface_pedagogo.md |
-| Versão | 0.1.1 |
+| Versão | 0.2.0 |
 | Status | APROVADO |
 | Módulo firmware | MOD_WIFI — [VER: 01_arquitetura.md#mod-wifi] |
 | Stack | HTML + CSS + JS puro, sem framework — [VER: 01_arquitetura.md#stack-tecnologico] |
@@ -259,23 +259,70 @@ Derivado de [VER: 00_conceito.md#exportacao]. Acionado manualmente pelo pedagogo
 id,nome,timestamp_inicio,modo,mecanismo,n_configurado,acertos,erros,taxa_pct,duracao_s
 ```
 
-**Implementação:**
+### 8.1 Requisitos do arquivo exportado <a id="requisitos-csv"></a>
+
+| # | Requisito | Valor | Justificativa |
+|---|---|---|---|
+| CSV-01 | Codificação | UTF-8 com BOM (U+FEFF prefixado ao conteúdo) | Nomes pt-BR contêm acentos; planilhas Windows assumem ANSI na ausência de BOM e corrompem a acentuação |
+| CSV-02 | Escaping de campo | RFC 4180 §2: campo contendo vírgula, aspas ou quebra de linha é envolvido em aspas duplas; aspas internas duplicadas | Nome de criança pode conter vírgula/aspas — sem escaping as colunas deslocam (condição ideal proibida) |
+| CSV-03 | MIME type | `text/csv` com `charset=utf-8` explícito | Sem charset o browser/planilha decide a codificação por heurística |
+| CSV-04 | Mecanismo de download | `data:` URI (RFC 2397) em âncora com atributo `download`, anexada ao DOM antes de `click()` e removida após | Ver [VER: #mecanismo-download] |
+
+### 8.2 Mecanismo de download <a id="mecanismo-download"></a>
+
+```
+DECISAO: download via data: URI (RFC 2397) com conteúdo percent-encoded,
+  atributo download em âncora anexada ao document.body antes do click()
+  e removida em seguida. Sem object URLs, sem revogação.
+JUSTIFICATIVA: a implementação anterior (blob + URL.createObjectURL +
+  revokeObjectURL síncrono + âncora fora do DOM) falhava silenciosamente:
+  (1) revogação síncrona invalida a URL antes do fetch assíncrono do
+  download; (2) click() sintético em elemento fora do DOM é ignorado por
+  Firefox e browsers WebView; (3) o DownloadManager de WebViews Android
+  não resolve URLs blob: (contexto fora da página). data: URI carrega o
+  conteúdo na própria URL — resolvível por qualquer gerenciador de
+  download. Volume de dados trivial (~100 bytes/registro) descarta o
+  único custo do data: URI (inflação do percent-encoding).
+FASE V-MODEL: Fase 8 — correção derivada da validação de sistema (D1).
+VALIDACAO: CA-07-09 — [VER: #criterios-aceitacao].
+ANALISE DE FALHA: browser sem suporte ao atributo download (fora da
+  matriz RNF-05) não inicia o download; localStorage permanece intacto —
+  sem perda de dados; re-exportar em browser suportado recupera tudo.
+ALTERNATIVA: blob + revogação adiada — descartada: continua falhando em
+  WebViews (blob: irresolvível pelo DownloadManager). Download servido
+  pelo ESP32 — descartada: exigiria enviar dados de sessão ao ESP32,
+  violando 00_conceito.md#responsabilidade-dados.
+```
+
+**Constatação de origem (D1, validação 2026-07-03):** clicar em "Exportar CSV" não produzia nenhum efeito em browser WebView Android (DuckDuckGo). As três falhas listadas na JUSTIFICATIVA existiam simultaneamente na implementação anterior.
+
+**Implementação de referência** (nomes de constantes conforme WEB_STANDARD.md):
+
 ```js
+function csvEscapar(campo) {
+  const s = String(campo);
+  // RFC 4180 §2: envolver em aspas se contiver vírgula, aspas ou quebra de linha
+  return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
+
 function exportarCSV() {
-  const sessoes = JSON.parse(localStorage.getItem('bmi_sessoes') || '[]');
-  const header = 'id,nome,timestamp_inicio,modo,mecanismo,n_configurado,acertos,erros,taxa_pct,duracao_s';
+  const sessoes = carregarSessoes();
   const linhas = sessoes.map(s =>
     [s.id, s.nome, s.timestamp_inicio, s.modo, s.mecanismo,
-     s.n_configurado, s.acertos, s.erros, s.taxa_pct, s.duracao_s].join(',')
+     s.n_configurado, s.acertos, s.erros, s.taxa_pct, s.duracao_s]
+      .map(csvEscapar).join(',')
   );
-  const csv = [header, ...linhas].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
+  const csv = CSV_BOM + [CSV_CABECALHO].concat(linhas).join('\n');
   const a = document.createElement('a');
-  a.href = url; a.download = 'bmi_sessoes.csv'; a.click();
-  URL.revokeObjectURL(url);
+  a.href     = CSV_DATA_URI_PREFIX + encodeURIComponent(csv);
+  a.download = CSV_NOME_ARQUIVO;
+  document.body.appendChild(a);  // click() fora do DOM é ignorado por Firefox/WebView
+  a.click();
+  document.body.removeChild(a);
 }
 ```
+
+`CSV_DATA_URI_PREFIX` é composto de `data:` + tipo MIME + `;charset=` + charset + `,` — valores derivados de `spec/interface/interface.json#exportacao_csv` (`tipo_mime`, `charset`). `CSV_BOM` deriva de `spec/interface/interface.json#exportacao_csv.bom` (valor `"\uFEFF"` — requisito CSV-01). Nenhum destes valores é hardcoded no firmware.
 
 ---
 
@@ -291,7 +338,7 @@ function exportarCSV() {
 | CA-07-06 | Feedback erro | Tela vermelha + som neutro em < 200ms após impacto errado; mantida até próximo evento |
 | CA-07-07 | Tela de resultados | Ao receber FIM_SESSAO: exibe nome, acertos/total, taxa%, duração |
 | CA-07-08 | Persistência localStorage | Confirmar Nova Sessão: registro aparece no localStorage com todos os campos |
-| CA-07-09 | Exportação CSV | Botão gera download com cabeçalho correto e dados de todas as sessões armazenadas |
+| CA-07-09 | Exportação CSV | Botão gera download com cabeçalho correto e dados de todas as sessões armazenadas; campo contendo vírgula/aspas/quebra preservado em coluna única (RFC 4180 — [VER: #requisitos-csv]); acentuação correta ao abrir em planilha (UTF-8 BOM) |
 | CA-07-10 | Desconexão e retomada | WiFi pedagogo desligado: ESP32 pausa; reconectar: interface retoma sessão do ponto de pausa |
 | CA-07-11 | Offline total | Interface funciona sem acesso à internet em todas as etapas |
 
@@ -304,6 +351,7 @@ function exportarCSV() {
 | 0.1.0 | 2026-06-26 | — | Criação — derivada de 00_conceito v0.1.0 e 01_arquitetura v0.1.0 com âncoras e _PADRAO v0.1.0 | — |
 | 0.1.1 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo), 04_logica_jogo.md v0.1.0→v0.1.1 | — |
 | 0.1.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4), 04_logica_jogo.md v0.1.1→v0.1.2 | — |
+| 0.2.0 | 2026-07-03 | #exportacao-csv, #criterios-aceitacao, #identificacao | Re-especifica exportação CSV a partir do defeito D1 (validação ETAPA 8): mecanismo `data:` URI + âncora anexada ao DOM substitui blob + revokeObjectURL síncrono (falha silenciosa em Firefox/WebView); novos requisitos CSV-01..04 (UTF-8 BOM, escaping RFC 4180, charset explícito); CA-07-09 estendido; corrige versão desatualizada na tabela de Identificação (0.1.1) | WEB_STANDARD.md, spec/interface/interface.json, spec/interface/interface.schema.json, firmware/src/interface/interface.cpp |
 
 ---
 
