@@ -1,12 +1,12 @@
 ---
 documento:    WEB_STANDARD.md
-versão:       0.1.2
+versão:       0.2.0
 status:       APROVADO
 data:         2026-06-28
 depende_de:
   - _PADRAO.md v0.1.0                [BLOQUEADOR]
   - 01_arquitetura.md v0.2.1         [BLOQUEADOR]
-  - 07_interface_pedagogo.md v0.1.2  [BLOQUEADOR]
+  - 07_interface_pedagogo.md v0.2.0  [BLOQUEADOR]
 impacta:
   - firmware/src/interface/ (interface.cpp — arquivo HTML/CSS/JS embutido)
 ---
@@ -22,10 +22,10 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | WEB_STANDARD.md |
-| Versão | 0.1.1 |
+| Versão | 0.2.0 |
 | Status | APROVADO |
 | Escopo | HTML/CSS/JS embutido no firmware como string literal em interface.cpp |
-| Pais | _PADRAO.md v0.1.0, 01_arquitetura.md v0.2.0, 07_interface_pedagogo.md v0.1.1 |
+| Pais | _PADRAO.md v0.1.0, 01_arquitetura.md v0.2.1, 07_interface_pedagogo.md v0.2.0 |
 
 ---
 
@@ -225,6 +225,10 @@ const NOME_CONSTANTE = valor;
 | `LS_CHAVE` | `"bmi_sessoes"` | `armazenamento.chave` |
 | `CSV_CABECALHO` | `"id,nome,..."` | `exportacao_csv.cabecalho` |
 | `CSV_NOME_ARQUIVO` | `"bmi_sessoes.csv"` | `exportacao_csv.nome_arquivo` |
+| `CSV_MIME` | `"text/csv"` | `exportacao_csv.tipo_mime` |
+| `CSV_CHARSET` | `"utf-8"` | `exportacao_csv.charset` |
+| `CSV_DATA_URI_PREFIX` | `'data:' + CSV_MIME + ';charset=' + CSV_CHARSET + ','` | composta — [VER: 07_interface_pedagogo.md#mecanismo-download] |
+| `CSV_BOM` | `"\uFEFF"` | `exportacao_csv.bom` — [VER: 07_interface_pedagogo.md#requisitos-csv] CSV-01 |
 | `JANELA_MS_PADRAO` | `800` | `configuracao_ui.janela_ms_padrao` |
 | `N_MIN` | `1` | `configuracao_ui.n_interacoes_min` |
 | `MODO_PADRAO` | `"UM_MARTELO"` | `configuracao_ui.modo_padrao` |
@@ -235,7 +239,7 @@ const NOME_CONSTANTE = valor;
 | Classe | Definição | Ação |
 |---|---|---|
 | `DERIVADO` | Campo existe em `spec/interface/interface.json` | Declarar com comentário `--- DERIVADO: interface.json#campo ---` |
-| `HARDCODED_WEB` | Detalhe de plataforma web (ex: `"text/csv"`, `"application/json"`) | Declarar com comentário técnico obrigatório |
+| `HARDCODED_WEB` | Detalhe de plataforma web (ex: `"application/json"`, `WebSocket.OPEN`) | Declarar com comentário técnico obrigatório |
 | `MAGIC NUMBER` | Literal sem nome no corpo de função | **Proibido. Sem exceção.** |
 
 ---
@@ -251,7 +255,7 @@ const NOME_CONSTANTE = valor;
 | Som | `tocar<Evento>()` | `tocarAcerto()`, `tocarErro()` |
 | WebSocket | `conectarWS()`, `enviarMensagem(obj)` | — |
 | Armazenamento | `salvarSessao(registro)`, `carregarSessoes()` | — |
-| Exportação | `exportarCSV()` | — |
+| Exportação | `exportarCSV()`, `csvEscapar(campo)` | — |
 
 ### 8.2 Estrutura obrigatória do bloco `<script>` <a id="estrutura-script"></a>
 
@@ -343,6 +347,12 @@ Campos e tipos derivados de `spec/interface/interface.json#armazenamento.campos_
 ### 10.2 Exportação CSV <a id="exportacao-csv"></a>
 
 O cabeçalho CSV é exatamente `CSV_CABECALHO` (constante derivada de `interface.json#exportacao_csv.cabecalho`). A ordem das colunas no CSV segue a ordem dos campos na tabela acima. O nome do arquivo é `CSV_NOME_ARQUIVO`.
+
+Requisitos do arquivo e mecanismo de download: [VER: 07_interface_pedagogo.md#requisitos-csv] e [VER: 07_interface_pedagogo.md#mecanismo-download]. Regras derivadas:
+
+- Todo campo passa por `csvEscapar()` (RFC 4180 §2) antes do `join(',')` — CSV-02.
+- O conteúdo é prefixado com `CSV_BOM` (`interface.json#exportacao_csv.bom`) — CSV-01.
+- Download via `data:` URI: `CSV_DATA_URI_PREFIX + encodeURIComponent(csv)` em âncora com atributo `download`, anexada ao `document.body` antes de `click()` e removida após — CSV-04. Proibido: `URL.createObjectURL`/`revokeObjectURL` para exportação e `click()` em âncora fora do DOM (causa raiz do defeito D1).
 
 ---
 
@@ -438,9 +448,9 @@ Os cenários abaixo são derivados diretamente de `spec/interface/interface.json
 - Resultado: DevTools → Application → localStorage → chave `"bmi_sessoes"` (interface.json#armazenamento.chave) contém array com 1 registro com os 10 campos de interface.json#armazenamento.campos_registro
 
 **[CA-07-09] Exportação CSV**
-- Precondição: localStorage com ≥ 1 registro
+- Precondição: localStorage com ≥ 1 registro, incluindo um registro com nome contendo vírgula e um com acento (ex: `"Silva, João"`)
 - Ação: clicar "Exportar CSV"
-- Resultado: download de arquivo `"bmi_sessoes.csv"` (interface.json#exportacao_csv.nome_arquivo) com primeira linha exatamente `"id,nome,timestamp_inicio,modo,mecanismo,n_configurado,acertos,erros,taxa_pct,duracao_s"` (interface.json#exportacao_csv.cabecalho)
+- Resultado: download de arquivo `"bmi_sessoes.csv"` (interface.json#exportacao_csv.nome_arquivo) com primeira linha exatamente `"id,nome,timestamp_inicio,modo,mecanismo,n_configurado,acertos,erros,taxa_pct,duracao_s"` (interface.json#exportacao_csv.cabecalho), precedida apenas do BOM U+FEFF (interface.json#exportacao_csv.bom — invisível em editor de texto); aberto em planilha: nome com vírgula ocupa uma única coluna (RFC 4180) e acentos exibidos corretamente
 
 **[CA-07-10] Desconexão e retomada**
 - Precondição: estado SESSAO_ATIVA, WiFi ativo
@@ -479,6 +489,7 @@ Verificação manual no browser após flash do firmware.
 | 0.1.0 | 2026-06-28 | — | Criação: padrão de UI web embutida — MD3 offline, zero magic numbers JS/CSS, estrutura HTML, máquina de estados, nomenclatura de funções | firmware/src/interface/interface.cpp |
 | 0.1.1 | 2026-07-01 | depende_de, Rastreabilidade, #identificacao | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo), 07_interface_pedagogo.md v0.1.0→v0.1.1 | — |
 | 0.1.2 | 2026-07-01 | depende_de | Atualiza referências: 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4), 07_interface_pedagogo.md v0.1.1→v0.1.2 | — |
+| 0.2.0 | 2026-07-03 | #tabela-constantes-js, #classificacao-constantes-js, #nomenclatura-funcoes-js, #exportacao-csv, #teste-cenarios | Cascata do 07 v0.2.0 (correção D1): novas constantes obrigatórias CSV_MIME, CSV_CHARSET, CSV_DATA_URI_PREFIX, CSV_BOM (todas derivadas de exportacao_csv); csvEscapar() na nomenclatura; §10.2 com regras de escaping/BOM/data URI e proibição de blob+revoke na exportação; cenário CA-07-09 estendido; corrige versões desatualizadas em #identificacao e Rastreabilidade (01 v0.2.0→v0.2.1, 07 v0.1.1→v0.2.0) | firmware/src/interface/interface.cpp |
 
 ---
 
@@ -487,8 +498,8 @@ Verificação manual no browser após flash do firmware.
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 01_arquitetura.md | 0.2.0 | BLOQUEADOR | #requisitos-nao-funcionais, #stack-tecnologico |
-| Pai | 07_interface_pedagogo.md | 0.1.1 | BLOQUEADOR | #estados-interface, #feedback-sonoro, #websocket, #armazenamento-dados, #exportacao-csv, #tela-feedback |
+| Pai | 01_arquitetura.md | 0.2.1 | BLOQUEADOR | #requisitos-nao-funcionais, #stack-tecnologico |
+| Pai | 07_interface_pedagogo.md | 0.2.0 | BLOQUEADOR | #estados-interface, #feedback-sonoro, #websocket, #armazenamento-dados, #exportacao-csv, #requisitos-csv, #mecanismo-download, #tela-feedback |
 | Governa | firmware/src/interface/ | — | OBRIGATÓRIO | interface.cpp (HTML/CSS/JS embutido) |
 
 ---
