@@ -23,10 +23,17 @@ Fases concluídas e aprovadas:
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: feat/export-preview-pdf (criada de fix/export-csv em
-2026-07-03 — melhorias M2/M3 do TODO.md: pré-visualização com confirmação
-antes do download e escolha de formato CSV/PDF, com exportação PDF gerada
-em JS puro).
+VALIDAÇÃO FÍSICA CONCLUÍDA (2026-07-03, bancada, browser da matriz
+RNF-05): CA-07-09 (CSV via prévia — regressão do D1), CA-07-12
+(pré-visualização/confirmação) e CA-07-13 (PDF) — PASSOU. D1 BAIXADO.
+Merges fast-forward feitos em develop: fix/export-csv (ec94afd) e
+feat/export-preview-pdf (5ea06a9). M2 e M3 concluídos.
+
+Branch ativa: docs/conceito-exportacao (criada de develop em 2026-07-03 —
+decisão do usuário: registrar exportação PDF + pré-visualização no
+00_conceito.md §12.2/§15 e executar a cascata transitiva de depende_de).
+
+Contexto da branch anterior feat/export-preview-pdf (M2/M3, MERGEADA):
 Estado da branch feat/export-preview-pdf — cadeia completa commitada na
 ordem md → padrão → spec → código, run_all.py verde, jsonschema OK e
 CHANGELOG atualizado antes de cada commit:
@@ -53,16 +60,14 @@ visualmente (título, data/hora, tabela, acentos); pio run -e esp32dev
 SUCCESS sem warnings (Flash 66.7%); pio test -e native 38/38.
 Harness em scratchpad da sessão (previa_pdf_check.js) — recriável a
 partir dos cenários do WEB_STANDARD §11.5.
-Próxima ação: VALIDAÇÃO FÍSICA de CA-07-09 (ainda pendente do D1),
-CA-07-12 e CA-07-13 — flashar feat/export-preview-pdf (contém o fix do
-D1) e validar na bancada com browser da matriz RNF-05. PASSOU → merge
-fast-forward de fix/export-csv em develop, depois feat/export-preview-pdf
-em develop; baixa de D1 e M2/M3 no TODO.md. FALHOU → iterar.
-Nota de derivação registrada: M2/M3 derivam do 07 (trâmite do TODO.md,
-igual ao D1); 00_conceito.md §12.2 segue citando só CSV — se o usuário
-quiser registrar PDF no conceito, é branch docs/conceito-exportacao com
-bump 00 v0.1.0→v0.2.0 + cascata de depende_de em ~10 documentos
-(mecânica, não bloqueia).
+Próxima ação: concluir a cascata do conceito nesta branch — 00 v0.2.0
+(§12.2 formatos CSV/PDF + pré-visualização; §15 escopo), conteúdo em
+01 (CA-01-08) e 06 (portabilidade), cascata transitiva de depende_de em
+todos os dependentes (01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11,
+CODING/TESTING/WEB_STANDARD), run_all.py zero erros, merge em develop.
+Depois, nesta ordem: (1) checklist formal de CAs da ETAPA 8 restantes
+(CA-05-08, CA-09-07, CA-10-06 e demais); (2) melhorias M1/M4/M5 em
+branches próprias; (3) só então tag v1.0.0 e merge em main.
 
 Contexto herdado da branch fix/export-csv (D1):
 Estado da branch — cadeia completa commitada na ordem md → json → schema →
