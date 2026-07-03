@@ -1,13 +1,13 @@
 ---
 documento:    02_sensor_impacto.md
-versão:       0.1.3
+versão:       0.2.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.1.0    [BLOQUEADOR]
   - 01_arquitetura.md v0.2.1 [BLOQUEADOR]
-  - 05_alimentacao.md v0.2.2 [BLOQUEADOR]
+  - 05_alimentacao.md v0.3.0 [BLOQUEADOR]
 impacta:
   - 08_bom.md                [OBRIGATÓRIO]
   - 09_conexoes.md           [OBRIGATÓRIO]
@@ -22,7 +22,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 02_sensor_impacto.md |
-| Versão | 0.1.2 |
+| Versão | 0.2.0 |
 | Status | APROVADO |
 | Módulo firmware | MOD_SENSOR — [VER: 01_arquitetura.md#mod-sensor] |
 | GPIOs | 34, 35, 32, 33 — [VER: 01_arquitetura.md#mapeamento-gpios] |
@@ -124,7 +124,7 @@ if (leitura > THRESHOLD) {
 | `THRESHOLD` | 500 | int (0–4095) | ADC mínimo para impacto válido — 500/4095 × 3.3V ≈ 0.40V. [CALIBRAR] |
 | `DEBOUNCE_MS` | 200 | int (ms) | Janela de bloqueio após detecção — cobre ringing mecânico do disco |
 
-**Sobre THRESHOLD:** verificar empiricamente após montagem — batida leve deve ultrapassar 500; vibração de zona adjacente não deve ultrapassar 500.
+**Sobre THRESHOLD:** verificar empiricamente após montagem — batida leve deve ultrapassar 500; vibração de zona adjacente não deve ultrapassar 500. A calibração DEVE ser feita com a topologia de alimentação final energizada: o rail 3.3V é saída direta do LM2596 (sem o PSRR do AMS1117), e o piso de ruído do ADC muda com o ripple residual — [VER: 05_alimentacao.md#restricao-sensor].
 
 **Sobre DEBOUNCE_MS:** 200ms é conservador para uso infantil — cobre ringing mecânico e impede dupla contagem. Cada GPIO tem timer independente: Modo 2 não é afetado (zonas distintas).
 
@@ -171,6 +171,7 @@ if (leitura > THRESHOLD) {
 | 0.1.1 | 2026-06-30 | depende_de | Atualiza referência 05_alimentacao.md de v0.1.0 para v0.2.0 (nota AMS1117 onboard) | — |
 | 0.1.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo), 05_alimentacao.md v0.2.0→v0.2.1 | — |
 | 0.1.3 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4), 05_alimentacao.md v0.2.1→v0.2.2 (VIN→pino 5V) | — |
+| 0.2.0 | 2026-07-03 | #parametros (nota THRESHOLD), depende_de, Rastreabilidade | Clarifica condição de calibração do THRESHOLD: obrigatória com topologia final energizada (rail 3.3V direto do LM2596, sem PSRR do AMS1117 — 05_alimentacao v0.3.0); atualiza depende_de 05 v0.2.2→v0.3.0 | 08, 09 (somente depende_de) |
 
 ---
 
@@ -181,7 +182,7 @@ if (leitura > THRESHOLD) {
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.1.0 | BLOQUEADOR | #zonas-impacto |
 | Pai | 01_arquitetura.md | 0.2.1 | BLOQUEADOR | #mod-sensor, #mapeamento-gpios, #interface-sensor-jogo, #requisitos-nao-funcionais |
-| Pai | 05_alimentacao.md | 0.2.2 | BLOQUEADOR | #restricao-sensor |
+| Pai | 05_alimentacao.md | 0.3.0 | BLOQUEADOR | #restricao-sensor |
 | Filho | 08_bom.md | — | OBRIGATÓRIO | #componente-piezo, #componentes-protecao |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #esquema-protecao, #mapeamento-gpios-sensor, #fios-sensor |
 ---
