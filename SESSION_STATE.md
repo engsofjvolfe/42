@@ -27,17 +27,20 @@ Branch ativa: develop (fix/ca-07-01 MERGEADA em develop via fast-forward em
 2026-07-02 — commits 34007bd build(ci) + 9b8b2de chore/SESSION_STATE; fecha o
 ciclo fix→re-teste do CA-07-01 na ETAPA 8. Os 14 commits da investigação
 antiga seguem preservados só na tag backup/fix-ca-07-01-abandonado-20260702)
-Próxima ação: CASCATA DE DOCUMENTAÇÃO AUTORIZADA E EM EXECUÇÃO (branch
-docs/cascata-alimentacao-3v3): sementes = arquitetura de alimentação 3.3V
-direta (dono: 05_alimentacao, bump MAJOR), verificação de serigrafia de
-bornes (09_conexoes + nota E02 em 08_bom), robustez de conexões da cadeia
-LED (10_cablagem + 11_montagem); recursão via campo impacta; re-derivação de
-spec/power. Depois da cascata: checklist formal de CAs da ETAPA 8
-(PASSOU/FALHOU por CA). Pendente para outra sessão: branch fix do EXPORT CSV
-(defeito conhecido, CA-07-*). NÃO TAGUEAR v1.0.0 até TODOS os CAs passarem —
-gate do protocolo. Pendências físicas: marcar borne falso-GND (CMD) como
-proibido; auditar todos os rótulos do shield contra a serigrafia do DevKitC;
-travar/marcar o trimpot do LM2596 em 3.30V.
+Próxima ação: CASCATA DE ALIMENTAÇÃO 3.3V CONCLUÍDA E MERGEADA em develop
+(2026-07-03, branch docs/cascata-alimentacao-3v3, commits da1514c..3d1eed1,
+fast-forward): 05 v0.3.0 (dono; bump MAJOR adiado por decisão de projeto,
+mantido MINOR até o fechamento do V-model), 02 v0.2.0, 03 v0.1.4, 08 v0.3.0,
+09 v0.3.0 (+#verificacao-serigrafia, CA-09-07), 10 v0.2.0 (+CA-10-06),
+11 v0.3.0, spec/power re-derivada (jsonschema OK), TODO.md com D1 (export
+CSV) e M1–M5. run_all.py verde em todos os commits.
+Próximos passos, nesta ordem: (1) branch fix/export-csv — defeito D1 do
+TODO.md, BLOQUEIA o gate v1.0.0; (2) checklist formal de CAs da ETAPA 8
+(PASSOU/FALHOU por CA, incluindo CA-05-08, CA-09-07, CA-10-06 novos);
+(3) melhorias M1–M5 em branches próprias; (4) só então tag v1.0.0 e merge
+em main. Pendências físicas: marcar borne falso-GND (CMD) como proibido;
+auditar todos os rótulos do shield contra a serigrafia do DevKitC;
+travar/marcar o trimpot do LM2596 em 3.30V (CA-09-07/CA-05-01).
 
 ---
 
