@@ -51,8 +51,8 @@ ETAPA 8 exige todos os CAs aprovados.
 | # | Item | Motivação | Critério de conclusão |
 |---|---|---|---|
 | M1 | Botão de encerrar sessão e iniciar nova sessão | Hoje não há caminho explícito na interface para encerrar e recomeçar sem recarregar/reiniciar | Pedagogo encerra sessão ativa e inicia nova sem recarregar a página nem reiniciar o ESP32 |
-| M2 | Visualização do CSV na própria interface | Pedagogo precisa conferir os dados antes de baixar | Tabela renderizada na interface com os mesmos dados do arquivo exportado |
-| M3 | Exportação em formato legível além do CSV | CSV é para planilha; falta formato para leitura humana (relatório) | Pedagogo escolhe o formato no momento do download (CSV ou legível) |
+| M2 | Visualização do CSV na própria interface | Pedagogo precisa conferir os dados antes de baixar | Tabela renderizada na interface com os mesmos dados do arquivo exportado — **implementado em `feat/export-preview-pdf` (CA-07-12); aguarda validação física** |
+| M3 | Exportação em formato legível além do CSV | CSV é para planilha; falta formato para leitura humana (relatório) | Pedagogo escolhe o formato no momento do download (CSV ou PDF) — **implementado em `feat/export-preview-pdf` (CA-07-13); aguarda validação física** |
 | M4 | Documento de instrução do jogo | Não existe manual de uso para o pedagogo | Documento em linguagem não-técnica: preparação, modos, sessão, leitura de resultados |
 | M5 | Atualização do README | README desatualizado frente ao estado real (validação, arquitetura 3.3V) | README reflete o estado corrente do projeto e aponta para o manual (M4) |
 

@@ -23,9 +23,48 @@ Fases concluídas e aprovadas:
   [ ] Fase 7 — Teste de Integração
   [ ] Fase 8 — Teste de Sistema
 
-Branch ativa: fix/export-csv (criada de develop em 2026-07-03 — correção do
-defeito D1: exportação CSV não funcionava, CA-07-09 reprovado na bancada em
-browser WebView Android/DuckDuckGo).
+Branch ativa: feat/export-preview-pdf (criada de fix/export-csv em
+2026-07-03 — melhorias M2/M3 do TODO.md: pré-visualização com confirmação
+antes do download e escolha de formato CSV/PDF, com exportação PDF gerada
+em JS puro).
+Estado da branch feat/export-preview-pdf — cadeia completa commitada na
+ordem md → padrão → spec → código, run_all.py verde, jsonschema OK e
+CHANGELOG atualizado antes de cada commit:
+  1. docs(interface) 28e8191 — 07 v0.3.0: §8 reestruturada (fluxo Exportar
+     → prévia → formato → confirmar), §8.3 PRE-01..05, §8.4 PDF-01..06 com
+     DECISAO formal (PDF 1.4 em JS puro, base-14, WinAnsi, A4 paisagem,
+     35 linhas/página), CA-07-09 ajustado, CA-07-12/13 novos
+  2. docs(padrao) 24cd106 — WEB_STANDARD v0.3.0: overlay-exportacao,
+     constantes EXPORT_*/PDF_*, §10.3/§10.4, cenários CA-07-12/13
+  3. spec(interface) 1b1150c — exportacao_ui + exportacao_pdf no
+     interface.json/schema, 13 CAs, versao_fonte 0.3.0
+  4. feat(interface) 72ba5cb — interface.cpp: overlay de prévia (tabela
+     via textContent, radios de EXPORT_FORMATOS, Baixar/Cancelar,
+     PRE-05 com vazio), gerador _pdfGerar (xref byte-exata), download
+     base64 pelo mesmo mecanismo data: URI do D1; baixarArquivo() como
+     ponto único de âncora; exportarCSV() só via confirmação da prévia
+Verificação já feita nesta branch: harness Node novo (JS real embutido,
+DOM mockado, valores esperados lidos do interface.json) — 44/44 checks
+cobrindo CA-07-12 (prévia/cancelar/vazio), CA-07-09 via prévia (regressão
+D1 completa: BOM, RFC 4180, data: URI) e CA-07-13 (estrutura PDF: %PDF-1.4,
+xref byte-exata, /Length, WinAnsi de acentos, escaping de parênteses,
+paginação 40 registros → 2 páginas); PDF de amostra aberto e conferido
+visualmente (título, data/hora, tabela, acentos); pio run -e esp32dev
+SUCCESS sem warnings (Flash 66.7%); pio test -e native 38/38.
+Harness em scratchpad da sessão (previa_pdf_check.js) — recriável a
+partir dos cenários do WEB_STANDARD §11.5.
+Próxima ação: VALIDAÇÃO FÍSICA de CA-07-09 (ainda pendente do D1),
+CA-07-12 e CA-07-13 — flashar feat/export-preview-pdf (contém o fix do
+D1) e validar na bancada com browser da matriz RNF-05. PASSOU → merge
+fast-forward de fix/export-csv em develop, depois feat/export-preview-pdf
+em develop; baixa de D1 e M2/M3 no TODO.md. FALHOU → iterar.
+Nota de derivação registrada: M2/M3 derivam do 07 (trâmite do TODO.md,
+igual ao D1); 00_conceito.md §12.2 segue citando só CSV — se o usuário
+quiser registrar PDF no conceito, é branch docs/conceito-exportacao com
+bump 00 v0.1.0→v0.2.0 + cascata de depende_de em ~10 documentos
+(mecânica, não bloqueia).
+
+Contexto herdado da branch fix/export-csv (D1):
 Estado da branch — cadeia completa commitada na ordem md → json → schema →
 código, run_all.py verde e jsonschema OK em todos os commits:
   1. docs(interface) cf97ed9 — 07 v0.2.0: §8 re-especificada — mecanismo
