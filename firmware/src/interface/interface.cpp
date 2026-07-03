@@ -198,6 +198,52 @@ static const char HTML_PAGE[] PROGMEM = R"rawhtml(<!DOCTYPE html>
       margin-top: var(--md-sys-spacing-md);
       font-size: 0.875rem; color: var(--md-sys-color-outline);
     }
+
+    /* --- Overlay de exportacao — WEB_STANDARD.md#pre-visualizacao-js --- */
+    #overlay-exportacao {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.50);
+      display: flex; align-items: center; justify-content: center;
+      padding: var(--md-sys-spacing-md);
+    }
+    .previa-card {
+      background: var(--md-sys-color-surface);
+      border-radius: var(--md-sys-shape-large);
+      box-shadow: var(--md-sys-elevation-2);
+      padding: var(--md-sys-spacing-lg);
+      width: 100%; max-width: 640px;
+      max-height: 90dvh;
+      display: flex; flex-direction: column;
+    }
+    .previa-tabela-wrap {
+      overflow: auto;
+      margin: var(--md-sys-spacing-md) 0;
+      border: 1px solid var(--md-sys-color-surface-variant);
+      border-radius: var(--md-sys-shape-small);
+    }
+    #previa-tabela { border-collapse: collapse; width: 100%; font-size: 0.75rem; }
+    #previa-tabela th, #previa-tabela td {
+      padding: var(--md-sys-spacing-xs) var(--md-sys-spacing-sm);
+      border-bottom: 1px solid var(--md-sys-color-surface-variant);
+      text-align: left; white-space: nowrap;
+    }
+    #previa-tabela th { color: var(--md-sys-color-outline); font-weight: 500; }
+    .formato-row {
+      display: flex; gap: var(--md-sys-spacing-lg);
+      margin-top: var(--md-sys-spacing-sm);
+    }
+    .formato-row label {
+      display: flex; align-items: center; gap: var(--md-sys-spacing-xs);
+      font-size: 0.875rem; color: var(--md-sys-color-on-surface);
+      margin-bottom: 0;
+    }
+    .formato-row input { width: auto; }
+    #previa-vazio {
+      color: var(--md-sys-color-error);
+      font-size: 0.875rem;
+      margin-top: var(--md-sys-spacing-md);
+    }
+    .btn[disabled] { opacity: 0.38; cursor: not-allowed; } /* opacidade de estado disabled MD3 */
   </style>
 </head>
 <body>
@@ -270,7 +316,22 @@ static const char HTML_PAGE[] PROGMEM = R"rawhtml(<!DOCTYPE html>
     <div class="stat-row"><span>Taxa</span>   <span id="res-taxa">-</span></div>
     <div class="stat-row"><span>Duracao</span><span id="res-duracao">-</span></div>
     <button class="btn"         id="btn-nova-sessao">Nova Sessao</button>
-    <button class="btn btn-outline" id="btn-exportar">Exportar CSV</button>
+    <button class="btn btn-outline" id="btn-exportar">Exportar</button>
+  </div>
+
+  <!-- OVERLAY EXPORTACAO — pre-visualizacao com confirmacao —
+       07_interface_pedagogo.md#pre-visualizacao / WEB_STANDARD.md#pre-visualizacao-js -->
+  <div id="overlay-exportacao" hidden>
+    <div class="previa-card">
+      <h2>Exportar sessoes</h2>
+      <div class="previa-tabela-wrap">
+        <table id="previa-tabela"></table>
+      </div>
+      <p id="previa-vazio" hidden>Nenhuma sessao registrada - nada para exportar.</p>
+      <div class="formato-row" id="previa-formatos"></div>
+      <button class="btn" id="btn-baixar">Baixar</button>
+      <button class="btn btn-outline" id="btn-cancelar">Cancelar</button>
+    </div>
   </div>
 
   <script>
@@ -334,6 +395,67 @@ static const char HTML_PAGE[] PROGMEM = R"rawhtml(<!DOCTYPE html>
     const CSV_BOM = '\uFEFF';
     // Composta — 07_interface_pedagogo.md#mecanismo-download (CSV-04)
     const CSV_DATA_URI_PREFIX = 'data:' + CSV_MIME + ';charset=' + CSV_CHARSET + ',';
+    // --- DERIVADO: spec/interface/interface.json#exportacao_ui.formatos ---
+    const EXPORT_FORMATOS = ['CSV', 'PDF'];
+    // --- DERIVADO: spec/interface/interface.json#exportacao_ui.formato_padrao ---
+    const EXPORT_FORMATO_PADRAO = 'CSV';
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.nome_arquivo ---
+    const PDF_NOME_ARQUIVO = 'bmi_sessoes.pdf';
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.tipo_mime ---
+    const PDF_MIME = 'application/pdf';
+    // Composta — 07_interface_pedagogo.md#exportacao-pdf (PDF-06: binario em base64)
+    const PDF_DATA_URI_PREFIX = 'data:' + PDF_MIME + ';base64,';
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.versao_pdf ---
+    const PDF_VERSAO = '1.4';
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.titulo ---
+    const PDF_TITULO = 'Relatório de Sessões — BMI';
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.fontes.titulo.nome ---
+    const PDF_FONTE_TITULO = 'Helvetica-Bold';
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.fontes.titulo.tamanho_pt ---
+    const PDF_FONTE_TITULO_PT = 16;
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.fontes.metadados.nome ---
+    const PDF_FONTE_META = 'Helvetica';
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.fontes.metadados.tamanho_pt ---
+    const PDF_FONTE_META_PT = 10;
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.fontes.tabela.nome ---
+    const PDF_FONTE_TABELA = 'Courier';
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.fontes.tabela.tamanho_pt ---
+    const PDF_FONTE_TABELA_PT = 8;
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.pagina.largura_pt ---
+    const PDF_PAG_LARGURA_PT = 842;
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.pagina.altura_pt ---
+    const PDF_PAG_ALTURA_PT = 595;
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.pagina.margem_pt ---
+    const PDF_MARGEM_PT = 40;
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.altura_linha_pt ---
+    const PDF_ALTURA_LINHA_PT = 12;
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.espaco_pos_titulo_pt ---
+    const PDF_ESPACO_POS_TITULO_PT = 20;
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.espaco_pos_meta_pt ---
+    const PDF_ESPACO_POS_META_PT = 24;
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.linhas_dados_por_pagina ---
+    const PDF_LINHAS_DADOS_POR_PAGINA = 35;
+    // --- DERIVADO: spec/interface/interface.json#exportacao_pdf.colunas ---
+    const PDF_COLUNAS = [
+      {campo: 'id',               titulo: 'Id',        largura_chars: 14},
+      {campo: 'nome',             titulo: 'Nome',      largura_chars: 40},
+      {campo: 'timestamp_inicio', titulo: 'Início',    largura_chars: 25},
+      {campo: 'modo',             titulo: 'Modo',      largura_chars: 14},
+      {campo: 'mecanismo',        titulo: 'Mecanismo', largura_chars: 10},
+      {campo: 'n_configurado',    titulo: 'N',         largura_chars: 4},
+      {campo: 'acertos',          titulo: 'Acertos',   largura_chars: 8},
+      {campo: 'erros',            titulo: 'Erros',     largura_chars: 6},
+      {campo: 'taxa_pct',         titulo: 'Taxa %',    largura_chars: 8},
+      {campo: 'duracao_s',        titulo: 'Dur. s',    largura_chars: 10}
+    ];
+    // Caractere de truncamento — 07_interface_pedagogo.md#exportacao-pdf (PDF-05)
+    const PDF_ELIPSE = '…';
+    // HARDCODED_WEB: posicoes WinAnsi de caracteres fora do latin-1 direto —
+    // conteudo normativo do ISO 32000-1 Annex D.2, nao e dado de dominio (PDF-02)
+    const PDF_WINANSI_MAP = {
+      0x20AC: 0x80, 0x2026: 0x85, 0x2018: 0x91, 0x2019: 0x92,
+      0x201C: 0x93, 0x201D: 0x94, 0x2013: 0x96, 0x2014: 0x97
+    };
 
     // =======================================================================
     // 2. Estado de sessao — WEB_STANDARD.md#estado-sessao-js
@@ -375,6 +497,11 @@ static const char HTML_PAGE[] PROGMEM = R"rawhtml(<!DOCTYPE html>
     const elResTotal      = document.getElementById('res-total');
     const elResTaxa       = document.getElementById('res-taxa');
     const elResDuracao    = document.getElementById('res-duracao');
+    const elOverlayExportacao = document.getElementById('overlay-exportacao');
+    const elPreviaTabela      = document.getElementById('previa-tabela');
+    const elPreviaVazio       = document.getElementById('previa-vazio');
+    const elPreviaFormatos    = document.getElementById('previa-formatos');
+    const elBtnBaixar         = document.getElementById('btn-baixar');
 
     // =======================================================================
     // 4. Som — WEB_STANDARD.md#padrao-funcoes-js (tocar<Evento>)
@@ -589,7 +716,24 @@ static const char HTML_PAGE[] PROGMEM = R"rawhtml(<!DOCTYPE html>
       setState('CONFIGURANDO');
     });
 
-    document.getElementById('btn-exportar').addEventListener('click', exportarCSV);
+    // PRE-01: o botao Exportar abre a previa — nunca baixa direto
+    document.getElementById('btn-exportar').addEventListener('click', abrirPrevia);
+
+    // PRE-04: Cancelar fecha sem qualquer download
+    document.getElementById('btn-cancelar').addEventListener('click', fecharPrevia);
+
+    // PRE-04: Baixar confirma no formato selecionado e fecha a previa
+    elBtnBaixar.addEventListener('click', function() {
+      const lista = carregarSessoes();
+      if (lista.length === 0) { return; } // PRE-05 defensivo — botao ja esta disabled
+      // EXPORT_FORMATOS = ['CSV', 'PDF'] — indice 1 e PDF
+      if (_formatoSelecionado() === EXPORT_FORMATOS[1]) {
+        exportarPDF(lista);
+      } else {
+        exportarCSV(lista);
+      }
+      fecharPrevia();
+    });
 
     // =======================================================================
     // 9. Armazenamento e exportacao — WEB_STANDARD.md#armazenamento-exportacao
@@ -612,21 +756,205 @@ static const char HTML_PAGE[] PROGMEM = R"rawhtml(<!DOCTYPE html>
       return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
     }
 
-    // Mecanismo data: URI — 07_interface_pedagogo.md#mecanismo-download (CSV-04).
+    // DRY: unico ponto de criacao da ancora de download (CSV-04 / PDF-06).
     // Proibido blob + revokeObjectURL e click() fora do DOM (causa raiz do D1).
-    function exportarCSV() {
-      const lista = carregarSessoes();
+    function baixarArquivo(href, nome) {
+      const a    = document.createElement('a');
+      a.href     = href;
+      a.download = nome;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // Mecanismo data: URI — 07_interface_pedagogo.md#mecanismo-download (CSV-04).
+    // Chamada somente pela confirmacao da previa (PRE-04).
+    function exportarCSV(lista) {
       const linhas = [CSV_CABECALHO].concat(lista.map(function(r) {
         return [r.id, r.nome, r.timestamp_inicio, r.modo, r.mecanismo,
                 r.n_configurado, r.acertos, r.erros, r.taxa_pct, r.duracao_s
                ].map(csvEscapar).join(',');
       }));
-      const a    = document.createElement('a');
-      a.href     = CSV_DATA_URI_PREFIX + encodeURIComponent(CSV_BOM + linhas.join('\n'));
-      a.download = CSV_NOME_ARQUIVO;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      baixarArquivo(CSV_DATA_URI_PREFIX + encodeURIComponent(CSV_BOM + linhas.join('\n')),
+                    CSV_NOME_ARQUIVO);
+    }
+
+    // =======================================================================
+    // 9b. Pre-visualizacao de exportacao — WEB_STANDARD.md#pre-visualizacao-js
+    // =======================================================================
+
+    // PRE-02: mesmas 10 colunas e mesma ordem do CSV; dado de sessao sempre
+    // via textContent (nome de crianca e entrada de usuario)
+    function renderizarPrevia(lista) {
+      while (elPreviaTabela.firstChild) {
+        elPreviaTabela.removeChild(elPreviaTabela.firstChild);
+      }
+      const trCabecalho = document.createElement('tr');
+      CSV_CABECALHO.split(',').forEach(function(nomeColuna) {
+        const th = document.createElement('th');
+        th.textContent = nomeColuna;
+        trCabecalho.appendChild(th);
+      });
+      elPreviaTabela.appendChild(trCabecalho);
+      lista.forEach(function(r) {
+        const tr = document.createElement('tr');
+        [r.id, r.nome, r.timestamp_inicio, r.modo, r.mecanismo,
+         r.n_configurado, r.acertos, r.erros, r.taxa_pct, r.duracao_s
+        ].forEach(function(valor) {
+          const td = document.createElement('td');
+          td.textContent = String(valor);
+          tr.appendChild(td);
+        });
+        elPreviaTabela.appendChild(tr);
+      });
+      const vazio = (lista.length === 0);
+      elPreviaVazio.hidden = !vazio;  // PRE-05
+      elBtnBaixar.disabled = vazio;   // PRE-05
+    }
+
+    function abrirPrevia() {
+      renderizarPrevia(carregarSessoes());
+      elOverlayExportacao.hidden = false; // PRE-01: nenhum download aqui
+    }
+
+    function fecharPrevia() {
+      elOverlayExportacao.hidden = true;
+    }
+
+    function _formatoSelecionado() {
+      const marcado = document.querySelector('#previa-formatos input:checked');
+      return marcado ? marcado.value : EXPORT_FORMATO_PADRAO;
+    }
+
+    // =======================================================================
+    // 9c. Geracao de PDF — WEB_STANDARD.md#geracao-pdf-js
+    //     07_interface_pedagogo.md#exportacao-pdf (PDF-01..06)
+    // =======================================================================
+
+    // PDF-02: UTF-16 -> bytes WinAnsi; latin-1 direto (fora de 0x80-0x9F),
+    // tipograficos via PDF_WINANSI_MAP, resto vira '?'
+    function _pdfWinAnsi(s) {
+      let saida = '';
+      for (let i = 0; i < s.length; i++) {
+        const cp = s.charCodeAt(i);
+        if (cp <= 0xFF && !(cp >= 0x80 && cp <= 0x9F)) {
+          saida += String.fromCharCode(cp);
+        } else if (PDF_WINANSI_MAP[cp]) {
+          saida += String.fromCharCode(PDF_WINANSI_MAP[cp]);
+        } else {
+          saida += '?';
+        }
+      }
+      return saida;
+    }
+
+    // PDF-05: escaping de string PDF — ISO 32000-1 secao 7.3.4.2
+    function _pdfEscapar(s) {
+      return s.replace(/([\\()])/g, '\\$1');
+    }
+
+    // PDF-03: dd/mm/aaaa hh:mm — montagem manual; toLocaleString varia por engine
+    function _formatarDataGeracao(d) {
+      function dois(n) { return String(n).padStart(2, '0'); }
+      return dois(d.getDate()) + '/' + dois(d.getMonth() + 1) + '/' + d.getFullYear() +
+             ' ' + dois(d.getHours()) + ':' + dois(d.getMinutes());
+    }
+
+    // PDF-05: celula de largura fixa — trunca com reticencias e completa com espacos
+    function _pdfCelula(valor, largura) {
+      let s = _pdfWinAnsi(String(valor));
+      if (s.length > largura) {
+        s = s.slice(0, largura - 2) + _pdfWinAnsi(PDF_ELIPSE);
+      }
+      return s.padEnd(largura, ' ');
+    }
+
+    // Monta o arquivo PDF completo como string binaria (1 char = 1 byte apos
+    // _pdfWinAnsi); offsets da xref calculados sobre o comprimento acumulado —
+    // byte-exatos por construcao. Objetos: 1 Catalog, 2 Pages, 3-5 fontes,
+    // depois pares (Page, Contents) por pagina.
+    function _pdfGerar(lista) {
+      const cabecalhoTabela = PDF_COLUNAS.map(function(c) {
+        return _pdfCelula(c.titulo, c.largura_chars);
+      }).join('');
+      const separador = ''.padEnd(cabecalhoTabela.length, '-');
+      const linhasDados = lista.map(function(r) {
+        return PDF_COLUNAS.map(function(c) {
+          return _pdfCelula(r[c.campo], c.largura_chars);
+        }).join('');
+      });
+      const totalPaginas = Math.max(1, Math.ceil(linhasDados.length / PDF_LINHAS_DADOS_POR_PAGINA));
+      const dataGeracao = _formatarDataGeracao(new Date());
+
+      const streams = [];
+      for (let p = 0; p < totalPaginas; p++) {
+        const yTitulo = PDF_PAG_ALTURA_PT - PDF_MARGEM_PT - PDF_FONTE_TITULO_PT;
+        const yMeta   = yTitulo - PDF_ESPACO_POS_TITULO_PT;
+        let   yLinha  = yMeta - PDF_ESPACO_POS_META_PT;
+        const meta = 'Gerado em ' + dataGeracao +
+                     ' — Sessões: ' + lista.length +
+                     ' — Página ' + (p + 1) + ' de ' + totalPaginas;
+        let ops = 'BT\n';
+        ops += '/F1 ' + PDF_FONTE_TITULO_PT + ' Tf\n' +
+               '1 0 0 1 ' + PDF_MARGEM_PT + ' ' + yTitulo + ' Tm\n' +
+               '(' + _pdfEscapar(_pdfWinAnsi(PDF_TITULO)) + ') Tj\n';
+        ops += '/F2 ' + PDF_FONTE_META_PT + ' Tf\n' +
+               '1 0 0 1 ' + PDF_MARGEM_PT + ' ' + yMeta + ' Tm\n' +
+               '(' + _pdfEscapar(_pdfWinAnsi(meta)) + ') Tj\n';
+        ops += '/F3 ' + PDF_FONTE_TABELA_PT + ' Tf\n';
+        const linhasPagina = [cabecalhoTabela, separador].concat(
+          linhasDados.slice(p * PDF_LINHAS_DADOS_POR_PAGINA,
+                            (p + 1) * PDF_LINHAS_DADOS_POR_PAGINA));
+        linhasPagina.forEach(function(linha) {
+          ops += '1 0 0 1 ' + PDF_MARGEM_PT + ' ' + yLinha + ' Tm\n' +
+                 '(' + _pdfEscapar(linha) + ') Tj\n';
+          yLinha -= PDF_ALTURA_LINHA_PT;
+        });
+        ops += 'ET';
+        streams.push(ops);
+      }
+
+      const objetos = [];
+      const kidsRefs = [];
+      // objetos 1-5 fixos: primeira pagina e o objeto 6; pares (Page, Contents)
+      for (let p = 0; p < totalPaginas; p++) {
+        kidsRefs.push((6 + p * 2) + ' 0 R');
+      }
+      objetos.push('<< /Type /Catalog /Pages 2 0 R >>');
+      objetos.push('<< /Type /Pages /Kids [' + kidsRefs.join(' ') + '] /Count ' + totalPaginas + ' >>');
+      objetos.push('<< /Type /Font /Subtype /Type1 /BaseFont /' + PDF_FONTE_TITULO + ' /Encoding /WinAnsiEncoding >>');
+      objetos.push('<< /Type /Font /Subtype /Type1 /BaseFont /' + PDF_FONTE_META + ' /Encoding /WinAnsiEncoding >>');
+      objetos.push('<< /Type /Font /Subtype /Type1 /BaseFont /' + PDF_FONTE_TABELA + ' /Encoding /WinAnsiEncoding >>');
+      streams.forEach(function(stream) {
+        const numContents = objetos.length + 2; // o Contents vem logo apos o Page
+        objetos.push('<< /Type /Page /Parent 2 0 R' +
+                     ' /MediaBox [0 0 ' + PDF_PAG_LARGURA_PT + ' ' + PDF_PAG_ALTURA_PT + ']' +
+                     ' /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >>' +
+                     ' /Contents ' + numContents + ' 0 R >>');
+        objetos.push('<< /Length ' + stream.length + ' >>\nstream\n' + stream + '\nendstream');
+      });
+
+      let corpo = '%PDF-' + PDF_VERSAO + '\n';
+      const offsets = [];
+      objetos.forEach(function(obj, idx) {
+        offsets.push(corpo.length);
+        corpo += (idx + 1) + ' 0 obj\n' + obj + '\nendobj\n';
+      });
+      const inicioXref = corpo.length;
+      corpo += 'xref\n0 ' + (objetos.length + 1) + '\n0000000000 65535 f \n';
+      offsets.forEach(function(off) {
+        corpo += String(off).padStart(10, '0') + ' 00000 n \n';
+      });
+      corpo += 'trailer\n<< /Size ' + (objetos.length + 1) + ' /Root 1 0 R >>\n' +
+               'startxref\n' + inicioXref + '\n%%EOF';
+      return corpo;
+    }
+
+    // PDF-06: mesmo mecanismo do CSV, conteudo binario em base64.
+    // Chamada somente pela confirmacao da previa (PRE-04).
+    // btoa e seguro: apos _pdfWinAnsi todos os code points sao <= 0xFF.
+    function exportarPDF(lista) {
+      baixarArquivo(PDF_DATA_URI_PREFIX + btoa(_pdfGerar(lista)), PDF_NOME_ARQUIVO);
     }
 
     // DRY: renderizacao de resultados recebe valores ja calculados — nao recalcula
@@ -642,6 +970,21 @@ static const char HTML_PAGE[] PROGMEM = R"rawhtml(<!DOCTYPE html>
     // 10. Inicializacao
     // =======================================================================
     elJanelaWrapper.hidden = (elModo.value !== 'DOIS_MARTELOS');
+
+    // PRE-03: seletor de formato gerado a partir de EXPORT_FORMATOS,
+    // selecao inicial EXPORT_FORMATO_PADRAO
+    EXPORT_FORMATOS.forEach(function(formato) {
+      const rotulo = document.createElement('label');
+      const radio  = document.createElement('input');
+      radio.type    = 'radio';
+      radio.name    = 'previa-formato';
+      radio.value   = formato;
+      radio.checked = (formato === EXPORT_FORMATO_PADRAO);
+      rotulo.appendChild(radio);
+      rotulo.appendChild(document.createTextNode(formato));
+      elPreviaFormatos.appendChild(rotulo);
+    });
+
     conectarWS();
   </script>
 </body>

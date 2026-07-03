@@ -10,6 +10,7 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 ## [Nao lancado]
 
 ### Adicionado
+- `firmware/src/interface/interface.cpp` — pré-visualização de exportação com confirmação (M2) e exportação PDF (M3), derivadas de `spec/interface/interface.json#exportacao_ui` e `#exportacao_pdf`: overlay `#overlay-exportacao` com tabela das 10 colunas via `textContent`, seletor CSV/PDF gerado de `EXPORT_FORMATOS`, botões Baixar/Cancelar (Baixar desabilitado com localStorage vazio); gerador de PDF 1.4 em JS puro (`_pdfGerar` — fontes base-14, WinAnsiEncoding, A4 paisagem, 35 linhas/página, xref byte-exata) baixado por `data:application/pdf;base64,`; `baixarArquivo()` como ponto único de criação da âncora de download; `exportarCSV()` passa a receber a lista e só é chamada pela confirmação da prévia; pré-validado em Node com o JS real embutido (44/44 checks — CA-07-09/12/13)
 - `firmware/diag/` — kit de diagnóstico de bancada (projeto PlatformIO separado, fora do V-model e dos builds normais): `led_test.cpp` (onda quadrada medível com multímetro + ciclo de cores FastLED), `wifi_test.cpp` (init do AP com TX reduzido + breadcrumbs — diagnóstico de brownout) e `monitor_serial.py` (timestamps por linha + reset via RTS); origem: investigação CA-07-01, diagnóstico dos LEDs e condenação do AMS1117 (2026-07-02)
 - `TODO.md` — lista de tarefas futuras: metadocumentos e índices de navegação por diretório (`modules/`, `spec/`, `hardware/`, `_governance/`)
 
