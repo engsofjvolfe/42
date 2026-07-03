@@ -1,12 +1,12 @@
 ---
 documento:    WEB_STANDARD.md
-versão:       0.2.0
+versão:       0.3.0
 status:       APROVADO
 data:         2026-06-28
 depende_de:
   - _PADRAO.md v0.1.0                [BLOQUEADOR]
   - 01_arquitetura.md v0.2.1         [BLOQUEADOR]
-  - 07_interface_pedagogo.md v0.2.0  [BLOQUEADOR]
+  - 07_interface_pedagogo.md v0.3.0  [BLOQUEADOR]
 impacta:
   - firmware/src/interface/ (interface.cpp — arquivo HTML/CSS/JS embutido)
 ---
@@ -22,10 +22,10 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | WEB_STANDARD.md |
-| Versão | 0.2.0 |
+| Versão | 0.3.0 |
 | Status | APROVADO |
 | Escopo | HTML/CSS/JS embutido no firmware como string literal em interface.cpp |
-| Pais | _PADRAO.md v0.1.0, 01_arquitetura.md v0.2.1, 07_interface_pedagogo.md v0.2.0 |
+| Pais | _PADRAO.md v0.1.0, 01_arquitetura.md v0.2.1, 07_interface_pedagogo.md v0.3.0 |
 
 ---
 
@@ -125,6 +125,7 @@ Grid MD3: múltiplos de 4dp.
   <div id="overlay-feedback" hidden>...</div>
   <div id="tela-pausado"     hidden>...</div>
   <div id="tela-resultados"  hidden>...</div>
+  <div id="overlay-exportacao" hidden>...</div>
   <script>/* constantes + estado + handlers */</script>
 </body>
 </html>
@@ -150,6 +151,8 @@ Derivado de [VER: 07_interface_pedagogo.md#estados-interface].
 | `RESULTADOS` | `#tela-resultados` | todos os outros |
 
 `#overlay-feedback` é um `<div>` posicionado `position:fixed; inset:0` sobre `#tela-sessao`.
+
+`#overlay-exportacao` é a pré-visualização de exportação ([VER: 07_interface_pedagogo.md#pre-visualizacao]) — `position:fixed; inset:0` sobre `#tela-resultados`. Não é um estado da máquina: só pode ficar visível enquanto `_estado === 'RESULTADOS'`, e o estado não muda com sua abertura/fechamento.
 
 ---
 
@@ -233,6 +236,27 @@ const NOME_CONSTANTE = valor;
 | `N_MIN` | `1` | `configuracao_ui.n_interacoes_min` |
 | `MODO_PADRAO` | `"UM_MARTELO"` | `configuracao_ui.modo_padrao` |
 | `MECA_PADRAO` | `"A_SHUFFLE"` | `configuracao_ui.mecanismo_padrao` |
+| `EXPORT_FORMATOS` | `["CSV", "PDF"]` | `exportacao_ui.formatos` |
+| `EXPORT_FORMATO_PADRAO` | `"CSV"` | `exportacao_ui.formato_padrao` |
+| `PDF_NOME_ARQUIVO` | `"bmi_sessoes.pdf"` | `exportacao_pdf.nome_arquivo` |
+| `PDF_MIME` | `"application/pdf"` | `exportacao_pdf.tipo_mime` |
+| `PDF_DATA_URI_PREFIX` | `'data:' + PDF_MIME + ';base64,'` | composta — [VER: 07_interface_pedagogo.md#exportacao-pdf] PDF-06 |
+| `PDF_VERSAO` | `"1.4"` | `exportacao_pdf.versao_pdf` |
+| `PDF_TITULO` | `"Relatório de Sessões — BMI"` | `exportacao_pdf.titulo` |
+| `PDF_FONTE_TITULO` | `"Helvetica-Bold"` | `exportacao_pdf.fontes.titulo.nome` |
+| `PDF_FONTE_TITULO_PT` | `16` | `exportacao_pdf.fontes.titulo.tamanho_pt` |
+| `PDF_FONTE_META` | `"Helvetica"` | `exportacao_pdf.fontes.metadados.nome` |
+| `PDF_FONTE_META_PT` | `10` | `exportacao_pdf.fontes.metadados.tamanho_pt` |
+| `PDF_FONTE_TABELA` | `"Courier"` | `exportacao_pdf.fontes.tabela.nome` |
+| `PDF_FONTE_TABELA_PT` | `8` | `exportacao_pdf.fontes.tabela.tamanho_pt` |
+| `PDF_PAG_LARGURA_PT` | `842` | `exportacao_pdf.pagina.largura_pt` |
+| `PDF_PAG_ALTURA_PT` | `595` | `exportacao_pdf.pagina.altura_pt` |
+| `PDF_MARGEM_PT` | `40` | `exportacao_pdf.pagina.margem_pt` |
+| `PDF_ALTURA_LINHA_PT` | `12` | `exportacao_pdf.altura_linha_pt` |
+| `PDF_ESPACO_POS_TITULO_PT` | `20` | `exportacao_pdf.espaco_pos_titulo_pt` |
+| `PDF_ESPACO_POS_META_PT` | `24` | `exportacao_pdf.espaco_pos_meta_pt` |
+| `PDF_LINHAS_DADOS_POR_PAGINA` | `35` | `exportacao_pdf.linhas_dados_por_pagina` |
+| `PDF_COLUNAS` | array `{campo, titulo, largura_chars}` (10 itens) | `exportacao_pdf.colunas` |
 
 ### 7.3 Classificação de constantes web <a id="classificacao-constantes-js"></a>
 
@@ -255,7 +279,9 @@ const NOME_CONSTANTE = valor;
 | Som | `tocar<Evento>()` | `tocarAcerto()`, `tocarErro()` |
 | WebSocket | `conectarWS()`, `enviarMensagem(obj)` | — |
 | Armazenamento | `salvarSessao(registro)`, `carregarSessoes()` | — |
-| Exportação | `exportarCSV()`, `csvEscapar(campo)` | — |
+| Exportação | `exportarCSV()`, `exportarPDF()`, `csvEscapar(campo)`, `baixarArquivo(href, nome)` | — |
+| Pré-visualização | `abrirPrevia()`, `fecharPrevia()`, `renderizarPrevia(lista)` | — |
+| Geração PDF (internas) | `_pdfWinAnsi(s)`, `_pdfEscapar(s)`, `_pdfGerar(lista)`, `_formatarDataGeracao(data)` | — |
 
 ### 8.2 Estrutura obrigatória do bloco `<script>` <a id="estrutura-script"></a>
 
@@ -353,6 +379,31 @@ Requisitos do arquivo e mecanismo de download: [VER: 07_interface_pedagogo.md#re
 - Todo campo passa por `csvEscapar()` (RFC 4180 §2) antes do `join(',')` — CSV-02.
 - O conteúdo é prefixado com `CSV_BOM` (`interface.json#exportacao_csv.bom`) — CSV-01.
 - Download via `data:` URI: `CSV_DATA_URI_PREFIX + encodeURIComponent(csv)` em âncora com atributo `download`, anexada ao `document.body` antes de `click()` e removida após — CSV-04. Proibido: `URL.createObjectURL`/`revokeObjectURL` para exportação e `click()` em âncora fora do DOM (causa raiz do defeito D1).
+- A âncora de download é criada em um único ponto: `baixarArquivo(href, nome)` — usada por `exportarCSV()` e `exportarPDF()`. Nenhuma outra função cria âncora de download.
+
+### 10.3 Pré-visualização e confirmação <a id="pre-visualizacao-js"></a>
+
+Derivado de [VER: 07_interface_pedagogo.md#pre-visualizacao] (PRE-01..05).
+
+- `exportarCSV()` e `exportarPDF()` **nunca** são chamadas diretamente por botão da tela de resultados — somente pela confirmação da prévia. O botão "Exportar" chama `abrirPrevia()`.
+- `abrirPrevia()`: chama `renderizarPrevia(carregarSessoes())` e exibe `#overlay-exportacao`. Nenhum download é iniciado.
+- `renderizarPrevia(lista)`: monta tabela HTML com as 10 colunas de `armazenamento.campos_registro`, na mesma ordem do CSV, uma linha por registro. Lista vazia: exibe aviso e desabilita o botão Baixar (`disabled`) — PRE-05.
+- Seletor de formato: valores exatamente `EXPORT_FORMATOS`, seleção inicial `EXPORT_FORMATO_PADRAO` — PRE-03.
+- Botão Baixar: despacha para `exportarCSV()` ou `exportarPDF()` conforme o formato selecionado e chama `fecharPrevia()` — PRE-04.
+- Botão Cancelar: chama apenas `fecharPrevia()` — nenhum download — PRE-04.
+- Conteúdo da tabela via `textContent` (nunca `innerHTML` com dado de sessão) — nome de criança é entrada de usuário.
+
+### 10.4 Geração de PDF <a id="geracao-pdf-js"></a>
+
+Derivado de [VER: 07_interface_pedagogo.md#exportacao-pdf] (PDF-01..06).
+
+- Todo valor de layout (página, margem, fontes, tamanhos, alturas, larguras de coluna, linhas por página) vem das constantes `PDF_*` da seção 7.2 — zero magic numbers também dentro do gerador.
+- `_pdfWinAnsi(s)`: converte string JS (UTF-16) para bytes WinAnsi; code points latin-1 (≤ `0xFF`, fora de `0x80–0x9F`) passam direto; caracteres tipográficos com posição própria no WinAnsi (ex: `…` `—` `–`) usam a posição do Annex D.2; qualquer outro vira `?` — PDF-02. A tabela de mapeamento é `HARDCODED_WEB` (conteúdo normativo do ISO 32000-1 Annex D.2, não é dado de domínio).
+- `_pdfEscapar(s)`: escapa `\`, `(` e `)` — PDF-05. Aplicado após `_pdfWinAnsi`.
+- `_pdfGerar(lista)`: monta o arquivo como string binária (1 char = 1 byte); os offsets da tabela `xref` são calculados sobre o comprimento acumulado dessa string — byte-exatos por construção. Retorna a string binária completa (`%PDF-` … `%%EOF`).
+- Célula da tabela: valor convertido, truncado em `largura_chars − 2` + `…` quando excede, e completado com espaços até `largura_chars` (`padEnd`) — Courier garante alinhamento.
+- Download: `PDF_DATA_URI_PREFIX + btoa(_pdfGerar(lista))` via `baixarArquivo()` — PDF-06. `btoa` é seguro aqui porque após `_pdfWinAnsi` todos os code points são ≤ `0xFF`.
+- Data/hora de geração: `_formatarDataGeracao(new Date())` no formato `dd/mm/aaaa hh:mm` (PDF-03), montado com `getDate()/getMonth()/getFullYear()/getHours()/getMinutes()` + `padStart` — sem `toLocaleString` (saída varia por engine; determinismo obrigatório).
 
 ---
 
@@ -449,8 +500,21 @@ Os cenários abaixo são derivados diretamente de `spec/interface/interface.json
 
 **[CA-07-09] Exportação CSV**
 - Precondição: localStorage com ≥ 1 registro, incluindo um registro com nome contendo vírgula e um com acento (ex: `"Silva, João"`)
-- Ação: clicar "Exportar CSV"
+- Ação: clicar "Exportar", manter o formato `CSV` (interface.json#exportacao_ui.formato_padrao) selecionado, clicar "Baixar"
 - Resultado: download de arquivo `"bmi_sessoes.csv"` (interface.json#exportacao_csv.nome_arquivo) com primeira linha exatamente `"id,nome,timestamp_inicio,modo,mecanismo,n_configurado,acertos,erros,taxa_pct,duracao_s"` (interface.json#exportacao_csv.cabecalho), precedida apenas do BOM U+FEFF (interface.json#exportacao_csv.bom — invisível em editor de texto); aberto em planilha: nome com vírgula ocupa uma única coluna (RFC 4180) e acentos exibidos corretamente
+
+**[CA-07-12] Pré-visualização e confirmação**
+- Precondição: estado RESULTADOS, localStorage com ≥ 2 registros
+- Ação: clicar "Exportar"
+- Resultado: `#overlay-exportacao` visível com tabela contendo as 10 colunas de interface.json#armazenamento.campos_registro, na mesma ordem, e uma linha por registro com valores idênticos ao localStorage; nenhum download iniciado (DevTools → sem navegação/download); seletor exibe `CSV` e `PDF` (interface.json#exportacao_ui.formatos) com `CSV` selecionado
+- Variante: clicar "Cancelar" → overlay fecha, nenhum download
+- Variante: localStorage vazio → aviso de ausência de registros visível e botão "Baixar" com atributo `disabled`
+
+**[CA-07-13] Exportação PDF**
+- Precondição: estado RESULTADOS, localStorage com ≥ 1 registro com acento no nome (ex: `"João"`)
+- Ação: clicar "Exportar", selecionar `PDF`, clicar "Baixar"
+- Resultado: download de `"bmi_sessoes.pdf"` (interface.json#exportacao_pdf.nome_arquivo); arquivo abre sem erro em leitor de PDF; contém o título (interface.json#exportacao_pdf.titulo), data/hora de geração no formato `dd/mm/aaaa hh:mm`, `Página 1 de 1` e tabela com todas as sessões e as 10 colunas (interface.json#exportacao_pdf.colunas); acentos exibidos corretamente
+- Variante: > 35 registros (interface.json#exportacao_pdf.linhas_dados_por_pagina) → arquivo com 2 páginas, metadados `Página 1 de 2` e `Página 2 de 2`, cabeçalho de tabela repetido na página 2
 
 **[CA-07-10] Desconexão e retomada**
 - Precondição: estado SESSAO_ATIVA, WiFi ativo
@@ -490,6 +554,7 @@ Verificação manual no browser após flash do firmware.
 | 0.1.1 | 2026-07-01 | depende_de, Rastreabilidade, #identificacao | Atualiza referências: 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo), 07_interface_pedagogo.md v0.1.0→v0.1.1 | — |
 | 0.1.2 | 2026-07-01 | depende_de | Atualiza referências: 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4), 07_interface_pedagogo.md v0.1.1→v0.1.2 | — |
 | 0.2.0 | 2026-07-03 | #tabela-constantes-js, #classificacao-constantes-js, #nomenclatura-funcoes-js, #exportacao-csv, #teste-cenarios | Cascata do 07 v0.2.0 (correção D1): novas constantes obrigatórias CSV_MIME, CSV_CHARSET, CSV_DATA_URI_PREFIX, CSV_BOM (todas derivadas de exportacao_csv); csvEscapar() na nomenclatura; §10.2 com regras de escaping/BOM/data URI e proibição de blob+revoke na exportação; cenário CA-07-09 estendido; corrige versões desatualizadas em #identificacao e Rastreabilidade (01 v0.2.0→v0.2.1, 07 v0.1.1→v0.2.0) | firmware/src/interface/interface.cpp |
+| 0.3.0 | 2026-07-03 | #esqueleto-html, #mapeamento-estado-elemento, #tabela-constantes-js, #nomenclatura-funcoes-js, #pre-visualizacao-js, #geracao-pdf-js, #teste-cenarios | Cascata do 07 v0.3.0 (melhorias M2/M3): `#overlay-exportacao` no esqueleto e no mapeamento; constantes obrigatórias EXPORT_* e PDF_* (derivadas de exportacao_ui e exportacao_pdf); nomenclatura exportarPDF/baixarArquivo/abrirPrevia/fecharPrevia/renderizarPrevia e internas de geração PDF; §10.3 regras da pré-visualização (PRE-01..05, textContent obrigatório); §10.4 regras do gerador PDF (WinAnsi, escaping, xref byte-exato, btoa, data determinística); cenário CA-07-09 ajustado ao fluxo com prévia; cenários CA-07-12 e CA-07-13 novos | firmware/src/interface/interface.cpp |
 
 ---
 
@@ -499,7 +564,7 @@ Verificação manual no browser após flash do firmware.
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 01_arquitetura.md | 0.2.1 | BLOQUEADOR | #requisitos-nao-funcionais, #stack-tecnologico |
-| Pai | 07_interface_pedagogo.md | 0.2.0 | BLOQUEADOR | #estados-interface, #feedback-sonoro, #websocket, #armazenamento-dados, #exportacao-csv, #requisitos-csv, #mecanismo-download, #tela-feedback |
+| Pai | 07_interface_pedagogo.md | 0.3.0 | BLOQUEADOR | #estados-interface, #feedback-sonoro, #websocket, #armazenamento-dados, #exportacao-csv, #requisitos-csv, #mecanismo-download, #pre-visualizacao, #exportacao-pdf, #tela-feedback |
 | Governa | firmware/src/interface/ | — | OBRIGATÓRIO | interface.cpp (HTML/CSS/JS embutido) |
 
 ---
