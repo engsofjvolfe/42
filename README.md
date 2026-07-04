@@ -2,56 +2,82 @@
 
 [![Verificação de Documentação](https://github.com/eflov/42/actions/workflows/verify-docs.yml/badge.svg)](https://github.com/eflov/42/actions/workflows/verify-docs.yml)
 
-Instrumento de estímulo e avaliação de coordenação motora e discriminação visual por cor para crianças de 5 anos em ambiente pedagógico supervisionado. Hardware: ESP32-WROOM-32U, 4 piezos cerâmicos 27mm e 3 LEDs WS2812B individuais, alimentado por fonte 12V AC/DC. Interface de controle servida pelo próprio ESP32 via Access Point — qualquer browser móvel, sem instalação, sem rede externa. Dois modos de operação (unimanual e bimanual) e dois mecanismos de aleatoriedade selecionáveis pelo pedagogo.
+Uma mesa de jogo para avaliar coordenação motora e reconhecimento de cores em crianças de 5 anos. Uma luz acende mostrando uma cor; a criança bate com um martelo de madeira na zona daquela cor; o pedagogo acompanha tudo pelo navegador do celular — sem instalar aplicativo, sem internet, sem os dados saírem do aparelho.
 
-> Fonte única de verdade: [`concept/00_conceito.md`](concept/00_conceito.md)
-
----
-
-## Status do V-Model
-
-| Fase | Artefato | Status |
-|---|---|---|
-| Conceito | [`concept/00_conceito.md`](concept/00_conceito.md) | APROVADO v0.1.0 |
-| Arquitetura | [`system/01_arquitetura.md`](system/01_arquitetura.md) | APROVADO v0.1.0 |
-| Spec módulos | [`modules/`](modules/) | APROVADO v0.1.0 |
-| Spec hardware | [`hardware/`](hardware/) | APROVADO v0.1.0 |
-| JSON Spec + Schema | [`spec/`](spec/) | CONCLUÍDO v0.2.0 |
-| Firmware | [`firmware/src/`](firmware/src/) | CONCLUÍDO v0.3.0 — 0 errors, 0 warnings |
-| Testes unitários | [`firmware/test/`](firmware/test/) | CONCLUÍDO v0.3.0 — 38/38 PASSED (native) |
-| Validação com hardware | — | Pendente (requer hardware físico) |
+Apesar do formato de brinquedo, é um **instrumento de avaliação pedagógica**: cada sessão registra acertos, erros e tempos, e os dados podem ser exportados em planilha (CSV) ou relatório (PDF) para acompanhar o desenvolvimento da criança ao longo do tempo.
 
 ---
 
-## Desenvolvimento
+## O brinquedo
+
+> **[FOTO — a inserir]**
+> *Vista geral: mesa com as 4 zonas coloridas, luzes indicadoras e martelos.*
+
+> **[FOTO — a inserir]**
+> *Criança em sessão: batendo na zona da cor acesa.*
+
+> **[FOTO — a inserir]**
+> *O painel do pedagogo: interface no celular com o andamento da sessão.*
+
+---
+
+## Como funciona
+
+- **4 zonas coloridas** (laranja, azul, amarelo e roxo — paleta acessível para daltonismo) sentem as batidas do martelo.
+- **3 luzes** acima das zonas mostram a cor-alvo de cada rodada de estímulo.
+- **Dois modos:** com 1 martelo (público principal, 5 anos) ou com 2 martelos simultâneos (coordenação bimanual, público estendido — a critério do profissional).
+- **O celular do pedagogo é o painel de controle:** o aparelho se conecta à rede WiFi criada pelo próprio brinquedo e abre a interface no navegador. Tela verde no acerto, vermelha no erro; a criança vê só as luzes — nunca a pontuação.
+- **Fim de sessão sempre festivo:** as luzes celebram independentemente do desempenho. O resultado objetivo fica apenas com o profissional.
+
+## Para usar
+
+- **[Manual de uso](manual/12_manual_pedagogo.md)** — passo a passo em linguagem simples: ligar, conectar, configurar a sessão, conduzir, ler os resultados e exportar.
+- **[Privacidade e dados das crianças](compliance/06_privacidade_lgpd.md)** — o que é registrado, onde fica e quais são os direitos dos responsáveis (LGPD), escrito para ser entregue às famílias.
+
+O uso é sempre supervisionado por profissional habilitado. O instrumento não se destina a uso doméstico sem orientação pedagógica.
+
+---
+
+## Estado do projeto
+
+O desenvolvimento segue o V-model: cada linha de firmware é rastreável a um documento de especificação, e cada documento ao conceito.
+
+| Marco | Status |
+|---|---|
+| Documentação (conceito → hardware) | Aprovada — `v0.1.0` |
+| Especificações JSON + schemas | Concluídas — `v0.2.0` |
+| Firmware (4 módulos) | Concluído — `v0.3.0`, 38/38 testes, compilação sem warnings |
+| Validação com hardware físico | **Em andamento** — [checklist de validação](VALIDATION.md) |
+| Release `v1.0.0` | Após todos os critérios de aceitação passarem |
+
+---
+
+## Para desenvolvedores
+
+Hardware: ESP32 DevKitC (WROOM-32), 4 discos piezoelétricos como sensores de impacto, 3 LEDs WS2812B, alimentação 12V → LM2596 a 3.3V. Firmware C++/PlatformIO em 4 módulos (sensor, visual, jogo, interface WiFi); interface HTML/CSS/JS embutida no firmware, servida por Access Point próprio.
 
 ### Pré-requisitos
 
 - Python 3.11+
 - PlatformIO CLI
-- MinGW-w64 (testes nativos no Windows)
+- MinGW-w64 (para os testes nativos no Windows)
 
-### Verificar integridade da documentação
+### Comandos
 
 ```bash
+# Verificar integridade da documentação (links, versões, rastreabilidade)
 python scripts/run_all.py
-```
 
-### Compilar firmware
-
-```bash
+# Compilar o firmware
 cd firmware && pio run
-```
 
-### Executar testes unitários (sem hardware)
-
-```bash
+# Testes unitários sem hardware
 cd firmware && pio test -e native
 ```
 
----
+### Como o repositório se organiza
 
-## Documentação
+Comece por [`CLAUDE.md`](CLAUDE.md) (guia de procedimentos do V-model) e [`concept/00_conceito.md`](concept/00_conceito.md) (fonte única de verdade). Nenhuma mudança é feita sem derivar de um documento aprovado.
 
 | Documento | Conteúdo |
 |---|---|
@@ -62,15 +88,15 @@ cd firmware && pio test -e native
 | [`modules/game/04_logica_jogo.md`](modules/game/04_logica_jogo.md) | Aleatoriedade, máquina de estados, score |
 | [`modules/power/05_alimentacao.md`](modules/power/05_alimentacao.md) | Cadeia de alimentação, orçamento de corrente, decoupling |
 | [`compliance/06_privacidade_lgpd.md`](compliance/06_privacidade_lgpd.md) | LGPD Lei 13.709/2018 — dados de crianças |
-| [`modules/interface/07_interface_pedagogo.md`](modules/interface/07_interface_pedagogo.md) | Interface web, WebSocket, localStorage, exportação CSV |
+| [`modules/interface/07_interface_pedagogo.md`](modules/interface/07_interface_pedagogo.md) | Interface web, WebSocket, localStorage, exportação CSV/PDF com prévia |
 | [`hardware/08_bom.md`](hardware/08_bom.md) | BOM completa com part numbers |
 | [`hardware/09_conexoes.md`](hardware/09_conexoes.md) | Esquemático, mapeamento de pinos, shield |
 | [`hardware/10_cablagem.md`](hardware/10_cablagem.md) | Fios, bitolas, comprimentos |
 | [`hardware/11_montagem.md`](hardware/11_montagem.md) | Ordem de montagem, fixação, testes por etapa |
-| [`_governance/_PADRAO.md`](_governance/_PADRAO.md) | Padrão de documentos |
-| [`_governance/CODING_STANDARD.md`](_governance/CODING_STANDARD.md) | Padrão de firmware C++ |
-| [`_governance/TESTING_STANDARD.md`](_governance/TESTING_STANDARD.md) | Padrão de testes Unity |
-| [`_governance/WEB_STANDARD.md`](_governance/WEB_STANDARD.md) | Padrão de HTML/CSS/JS embutido |
+| [`manual/12_manual_pedagogo.md`](manual/12_manual_pedagogo.md) | Manual de uso — linguagem não-técnica |
+| [`spec/`](spec/) | Especificações JSON + schemas derivados dos documentos |
+| [`_governance/`](_governance/) | Padrões: documentação, firmware C++, testes Unity, HTML/CSS/JS |
+| [`VALIDATION.md`](VALIDATION.md) | Checklist formal de validação (ETAPA 8) |
 
 ---
 
