@@ -1,11 +1,11 @@
 ---
 documento:    01_arquitetura.md
-versão:       0.3.1
+versão:       0.4.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0       [BLOQUEADOR]
-  - 00_conceito.md v0.2.1   [BLOQUEADOR]
+  - 00_conceito.md v0.3.0   [BLOQUEADOR]
 impacta:
   - 05_alimentacao.md       [OBRIGATÓRIO]
   - 02_sensor_impacto.md    [OBRIGATÓRIO]
@@ -25,7 +25,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 01_arquitetura.md |
-| Versão | 0.3.1 |
+| Versão | 0.4.0 |
 | Status | APROVADO |
 | Escopo | Decisões de sistema que todos os módulos devem seguir |
 
@@ -137,6 +137,7 @@ struct ConfigSessao {
 void iniciarSessao(ConfigSessao cfg);
 void pausarSessao();
 void retomarSessao();
+void encerrarSessao();  // encerramento antecipado, [VER: 00_conceito.md#encerramento-antecipado]
 
 // MOD_JOGO → MOD_WIFI (resultados)
 struct EventoResultado {
@@ -198,6 +199,7 @@ stateDiagram-v2
     AVALIANDO --> INTERVALO : acerto — LEDs apagam
     INTERVALO --> ESTIMULO : 2000ms [CALIBRAR] — N não atingido
     INTERVALO --> FIM_SESSAO : N interações atingido
+    SESSAO_ATIVA --> FIM_SESSAO : pedagogo encerra sessão antecipadamente
     FIM_SESSAO --> CONFIGURANDO : pedagogo reinicia
     SESSAO_ATIVA --> PAUSADO : desconexão detectada
     PAUSADO --> SESSAO_ATIVA : reconexão
@@ -217,6 +219,7 @@ stateDiagram-v2
 | CA-01-06 | Sessão completa Modo 2 | N=5: idem com dois martelos |
 | CA-01-07 | Desconexão e retomada | Desligar WiFi do pedagogo: ESP32 pausa; reconectar: retoma |
 | CA-01-08 | Exportação de dados | Pré-visualização exibida antes do download; CSV gerado com cabeçalho e dados corretos; PDF legível com os mesmos dados — [VER: 00_conceito.md#exportacao] |
+| CA-01-09 | Encerramento antecipado de sessão | Pedagogo encerra a sessão ativa antes do N configurado: acertos parciais preservados, tela de resultados exibida, nova sessão iniciada sem recarregar a página nem reiniciar o ESP32 — [VER: 00_conceito.md#encerramento-antecipado] |
 
 ---
 
@@ -229,6 +232,7 @@ stateDiagram-v2
 | 0.2.1 | 2026-07-01 | #hardware | Especifica modelo da placa como ESP32 DevKitC V4 e esclarece que o pino de entrada 5V é rotulado "5V" (não "VIN") neste DevKit | 02, 03, 04, 05, 07, 08, 09, CODING_STANDARD, WEB_STANDARD, TESTING_STANDARD |
 | 0.3.0 | 2026-07-03 | #criterios-aceitacao, depende_de, #identificacao | Cascata do conceito v0.2.0 (M2/M3 validados na ETAPA 8): CA-01-08 estendido — exportação com pré-visualização e dois formatos (CSV e PDF); corrige versão desatualizada na tabela de Identificação (0.2.0 em vez de 0.2.1) | 02, 03, 04, 05, 07, 08, 09, CODING_STANDARD, WEB_STANDARD, TESTING_STANDARD |
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1 | — |
+| 0.4.0 | 2026-07-04 | #interface-jogo-wifi, #diagrama-estados, #criterios-aceitacao, depende_de | Cascata do conceito v0.3.0 (melhoria M1, validada manualmente no código antes da cascata): nova função `encerrarSessao()` na interface MOD_JOGO↔MOD_WIFI; novo estado-transição `SESSAO_ATIVA → FIM_SESSAO` por encerramento antecipado do pedagogo; novo CA-01-09 | 02, 03, 04, 05, 07, 08, 09, CODING_STANDARD, TESTING_STANDARD, WEB_STANDARD (cascata mecânica) |
 
 ---
 
@@ -237,7 +241,7 @@ stateDiagram-v2
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.2.1 | BLOQUEADOR | #publico-alvo, #componentes-fisicos, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #interface-pedagogo, #gestao-dados |
+| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #publico-alvo, #componentes-fisicos, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #interface-pedagogo, #gestao-dados |
 | Filho | 05_alimentacao.md | — | OBRIGATÓRIO | #hardware |
 | Filho | 02_sensor_impacto.md | — | OBRIGATÓRIO | #mod-sensor, #mapeamento-gpios, #requisitos-nao-funcionais |
 | Filho | 03_saida_visual.md | — | OBRIGATÓRIO | #mod-led, #mapeamento-gpios, #requisitos-nao-funcionais |
