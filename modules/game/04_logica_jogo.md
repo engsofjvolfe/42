@@ -1,12 +1,12 @@
 ---
 documento:    04_logica_jogo.md
-versão:       0.1.4
+versão:       0.2.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.2.1    [BLOQUEADOR]
-  - 01_arquitetura.md v0.3.1 [BLOQUEADOR]
+  - 00_conceito.md v0.3.0    [BLOQUEADOR]
+  - 01_arquitetura.md v0.4.0 [BLOQUEADOR]
 impacta:
   - 07_interface_pedagogo.md [CONDICIONAL: #gestao-score]
 ---
@@ -20,7 +20,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 04_logica_jogo.md |
-| Versão | 0.1.1 |
+| Versão | 0.2.0 |
 | Status | APROVADO |
 | Módulo firmware | MOD_JOGO — [VER: 01_arquitetura.md#mod-jogo] |
 
@@ -59,6 +59,23 @@ enum class Estado {
 | `INTERVALO` | `FIM_SESSAO` | timer expirou, `acertos == n_interacoes` — celebração |
 | `SESSAO_ATIVA` (qualquer) | `PAUSADO` | notificação de desconexão de MOD_WIFI |
 | `PAUSADO` | estado anterior | notificação de reconexão de MOD_WIFI |
+| `SESSAO_ATIVA` (qualquer) | `FIM_SESSAO` | `encerrarSessao()` recebido de MOD_WIFI — pedagogo encerra a sessão antes do N configurado |
+
+### 3.2 Encerramento antecipado <a id="encerramento-antecipado"></a>
+
+Derivado de [VER: 00_conceito.md#encerramento-antecipado] e [VER: 01_arquitetura.md#interface-jogo-wifi].
+
+```
+encerrarSessao() (chamado por MOD_WIFI, a pedido do pedagogo):
+  se estado == OCIOSO ou estado == FIM_SESSAO:
+    ignorar (sem sessao ativa para encerrar)
+  senao:
+    apagar LED(s) do estimulo em curso          // [VER: 01_arquitetura.md#interface-jogo-led]
+    estado = FIM_SESSAO
+    onResultado({ FIM_SESSAO, acertos, n_configurado, duracao() })  // acertos parciais
+```
+
+Diferença para o fim de sessão natural ([VER: #tratamento-resultados]): o evento emitido é o mesmo `FIM_SESSAO`, mas `acertos` pode ser menor que `n_configurado`. MOD_WIFI e o browser tratam os dois casos de forma idêntica — mesmo consumidor, [VER: 07_interface_pedagogo.md#tela-resultados].
 
 ---
 
@@ -289,6 +306,7 @@ O mapeamento é 1:1 por design — cada cor identifica unicamente uma zona físi
 | CA-04-08 | Fim de sessão | N=5 acertos: `FIM_SESSAO` emitido com totais corretos |
 | CA-04-09 | Pausa/retomada | Desconexão durante ESTIMULO: estado preservado; reconexão: LEDs reacendem com mesma cor |
 | CA-04-10 | Intervalo entre interações | Medição: 2000ms ± 100ms entre apagamento do LED e próximo acendimento |
+| CA-04-11 | Encerramento antecipado | Chamar `encerrarSessao()` durante `ESTIMULO`/`AVALIANDO`/`INTERVALO`: `FIM_SESSAO` emitido com os acertos parciais corretos e LED(s) apagados; chamada em `OCIOSO` ou `FIM_SESSAO`: sem efeito |
 
 ---
 
@@ -301,6 +319,7 @@ O mapeamento é 1:1 por design — cada cor identifica unicamente uma zona físi
 | 0.1.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4) | 07_interface_pedagogo.md |
 | 0.1.3 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0 | — |
 | 0.1.4 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1 | — |
+| 0.2.0 | 2026-07-04 | #transicoes (nova §3.2), #criterios-aceitacao, depende_de | Melhoria M1 (TODO.md), validada manualmente no código antes da cascata: nova transição `SESSAO_ATIVA (qualquer) → FIM_SESSAO` via `encerrarSessao()`, chamada por MOD_WIFI quando o pedagogo encerra a sessão antes do N configurado; reaproveita o evento `FIM_SESSAO` existente com acertos parciais; novo CA-04-11 | 07_interface_pedagogo.md |
 
 ---
 
@@ -309,8 +328,8 @@ O mapeamento é 1:1 por design — cada cor identifica unicamente uma zona físi
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.2.1 | BLOQUEADOR | #glossario, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #aleatoriedade, #timings, #intervalo-interacoes, #contagem-score, #armazenamento |
-| Pai | 01_arquitetura.md | 0.3.1 | BLOQUEADOR | #mod-jogo, #interfaces-modulos, #diagrama-estados, #requisitos-nao-funcionais |
+| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #glossario, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #aleatoriedade, #timings, #intervalo-interacoes, #contagem-score, #armazenamento, #encerramento-antecipado |
+| Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #mod-jogo, #interfaces-modulos, #diagrama-estados, #requisitos-nao-funcionais |
 | Filho | 07_interface_pedagogo.md | — | CONDICIONAL: #gestao-score | #gestao-score |
 ---
 
