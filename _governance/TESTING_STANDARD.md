@@ -1,12 +1,12 @@
 ---
 documento:    TESTING_STANDARD.md
-versão:       0.1.5
+versão:       0.1.6
 status:       APROVADO
 data:         2026-06-28
 depende_de:
   - _PADRAO.md v0.1.0           [BLOQUEADOR]
-  - CODING_STANDARD.md v0.2.3   [BLOQUEADOR]
-  - 01_arquitetura.md v0.3.1    [BLOQUEADOR]
+  - CODING_STANDARD.md v0.2.4   [BLOQUEADOR]
+  - 01_arquitetura.md v0.4.0    [BLOQUEADOR]
 impacta: firmware/test/ (test_main.cpp de cada modulo — nao sao .md)
 ---
 
@@ -21,10 +21,10 @@ impacta: firmware/test/ (test_main.cpp de cada modulo — nao sao .md)
 | Campo | Valor |
 |---|---|
 | Documento | TESTING_STANDARD.md |
-| Versão | 0.1.5 |
+| Versão | 0.1.6 |
 | Status | APROVADO |
 | Escopo | Todos os arquivos de teste em `firmware/test/` |
-| Pais | _PADRAO.md v0.1.0, CODING_STANDARD.md v0.2.2, 01_arquitetura.md v0.3.0 |
+| Pais | _PADRAO.md v0.1.0, CODING_STANDARD.md v0.2.4, 01_arquitetura.md v0.4.0 |
 
 ---
 
@@ -334,6 +334,7 @@ Resultado esperado: todos os testes passam, zero falhas.
 | 0.1.3 | 2026-07-01 | depende_de | Atualiza referências: CODING_STANDARD.md v0.2.0→v0.2.1, 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4) | — |
 | 0.1.4 | 2026-07-03 | depende_de, Rastreabilidade, #identificacao | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — CODING_STANDARD.md v0.2.1→v0.2.2, 01_arquitetura.md v0.2.1→v0.3.0; corrige versões desatualizadas na Identificação (0.1.2; Pais CODING v0.2.0 e 01 v0.2.0) e na Rastreabilidade (CODING v0.2.0, 01 v0.2.0) | — |
 | 0.1.5 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 01_arquitetura.md v0.3.0→v0.3.1, CODING_STANDARD.md v0.2.2→v0.2.3 | — |
+| 0.1.6 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica de 01_arquitetura v0.4.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em padrão de testes): atualiza referências — 01_arquitetura.md v0.3.1→v0.4.0, CODING_STANDARD.md v0.2.3→v0.2.4 | — |
 
 ---
 
@@ -342,8 +343,8 @@ Resultado esperado: todos os testes passam, zero falhas.
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | CODING_STANDARD.md | 0.2.3 | BLOQUEADOR | #constantes-zero-magic-numbers, #estrutura-arquivo, #nomenclatura |
-| Pai | 01_arquitetura.md | 0.3.1 | BLOQUEADOR | #modulos-firmware |
+| Pai | CODING_STANDARD.md | 0.2.4 | BLOQUEADOR | #constantes-zero-magic-numbers, #estrutura-arquivo, #nomenclatura |
+| Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #modulos-firmware |
 | Governa | firmware/test/ | — | OBRIGATÓRIO | — |
 ---
 
