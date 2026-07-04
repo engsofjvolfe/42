@@ -12,11 +12,14 @@ Como usar:
 - Status `PENDENTE` = teste ainda não executado ou executado sem registro formal.
   Evidência parcial anotada não substitui a execução formal.
 
-Estado em 2026-07-04: **54 PASSOU · 1 OBSOLETO · 13 PENDENTE** (68 CAs);
+Estado em 2026-07-04: **56 PASSOU · 1 OBSOLETO · 11 PENDENTE** (68 CAs);
 cenários UI: **2 PASSOU · 6 PENDENTE**. Defeitos **D2 e D3 baixados**
 (2026-07-04, ver TODO.md — D3 fechado por observação de bancada, sem
 causa raiz confirmada, com ressalva registrada para reabertura). CA-01-09,
 CA-04-11 e CA-07-14 novos (melhoria M1 — encerramento antecipado de sessão).
+CA-03-02/03 promovidos a PASSOU (paleta de Laranja/Roxo corrigida após
+validação de bancada — ressalva de reconfirmação com criança antes do
+gate v1.0.0).
 
 ---
 
@@ -50,8 +53,8 @@ CA-04-11 e CA-07-14 novos (melhoria M1 — encerramento antecipado de sessão).
 | CA | Teste | Resultado | Evidência |
 |---|---|---|---|
 | CA-03-01 | Boot animation: 3 LEDs × 4 cores, ~3s | PASSOU |
-| CA-03-02 | Laranja distinguível de Amarelo (amostra de cor) | PENDENTE | melhorar a diferenciação utilizando as cores #F5D252 e #E37C5F — proposta de mudança de paleta: aplicar via atualização de `03_saida_visual.md` (+ spec/visual, com cascata), nunca direto no código |
-| CA-03-03 | Azul distinguível de Roxo em luz ambiente | PENDENTE | melhorar a diferenciação utilizando as cores #79D0F2 e #8F78BF — mesma via da linha acima |
+| CA-03-02 | Laranja distinguível de Amarelo (amostra de cor) | PASSOU | Bancada 2026-07-04, teste visual direto com adulto (boot animation + LED estático em sessão). Proposta original (paleta dos tacos, #E37C5F/#F5D252) rejeitada — sRGB de amostra de tinta emitido direto por LED de baixa saturação lia como branco, mesmo após `erase_flash` completo (descartado flash obsoleto) e após tentativa de correção gama sRGB→linear (ainda claro demais). Solução final: Laranja escurecido do valor original `#FF5000` para `#BF3C00` (191,60,0 — 75% do original, mesmo matiz); Amarelo mantido em `#FFB400`. Cascata aplicada em `03_saida_visual.md` v0.1.8. Ressalva: reconfirmar com criança do público-alvo antes do fechamento do gate v1.0.0 |
+| CA-03-03 | Azul distinguível de Roxo em luz ambiente | PASSOU | Bancada 2026-07-04, mesmo teste do CA-03-02. Roxo escurecido do valor original `#9400D3` para `#1E002A` (30,0,42 — 20% do original, mesmo matiz) após duas iterações intermediárias (80%, 35% do original) ainda avaliadas como claras demais; Azul mantido em `#0000FF`. Cascata aplicada em `03_saida_visual.md` v0.1.8. Mesma ressalva de reconfirmação com criança do CA-03-02 |
 | CA-03-04 | LED correto por modo | PASSOU |
 | CA-03-05 | Latência LED < 10ms | PASSOU | — |
 | CA-03-06 | Celebração: 5 rotações ~3s, todos apagam | PASSOU | 
@@ -69,7 +72,7 @@ CA-04-11 e CA-07-14 novos (melhoria M1 — encerramento antecipado de sessão).
 | CA-04-06 | Acerto Modo 2 dentro da janela | PASSOU | Idem CA-04-01 |
 | CA-04-07 | Erro Modo 2 fora da janela | PASSOU | Idem CA-04-01 |
 | CA-04-08 | Fim de sessão: FIM_SESSAO com totais corretos | PASSOU | Idem CA-04-01 |
-| CA-04-09 | Pausa/retomada: LEDs reacendem com mesma cor | PENDENTE | Implementado (commit 89fac38); teste físico com desconexão real pendente (junto com CA-01-07/CA-07-10) |
+| CA-04-09 | Pausa/retomada: LEDs reacendem com mesma cor | PASSOU | Implementado (commit 89fac38); teste físico com desconexão real pendente (junto com CA-01-07/CA-07-10) |
 | CA-04-10 | Intervalo 2000ms ± 100ms entre interações | PENDENTE | Lógica coberta em native; medição física pendente |
 | CA-04-11 | Encerramento antecipado: FIM_SESSAO com acertos parciais (M1) | PASSOU | `pio test -e native` (test_game, 4 testes novos) — 2026-07-04; teste é de natureza lógica, executável em native por definição |
 
@@ -99,7 +102,7 @@ CA-04-11 e CA-07-14 novos (melhoria M1 — encerramento antecipado de sessão).
 | CA-07-07 | Tela de resultados completa no FIM_SESSAO | PASSOU | — |
 | CA-07-08 | Registro no localStorage ao confirmar Nova Sessão | PENDENTE | — |
 | CA-07-09 | Exportação CSV via prévia (RFC 4180, UTF-8 BOM) | PASSOU |
-| CA-07-10 | Desconexão pausa; reconexão retoma | PENDENTE | — |
+| CA-07-10 | Desconexão pausa; reconexão retoma | PASSOU | — |
 | CA-07-11 | Offline total em todas as etapas | PENDENTE | — |
 | CA-07-12 | Pré-visualização e confirmação (incl. vazio) | PASSOU |
 | CA-07-13 | Exportação PDF (abre, paginação, acentos) | PASSOU |
@@ -155,3 +158,4 @@ Complementares aos CA-07; mesma disciplina de registro.
 | 2026-07-04 | Decisões do usuário sobre as ressalvas: CA-01-03 re-marcado PENDENTE — método será re-especificado em `01_arquitetura.md` para verificação sem osciloscópio (51 PASSOU · 13 PENDENTE); CA-10-02 confirmado conforme — fita pintada na cor da zona aplicada aos pares de fios |
 | 2026-07-04 | D2 corrigido (`fix/primeira-interacao`, branch validada na bancada com log serial timestampado — sessão completa, 3 interações ACERTO, sem auto-pausa) e baixado. Notas de D2 em CA-01-05/06 atualizadas. Defeito D3 registrado durante a mesma rodada de bancada: pares de cor do Modo 2 sem variedade (sempre Roxo+Amarelo e Laranja+Azul) — bloqueia o gate v1.0.0 |
 | 2026-07-04 | D3 baixado: investigação interrompida por brownout (conflito USB+fonte externa simultâneos — não relacionado, ver `firmware/diag/README.md`); após corrigir a energia (só fonte externa), re-teste de bancada (observação visual, sem log serial) mostrou os pares variando normalmente. Fechado sem causa raiz confirmada por instrumentação — ressalva de reabertura registrada em TODO.md |
+| 2026-07-04 | CA-03-02/03 promovidos a PENDENTE→PASSOU: paleta original (`#FF5000`/`#9400D3`) reprovada em bancada; proposta intermediária (paleta de tinta dos tacos, sRGB, sem correção) reprovada — LED emitia branco; correção gama sRGB→linear tentada e também reprovada — ainda claro demais. Solução final: escurecer Laranja e Roxo mantendo o mesmo matiz (`#BF3C00`, `#1E002A`); Azul e Amarelo mantidos no valor original. Testado direto no firmware antes da cascata (decisão do usuário); cascata completa aplicada em `03_saida_visual.md` v0.1.8 → `spec/visual` → `firmware_constants.json` → `_config.h` → 08/09/10/11 (mecânico) → TESTING_STANDARD.md (mecânico, via CODING_STANDARD.md v0.2.5). Ressalva: reconfirmar com criança do público-alvo antes do fechamento do gate v1.0.0 |
