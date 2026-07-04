@@ -1,8 +1,8 @@
 ---
 documento:    03_saida_visual.md
-versão:       0.1.7
+versão:       0.1.8
 status:       APROVADO
-data:         2026-06-26
+data:         2026-07-04
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.3.0    [BLOQUEADOR]
@@ -22,7 +22,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 03_saida_visual.md |
-| Versão | 0.1.7 |
+| Versão | 0.1.8 |
 | Status | APROVADO |
 | Módulo firmware | MOD_LED — [VER: 01_arquitetura.md#mod-led] |
 | GPIO de dados | 5 — [VER: 01_arquitetura.md#mapeamento-gpios] |
@@ -81,13 +81,15 @@ Paleta derivada de [VER: 00_conceito.md#zonas-impacto] — Wong (2011) para aces
 
 | Cor | R | G | B | Hex |
 |---|---|---|---|---|
-| Laranja | 255 | 80 | 0 | #FF5000 |
+| Laranja | 191 | 60 | 0 | #BF3C00 |
 | Azul | 0 | 0 | 255 | #0000FF |
 | Amarelo | 255 | 180 | 0 | #FFB400 |
-| Roxo | 148 | 0 | 211 | #9400D3 |
+| Roxo | 30 | 0 | 42 | #1E002A |
 | OFF | 0 | 0 | 0 | #000000 |
 
 **Brilho:** `FastLED.setBrightness(150)` — fixo, aplicado globalmente. [CALIBRAR] pós-montagem se percepção em ambiente pedagógico for insuficiente.
+
+**Ajuste de Laranja e Roxo (2026-07-04):** valores originais (`#FF5000`, `#9400D3`) validados em bancada como não suficientemente distinguíveis (CA-03-02: Laranja/Amarelo confundidos por adulto; CA-03-03: Azul/Roxo). Ambas as cores escurecidas por escala proporcional em direção ao preto (mesmo matiz, luminância reduzida): Laranja a 75% do valor original (`191,60,0`); Roxo a 20% do valor original (`30,0,42`), após duas iterações intermediárias (80%, 35%) ainda avaliadas como claras demais. Azul e Amarelo mantidos no valor original — validados como suficientes após o ajuste dos outros dois. Validação: teste visual direto com adulto, boot animation e LED estático em sessão; recomenda-se reconfirmar com criança do público-alvo antes do fechamento definitivo do gate v1.0.0 (ambos observadores relevantes por RNF-05).
 
 ---
 
@@ -155,6 +157,7 @@ Especificação no BOM: [VER: 08_bom.md#passivos]
 | 0.1.5 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0, 05_alimentacao.md v0.3.0→v0.3.1 | — |
 | 0.1.6 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1, 05_alimentacao.md v0.3.1→v0.3.2 | — |
 | 0.1.7 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.3.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em saída visual): atualiza referências — 00_conceito.md v0.2.1→v0.3.0, 01_arquitetura.md v0.3.1→v0.4.0, 05_alimentacao.md v0.3.2→v0.3.3 | 08, 09 |
+| 0.1.8 | 2026-07-04 | #cores-rgb | Corrige valores de Laranja e Roxo após validação física de bancada apontar confusão perceptual (CA-03-02, CA-03-03, antes PENDENTE): Laranja `#FF5000`→`#BF3C00` (191,60,0 — 75% do valor original), Roxo `#9400D3`→`#1E002A` (30,0,42 — 20% do valor original), ambos por escala proporcional em direção ao preto, mesmo matiz. Azul e Amarelo mantidos inalterados. Testado direto no firmware (`visual_config.h`) antes desta cascata, por decisão do usuário | 08, 09 |
 
 ---
 
