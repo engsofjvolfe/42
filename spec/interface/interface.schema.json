@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "interface.schema.json",
-  "title": "Interface Spec — derivado de 07_interface_pedagogo.md v0.3.0",
+  "title": "Interface Spec — derivado de 07_interface_pedagogo.md v0.4.0",
   "type": "object",
   "required": [
     "meta", "access_point", "servidor_http", "websocket",
@@ -127,8 +127,8 @@
       "properties": {
         "browser_para_esp32": {
           "type": "array",
-          "minItems": 3,
-          "maxItems": 3,
+          "minItems": 4,
+          "maxItems": 4,
           "items": {"$ref": "#/definitions/mensagem_ws"}
         },
         "esp32_para_browser": {
@@ -358,8 +358,8 @@
 
     "criterios_aceitacao": {
       "type": "array",
-      "minItems": 13,
-      "maxItems": 13,
+      "minItems": 14,
+      "maxItems": 14,
       "items": {
         "type": "object",
         "required": ["id"],

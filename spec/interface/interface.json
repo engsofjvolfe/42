@@ -1,7 +1,7 @@
 {
   "meta": {
     "documento_fonte": "07_interface_pedagogo.md",
-    "versao_fonte": "0.3.0",
+    "versao_fonte": "0.4.0",
     "depende_de": ["spec/game/game.json"]
   },
 
@@ -51,6 +51,12 @@
         "tipo": "RETOMAR",
         "campos": [
           {"nome": "tipo", "tipo_c": "String", "valor_fixo": "RETOMAR"}
+        ]
+      },
+      {
+        "tipo": "ENCERRAR",
+        "campos": [
+          {"nome": "tipo", "tipo_c": "String", "valor_fixo": "ENCERRAR"}
         ]
       }
     ],
@@ -223,6 +229,7 @@
     {"id": "CA-07-10", "descricao_tecnica": "desconexao_e_retomada",            "desconexao_pausa": true, "reconexao_retoma": true},
     {"id": "CA-07-11", "descricao_tecnica": "operacao_offline",                 "offline_total": true},
     {"id": "CA-07-12", "descricao_tecnica": "pre_visualizacao_confirmacao",     "tabela_identica_localstorage": true, "download_somente_apos_confirmar": true, "cancelar_sem_download": true, "vazio_baixar_desabilitado": true},
-    {"id": "CA-07-13", "descricao_tecnica": "exportacao_pdf",                   "nome_arquivo": "bmi_sessoes.pdf", "abre_em_leitor_pdf": true, "contem_titulo_data_geracao_paginacao": true, "todas_sessoes_todas_colunas": true, "acentos_corretos": true, "paginacao_acima_de_35_linhas": true}
+    {"id": "CA-07-13", "descricao_tecnica": "exportacao_pdf",                   "nome_arquivo": "bmi_sessoes.pdf", "abre_em_leitor_pdf": true, "contem_titulo_data_geracao_paginacao": true, "todas_sessoes_todas_colunas": true, "acentos_corretos": true, "paginacao_acima_de_35_linhas": true},
+    {"id": "CA-07-14", "descricao_tecnica": "encerramento_antecipado",          "mensagem": "ENCERRAR", "requer_confirmacao": true, "tratado_como_fim_sessao": true, "acertos_parciais_preservados": true, "sem_reload_sem_reboot": true}
   ]
 }
