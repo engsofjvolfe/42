@@ -247,6 +247,96 @@ TODO.md, VALIDATION.md e CHANGELOG.md atualizados nesta sessão refletindo
 D2 e D3 ambos baixados. Nenhuma alteração de código foi feita para o D3
 (nenhum commit de fix — só documentação/tracking).
 
+SESSÃO 2026-07-04 (M1 — botão de encerrar sessão) — branch
+feat/encerrar-nova-sessao, criada a partir de develop, NADA COMMITADO (mesma
+ordem do usuário aplicada ao D2/D3: testar manualmente no código antes de
+cascatear specs/docs).
+M1 (TODO.md): hoje não havia caminho na interface para encerrar uma sessão
+antes do N configurado e iniciar outra sem recarregar a página nem
+reiniciar o ESP32. Desenho: reaproveitar o caminho FIM_SESSAO já existente
+(mesmo evento que MOD_WIFI já trata) em vez de criar estado novo — MOD_JOGO
+ganha `gameEncerrarSessao()` (game.h/game.cpp): se a sessão não está OCIOSA
+nem já em FIM_SESSAO, apaga os LEDs do estímulo em curso, força o estado
+para FIM_SESSAO e emite o evento com os acertos parciais já registrados.
+MOD_WIFI (interface.cpp): nova mensagem WS `ENCERRAR` (browser→ESP32),
+tratada só se `s_sessao_ativa`; botão "Encerrar Sessão" novo na tela
+SESSAO_ATIVA, com `window.confirm()` antes de enviar (ação destrutiva —
+perde as interações restantes do N configurado). Da tela de Resultados em
+diante nada muda: "Nova Sessão" já levava de volta a CONFIGURANDO sem
+reload/reboot — o critério de conclusão do M1 fica satisfeito só com esse
+caminho, sem tela nova.
+[PROVISÓRIO] Tudo marcado no código como provisório: `gameEncerrarSessao()`,
+a mensagem `ENCERRAR` e o botão não têm `[VER:]` nem entrada em
+interface.json ainda. Cascata identificada para quando o usuário validar:
+01_arquitetura.md#diagrama-estados precisa de uma transição nova (qualquer
+estado ativo → FIM_SESSAO por encerramento do pedagogo, distinta de
+"N interações atingido"); 04_logica_jogo.md (nova função pública, novo
+gatilho de transição); 07_interface_pedagogo.md (novo botão na tela
+SESSAO_ATIVA, nova mensagem no protocolo WS, novo CA); spec/interface/
+interface.json (mensagem ENCERRAR); 00_conceito.md se o encerramento
+antecipado for considerado requisito de produto novo (a confirmar contra
+#gestao-dados / #armazenamento — registro parcial usa o mesmo schema, sem
+campo que distinga sessão completa de encerrada cedo).
+4 testes novos em test_game/test_main.cpp (sessão parcial emite FIM_SESSAO
+com acertos parciais; LEDs apagam; no-op se OCIOSO; no-op se já em
+FIM_SESSAO). Validado: `pio test -e native` 42/42 PASSED (38 anteriores + 4
+novos); `pio run -e esp32dev` SUCCESS sem warnings (RAM 13.6%, Flash 66.8%);
+`run_all.py` verde (nenhum doc tocado ainda).
+Próxima ação: usuário flasha `feat/encerrar-nova-sessao` e testa na
+bancada — iniciar sessão, acertar algumas, clicar Encerrar Sessão
+(confirmar), conferir tela de Resultados com placar parcial correto, clicar
+Nova Sessão e confirmar volta à Configuração sem reload nem reboot. PASSOU
+→ cascata completa (00/01/04/07 + spec/interface) e só então commit.
+FALHOU → iterar nesta branch, nada commitado ainda.
+
+DESFECHO M1 (2026-07-04): usuário testou na bancada ("funcionou") e
+autorizou seguir a cascata "deterministicamente, sem pular os gates".
+Cascata completa executada nesta sessão, na ordem conceito → arquitetura →
+módulos → specs → cascata mecânica → manual → anotações [VER:] no código:
+  1. `00_conceito.md` v0.2.1→v0.3.0: nova §11.4 #encerramento-antecipado
+  2. `01_arquitetura.md` v0.3.1→v0.4.0: `encerrarSessao()` em
+     #interface-jogo-wifi; nova transição `SESSAO_ATIVA → FIM_SESSAO` no
+     diagrama de estados; CA-01-09 novo
+  3. `04_logica_jogo.md` v0.1.4→v0.2.0: nova §3.2 #encerramento-antecipado
+     (transição + pseudocódigo de `encerrarSessao()`); CA-04-11 novo
+  4. `07_interface_pedagogo.md` v0.3.2→v0.4.0: mensagem `ENCERRAR` no
+     protocolo (§4.1); botão na tela de sessão ativa (§5.2); nota em
+     #armazenamento-dados (acertos < n_configurado identifica encerramento
+     antecipado, sem campo novo); CA-07-14 novo
+  5. `spec/interface/interface.json` + `.schema.json`: mensagem `ENCERRAR`
+     em `protocolo_mensagens.browser_para_esp32` (3→4); CA-07-14 em
+     `criterios_aceitacao` (13→14); `versao_fonte` 0.3.0→0.4.0; validado
+     com jsonschema
+  6. Cascata mecânica (bump `depende_de`/Identificação/Rastreabilidade,
+     sem mudança de conteúdo — M1 não afeta hardware/alimentação/sensor/
+     visual/montagem/padrões): `05_alimentacao.md` v0.3.2→v0.3.3,
+     `02_sensor_impacto.md` v0.2.2→v0.2.3, `03_saida_visual.md`
+     v0.1.6→v0.1.7, `06_privacidade_lgpd.md` v0.2.1→v0.2.2, `08_bom.md`
+     v0.3.2→v0.3.3, `09_conexoes.md` v0.3.2→v0.3.3, `10_cablagem.md`
+     v0.2.2→v0.2.3, `11_montagem.md` v0.3.2→v0.3.3, `CODING_STANDARD.md`
+     v0.2.3→v0.2.4, `TESTING_STANDARD.md` v0.1.5→v0.1.6
+  7. `WEB_STANDARD.md` v0.3.2→v0.4.0 (MINOR, não mecânico): novo cenário
+     CA-07-14 em §11.5 — a máquina de estados JS (§6.2) já cobria a
+     transição `SESSAO_ATIVA → RESULTADOS` via `FIM_SESSAO`, reaproveitada
+     sem mudança
+  8. `manual/12_manual_pedagogo.md` v0.1.1→v0.2.0: descreve o botão
+     "Encerrar Sessão" em §11 (Durante a sessão) e nota em §13 (Fim da
+     sessão)
+  9. Código: marcadores `[PROVISORIO]` substituídos por `[VER:]` reais em
+     `game.h`, `game.cpp`, `interface.cpp` (constante `MSG_ENCERRAR` juntou
+     ao grupo `--- DERIVADO: ... ---` das demais mensagens) e nos
+     comentários de `test_game/test_main.cpp` (CA-04-11 no lugar de
+     "[PROVISORIO] M1")
+  10. `CHANGELOG.md`, `TODO.md` (M1 marcado CONCLUÍDO) e `VALIDATION.md`
+      (CA-01-09/CA-04-11/CA-07-14 novos, todos PASSOU — 54 PASSOU · 1
+      OBSOLETO · 13 PENDENTE, 68 CAs) atualizados.
+Pendente antes do commit: `run_all.py` (zero erros esperado — nenhuma
+âncora nova ficou sem `[VER:]`, todas as versões `depende_de` bumpadas
+foram para o valor exato do documento referenciado), `pio test -e native`
+e `pio run -e esp32dev` finais, depois commits atômicos por tipo (docs por
+documento/cascata mecânica agrupada, spec, feat) seguindo o contrato git —
+CHANGELOG já atualizado antes desta etapa, conforme protocolo.
+
 SESSÃO 2026-07-03 (M4/M5) — CONCLUÍDA. Três branches mergeadas em develop
 (fast-forward), run_all.py verde e CHANGELOG atualizado antes de cada commit:
   1. docs/manual-pedagogo (cd14828) — manual/12_manual_pedagogo.md v0.1.0

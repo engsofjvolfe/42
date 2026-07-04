@@ -55,7 +55,7 @@ tabela).**
 
 | # | Item | Motivação | Critério de conclusão |
 |---|---|---|---|
-| M1 | Botão de encerrar sessão e iniciar nova sessão | Hoje não há caminho explícito na interface para encerrar e recomeçar sem recarregar/reiniciar | Pedagogo encerra sessão ativa e inicia nova sem recarregar a página nem reiniciar o ESP32 |
+| M1 | Botão de encerrar sessão e iniciar nova sessão | Hoje não há caminho explícito na interface para encerrar e recomeçar sem recarregar/reiniciar | **CONCLUÍDO (2026-07-04):** CA-01-09/CA-04-11/CA-07-14 — botão "Encerrar Sessão" na tela de sessão ativa (com confirmação), reaproveitando o evento `FIM_SESSAO` já existente; validado manualmente no código (`pio test -e native` 42/42, `pio run` sem warnings) e na bancada pelo usuário antes da cascata; `branch feat/encerrar-nova-sessao` |
 | M2 | Visualização do CSV na própria interface | Pedagogo precisa conferir os dados antes de baixar | **CONCLUÍDO (2026-07-03):** CA-07-12 PASSOU na bancada; `feat/export-preview-pdf` mergeada em develop |
 | M3 | Exportação em formato legível além do CSV | CSV é para planilha; falta formato para leitura humana (relatório) | **CONCLUÍDO (2026-07-03):** CA-07-13 (PDF) PASSOU na bancada; `feat/export-preview-pdf` mergeada em develop |
 | M4 | Documento de instrução do jogo | Não existe manual de uso para o pedagogo | **CONCLUÍDO (2026-07-03):** `manual/12_manual_pedagogo.md` v0.1.0 criado (branch `docs/manual-pedagogo`, mergeada em develop) — preparação, modos, mecanismos de sorteio, sessão, resultados, exportação, privacidade; 11 marcadores de fotos a produzir com o exemplar final |

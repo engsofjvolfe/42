@@ -12,10 +12,11 @@ Como usar:
 - Status `PENDENTE` = teste ainda não executado ou executado sem registro formal.
   Evidência parcial anotada não substitui a execução formal.
 
-Estado em 2026-07-04: **51 PASSOU · 1 OBSOLETO · 13 PENDENTE** (65 CAs);
+Estado em 2026-07-04: **54 PASSOU · 1 OBSOLETO · 13 PENDENTE** (68 CAs);
 cenários UI: **2 PASSOU · 6 PENDENTE**. Defeitos **D2 e D3 baixados**
 (2026-07-04, ver TODO.md — D3 fechado por observação de bancada, sem
-causa raiz confirmada, com ressalva registrada para reabertura).
+causa raiz confirmada, com ressalva registrada para reabertura). CA-01-09,
+CA-04-11 e CA-07-14 novos (melhoria M1 — encerramento antecipado de sessão).
 
 ---
 
@@ -31,6 +32,7 @@ causa raiz confirmada, com ressalva registrada para reabertura).
 | CA-01-06 | Sessão completa Modo 2 (N=5) | PASSOU | Nota (2026-07-03): mesmo workaround do CA-01-05. D2 baixado em 2026-07-04. D3 (pares de cor do Modo 2 sem variedade) também baixado em 2026-07-04 por observação de bancada — ver ressalva de reabertura em TODO.md |
 | CA-01-07 | Desconexão e retomada | PENDENTE | — |
 | CA-01-08 | Exportação: prévia + CSV + PDF corretos | PASSOU | 
+| CA-01-09 | Encerramento antecipado: acertos parciais preservados, sem reload/reboot (M1) | PASSOU | Bancada 2026-07-04 — usuário confirmou funcionamento antes de autorizar a cascata de spec/doc |
 
 ## CA-02 — Sensor de impacto ([VER: 02_sensor_impacto.md#criterios-aceitacao])
 
@@ -69,6 +71,7 @@ causa raiz confirmada, com ressalva registrada para reabertura).
 | CA-04-08 | Fim de sessão: FIM_SESSAO com totais corretos | PASSOU | Idem CA-04-01 |
 | CA-04-09 | Pausa/retomada: LEDs reacendem com mesma cor | PENDENTE | Implementado (commit 89fac38); teste físico com desconexão real pendente (junto com CA-01-07/CA-07-10) |
 | CA-04-10 | Intervalo 2000ms ± 100ms entre interações | PENDENTE | Lógica coberta em native; medição física pendente |
+| CA-04-11 | Encerramento antecipado: FIM_SESSAO com acertos parciais (M1) | PASSOU | `pio test -e native` (test_game, 4 testes novos) — 2026-07-04; teste é de natureza lógica, executável em native por definição |
 
 ## CA-05 — Alimentação ([VER: 05_alimentacao.md#criterios-aceitacao])
 
@@ -100,6 +103,7 @@ causa raiz confirmada, com ressalva registrada para reabertura).
 | CA-07-11 | Offline total em todas as etapas | PENDENTE | — |
 | CA-07-12 | Pré-visualização e confirmação (incl. vazio) | PASSOU |
 | CA-07-13 | Exportação PDF (abre, paginação, acentos) | PASSOU |
+| CA-07-14 | Encerramento antecipado: mensagem ENCERRAR, confirmação, FIM_SESSAO (M1) | PASSOU | Bancada 2026-07-04 — usuário confirmou funcionamento antes de autorizar a cascata de spec/doc |
 
 ## CA-09 — Conexões ([VER: 09_conexoes.md#criterios-aceitacao])
 
