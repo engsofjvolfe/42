@@ -29,6 +29,34 @@ RNF-05): CA-07-09 (CSV via prévia — regressão do D1), CA-07-12
 Merges fast-forward feitos em develop: fix/export-csv (ec94afd) e
 feat/export-preview-pdf (5ea06a9). M2 e M3 concluídos.
 
+SESSÃO 2026-07-04 (correções + rodada de validação) — branch
+docs/correcoes-readme-manual, mergeada em develop:
+  1. docs 4f31478 — README: badge do Actions removido (owner errado
+     eflov/42; remote real engsofjvolfe/42) e substituído por 5 badges
+     estáticos (licença, ESP32, PlatformIO, testes 38/38, status→VALIDATION)
+  2. docs c4c0a7b — README + manual v0.1.1: descrição dos dados de sessão
+     corrigida — enumera os 10 campos do registro (id, nome, início, modo,
+     mecanismo, n_configurado, acertos, erros, taxa_pct, duracao_s);
+     distingue resumo da tela vs registro completo
+  3. chore — registra a rodada de bancada preenchida pelo USUÁRIO no
+     VALIDATION.md (41 CAs → PASSOU + 2 UI; estado: 52 PASSOU · 1 OBSOLETO ·
+     12 PENDENTE · UI 2/6) e o DEFEITO D2 no TODO.md
+DEFEITO D2 (ABERTO, bloqueia gate v1.0.0): primeira conexão à rede após
+energizar → primeira interação acende SEMPRE roxo e trava na primeira
+batida (ambos os modos); workaround PAUSAR/RETOMAR; reproduz a cada ciclo
+de energização. Hipóteses (não verificadas): seed do RNG (cor fixa);
+estado inicial que gameRetomarSessao() corrige. Branch futura:
+fix/primeira-interacao.
+RESSALVAS DE PROTOCOLO anotadas no VALIDATION (vereditos do usuário
+preservados): CA-01-03 PASSOU sem osciloscópio (re-marcar PENDENTE ou
+re-especificar o CA); CA-10-02 fio vermelho em todos os piezos (confirmar
+fita de identificação); CA-03-02/03 PENDENTES com proposta de nova paleta
+(#F5D252/#E37C5F, #79D0F2/#8F78BF) — aplicar via 03_saida_visual.md +
+spec/visual com cascata, nunca direto no código.
+GATE v1.0.0: segue BLOQUEADO — D2 aberto + 12 CAs PENDENTES + ressalvas +
+M1 + índices. Release em hold por ordem explícita do usuário (2026-07-03):
+NÃO lançar v1.0.0 sem autorização expressa, mesmo com checklist fechado.
+
 SESSÃO 2026-07-03 (M4/M5) — CONCLUÍDA. Três branches mergeadas em develop
 (fast-forward), run_all.py verde e CHANGELOG atualizado antes de cada commit:
   1. docs/manual-pedagogo (cd14828) — manual/12_manual_pedagogo.md v0.1.0

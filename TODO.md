@@ -42,9 +42,11 @@ primeiro, com cascata, para os itens que criam requisito novo).
 | # | Item | Tipo | Onde | Critério de conclusão |
 |---|---|---|---|---|
 | D1 | Exportação CSV não funciona | fix | `fix/export-csv` — `firmware/src/interface/interface.cpp` (HTML/JS embutido) | **RESOLVIDO (2026-07-03):** CA-07-09 PASSOU na validação física de bancada; branch mergeada em develop |
+| D2 | Primeira interação após energizar trava na primeira batida | fix | branch `fix/primeira-interacao` — investigar `firmware/src/game/game.cpp` (sorteio e estado inicial) e `firmware/src/interface/interface.cpp` | **ABERTO (registrado 2026-07-04).** Sintoma (bancada, ambos os modos): na primeira conexão à rede após ligar o dispositivo, a primeira interação acende **sempre a cor roxa** e trava na primeira batida; destrava com PAUSAR e depois RETOMAR na interface. Reproduz em todo ciclo de energização — é preciso tirar da tomada para reproduzir de novo. Pistas (hipóteses a verificar, não conclusões): cor sempre igual sugere sorteio determinístico no primeiro uso (seed do RNG); destravar via PAUSAR/RETOMAR sugere estado inicial que `gameRetomarSessao()` corrige. Critério de conclusão: primeira interação pós-boot sorteia cor conforme o mecanismo configurado e registra a primeira batida sem exigir pausar/retomar |
 
-**Regra do protocolo:** nenhuma tag v1.0.0 enquanto D1 não passar — o gate da
-ETAPA 8 exige todos os CAs aprovados. **D1 baixado em 2026-07-03.**
+**Regra do protocolo:** nenhuma tag v1.0.0 enquanto houver defeito aberto — o
+gate da ETAPA 8 exige todos os CAs aprovados. **D1 baixado em 2026-07-03.
+D2 aberto em 2026-07-04 — bloqueia o gate v1.0.0.**
 
 ### Melhorias de produto (requisito novo → atualizar 07_interface_pedagogo.md antes)
 

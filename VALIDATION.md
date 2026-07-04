@@ -12,7 +12,9 @@ Como usar:
 - Status `PENDENTE` = teste ainda não executado ou executado sem registro formal.
   Evidência parcial anotada não substitui a execução formal.
 
-Estado em 2026-07-03: **7 PASSOU · 1 OBSOLETO · 57 PENDENTE** (65 CAs) + 8 cenários UI.
+Estado em 2026-07-04: **52 PASSOU · 1 OBSOLETO · 12 PENDENTE** (65 CAs);
+cenários UI: **2 PASSOU · 6 PENDENTE**. Defeito **D2 aberto** (TODO.md) —
+bloqueia o gate mesmo com CAs aprovados.
 
 ---
 
@@ -20,14 +22,14 @@ Estado em 2026-07-03: **7 PASSOU · 1 OBSOLETO · 57 PENDENTE** (65 CAs) + 8 cen
 
 | CA | Teste | Resultado | Evidência |
 |---|---|---|---|
-| CA-01-01 | Boot completo: LEDs varrem 3×4 cores; hotspot < 5s | PENDENTE | Evidência parcial: boot + animação + AP BMI observados em bancada (2026-07-03, SESSION_STATE) — repetir com medição do tempo |
-| CA-01-02 | Browser conecta e carrega interface < 3s | PENDENTE | Evidência parcial: interface carregada em bancada (2026-07-03) — repetir com medição do tempo |
-| CA-01-03 | Latência impacto→LED < 50ms (osciloscópio, 10 amostras) | PENDENTE | — |
-| CA-01-04 | Latência evento→tela < 200ms (inspeção visual) | PENDENTE | — |
-| CA-01-05 | Sessão completa Modo 1 (N=5) | PENDENTE | — |
-| CA-01-06 | Sessão completa Modo 2 (N=5) | PENDENTE | — |
+| CA-01-01 | Boot completo: LEDs varrem 3×4 cores; hotspot < 5s | PASSOU | 
+| CA-01-02 | Browser conecta e carrega interface < 3s | PASSOU | 
+| CA-01-03 | Latência impacto→LED < 50ms (osciloscópio, 10 amostras) | PASSOU | impossibilidade de medir com osciloscópio — **RESSALVA de protocolo:** o teste definido exige osciloscópio; sem a medição, o PASSOU não é conforme. Resolver: re-marcar PENDENTE ou re-especificar o método do CA-01-03 em `01_arquitetura.md` (com cascata) para um método verificável sem osciloscópio |
+| CA-01-04 | Latência evento→tela < 200ms (inspeção visual) | PASSOU | — |
+| CA-01-05 | Sessão completa Modo 1 (N=5) | PASSOU | Nota: sujeito ao D2 (TODO.md) — primeira interação pós-energização trava; sessão conduzida com o workaround PAUSAR/RETOMAR |
+| CA-01-06 | Sessão completa Modo 2 (N=5) | PASSOU | Nota: sujeito ao D2 (TODO.md) — mesmo workaround |
 | CA-01-07 | Desconexão e retomada | PENDENTE | — |
-| CA-01-08 | Exportação: prévia + CSV + PDF corretos | PENDENTE | Evidência forte: CA-07-09/12/13 PASSOU em bancada (2026-07-03) — registrar execução formal deste CA de sistema |
+| CA-01-08 | Exportação: prévia + CSV + PDF corretos | PASSOU | 
 
 ## CA-02 — Sensor de impacto ([VER: 02_sensor_impacto.md#criterios-aceitacao])
 
@@ -35,22 +37,22 @@ Estado em 2026-07-03: **7 PASSOU · 1 OBSOLETO · 57 PENDENTE** (65 CAs) + 8 cen
 |---|---|---|---|
 | CA-02-01 | 50/50 batidas detectadas | PENDENTE | — |
 | CA-02-02 | 0 falsos positivos em 5 min | PENDENTE | — |
-| CA-02-03 | Bater em zona X não gera evento em Y | PENDENTE | — |
+| CA-02-03 | Bater em zona X não gera evento em Y | PASSOU | — |
 | CA-02-04 | GPIO sobrevive 100 impactos fortes | PENDENTE | — |
-| CA-02-05 | Uma batida → exatamente 1 evento (debounce) | PENDENTE | Lógica coberta em `pio test -e native` (test_sensor 13/13, 2026-06-28); execução física pendente |
-| CA-02-06 | Latência detecção→evento < 10ms | PENDENTE | — |
+| CA-02-05 | Uma batida → exatamente 1 evento (debounce) | PASSOU | Lógica coberta em `pio test -e native` (test_sensor 13/13, 2026-06-28)|
+| CA-02-06 | Latência detecção→evento < 10ms | PASSOU | — |
 
 ## CA-03 — Saída visual ([VER: 03_saida_visual.md#criterios-aceitacao])
 
 | CA | Teste | Resultado | Evidência |
 |---|---|---|---|
-| CA-03-01 | Boot animation: 3 LEDs × 4 cores, ~3s | PENDENTE | Evidência parcial: animação de boot observada em bancada (2026-07-03); lógica coberta em native (test_visual 14/14) — repetir com verificação da duração |
-| CA-03-02 | Laranja distinguível de Amarelo (amostra de cor) | PENDENTE | — |
-| CA-03-03 | Azul distinguível de Roxo em luz ambiente | PENDENTE | — |
-| CA-03-04 | LED correto por modo | PENDENTE | Lógica coberta em native (test_visual); execução física pendente |
-| CA-03-05 | Latência LED < 10ms | PENDENTE | — |
-| CA-03-06 | Celebração: 5 rotações ~3s, todos apagam | PENDENTE | Lógica coberta em native (test_visual); execução física pendente |
-| CA-03-07 | Sem aquecimento anormal após 60 min | PENDENTE | — |
+| CA-03-01 | Boot animation: 3 LEDs × 4 cores, ~3s | PASSOU |
+| CA-03-02 | Laranja distinguível de Amarelo (amostra de cor) | PENDENTE | melhorar a diferenciação utilizando as cores #F5D252 e #E37C5F — proposta de mudança de paleta: aplicar via atualização de `03_saida_visual.md` (+ spec/visual, com cascata), nunca direto no código |
+| CA-03-03 | Azul distinguível de Roxo em luz ambiente | PENDENTE | melhorar a diferenciação utilizando as cores #79D0F2 e #8F78BF — mesma via da linha acima |
+| CA-03-04 | LED correto por modo | PASSOU |
+| CA-03-05 | Latência LED < 10ms | PASSOU | — |
+| CA-03-06 | Celebração: 5 rotações ~3s, todos apagam | PASSOU | 
+| CA-03-07 | Sem aquecimento anormal após 60 min | PASSOU | — |
 
 ## CA-04 — Lógica de jogo ([VER: 04_logica_jogo.md#criterios-aceitacao])
 
@@ -71,55 +73,55 @@ Estado em 2026-07-03: **7 PASSOU · 1 OBSOLETO · 57 PENDENTE** (65 CAs) + 8 cen
 
 | CA | Teste | Resultado | Evidência |
 |---|---|---|---|
-| CA-05-01 | LM2596 em vazio: 3.30V ± 0.05V | PENDENTE | Evidência parcial: ajustado a 3.30V na bancada (2026-07-02); registrar medição formal + trava do trimpot |
-| CA-05-02 | LM2596 sob carga: 3.3V ± 5% por 60 min | PENDENTE | — |
-| CA-05-03 | Pino 3V3 sob carga: 3.3V ± 5% por 60 min | PENDENTE | — |
-| CA-05-04 | Zero resets por brownout em 60 min | PENDENTE | Evidência parcial: sistema operou em bancada sem brownout após arquitetura 3.3V direta (2026-07-03); janela de 60 min não cronometrada |
-| CA-05-05 | Temperatura LM2596 < 70°C após 30 min | PENDENTE | — |
+| CA-05-01 | LM2596 em vazio: 3.30V ± 0.05V | PASSOU |
+| CA-05-02 | LM2596 sob carga: 3.3V ± 5% por 60 min | PASSOU | — |
+| CA-05-03 | Pino 3V3 sob carga: 3.3V ± 5% por 60 min | PASSOU | — |
+| CA-05-04 | Zero resets por brownout em 60 min | PASSOU | Evidência parcial: sistema operou em bancada sem brownout após arquitetura 3.3V direta (2026-07-03); janela de 60 min não cronometrada |
+| CA-05-05 | Temperatura LM2596 < 70°C após 30 min | PASSOU | — |
 | CA-05-06 | — | OBSOLETO | AMS1117 fora do caminho de potência (05 v0.3.0) — não aplicável |
-| CA-05-07 | Ripple no rail 3.3V < 50mV pico a pico | PENDENTE | — |
-| CA-05-08 | 10 boots consecutivos com init WiFi sem brownout (incl. 1º pós-erase) | PENDENTE | — |
+| CA-05-07 | Ripple no rail 3.3V < 50mV pico a pico | PASSOU  | — |
+| CA-05-08 | 10 boots consecutivos com init WiFi sem brownout (incl. 1º pós-erase) | PASSOU | — |
 
 ## CA-07 — Interface do pedagogo ([VER: 07_interface_pedagogo.md#criterios-aceitacao])
 
 | CA | Teste | Resultado | Evidência |
 |---|---|---|---|
-| CA-07-01 | Hotspot `BMI` visível < 5s após boot | PENDENTE | Evidência parcial: AP no ar em bancada (2026-07-02/03); tempo não medido |
-| CA-07-02 | Interface carrega < 3s em 192.168.4.1 | PENDENTE | Evidência parcial: interface usada em bancada; tempo não medido |
-| CA-07-03 | Validação do formulário (nome vazio bloqueado) | PENDENTE | — |
+| CA-07-01 | Hotspot `BMI` visível < 5s após boot | PASSOU |
+| CA-07-02 | Interface carrega < 3s em 192.168.4.1 | PASSOU |
+| CA-07-03 | Validação do formulário (nome vazio bloqueado) | PASSOU | — |
 | CA-07-04 | Campo janela visível somente no Modo 2 | PENDENTE | — |
-| CA-07-05 | Feedback acerto: verde + som < 200ms, some em 1500ms | PENDENTE | — |
-| CA-07-06 | Feedback erro: vermelho + som < 200ms, mantido | PENDENTE | — |
-| CA-07-07 | Tela de resultados completa no FIM_SESSAO | PENDENTE | — |
+| CA-07-05 | Feedback acerto: verde + som < 200ms, some em 1500ms | PASSOU | — |
+| CA-07-06 | Feedback erro: vermelho + som < 200ms, mantido | PASSOU | — |
+| CA-07-07 | Tela de resultados completa no FIM_SESSAO | PASSOU | — |
 | CA-07-08 | Registro no localStorage ao confirmar Nova Sessão | PENDENTE | — |
-| CA-07-09 | Exportação CSV via prévia (RFC 4180, UTF-8 BOM) | PASSOU | Validação física de bancada, browser da matriz RNF-05 — 2026-07-03 (SESSION_STATE; commit 60d3bb0). Pré-validação: 44/44 checks em Node |
+| CA-07-09 | Exportação CSV via prévia (RFC 4180, UTF-8 BOM) | PASSOU |
 | CA-07-10 | Desconexão pausa; reconexão retoma | PENDENTE | — |
 | CA-07-11 | Offline total em todas as etapas | PENDENTE | — |
-| CA-07-12 | Pré-visualização e confirmação (incl. vazio) | PASSOU | Validação física de bancada — 2026-07-03 (SESSION_STATE; commit 60d3bb0) |
-| CA-07-13 | Exportação PDF (abre, paginação, acentos) | PASSOU | Validação física de bancada — 2026-07-03 (SESSION_STATE; commit 60d3bb0); PDF de amostra conferido visualmente |
+| CA-07-12 | Pré-visualização e confirmação (incl. vazio) | PASSOU |
+| CA-07-13 | Exportação PDF (abre, paginação, acentos) | PASSOU |
 
 ## CA-09 — Conexões ([VER: 09_conexoes.md#criterios-aceitacao])
 
 | CA | Teste | Resultado | Evidência |
 |---|---|---|---|
-| CA-09-01 | Continuidade + 3.30V ± 0.05V no pino 3V3 | PENDENTE | — |
-| CA-09-02 | Isolamento 12V→3.3V (sem curto no LM2596) | PENDENTE | — |
-| CA-09-03 | GPIOs de piezo leem 0V em repouso | PENDENTE | — |
-| CA-09-04 | Zener: GPIO não ultrapassa 3.3V com impacto forte | PENDENTE | — |
-| CA-09-05 | Cadeia LED: os 3 respondem ao comando | PENDENTE | Evidência parcial: 3/3 LEDs em ciclo de cores na bancada (2026-07-02) — registrar execução formal |
-| CA-09-06 | Resistência ∞ entre sinais ADC | PENDENTE | — |
-| CA-09-07 | Serigrafia verificada borne a borne; bornes proibidos marcados | PENDENTE | Pendência física registrada: marcar borne falso-GND (CMD) e auditar todos os rótulos (SESSION_STATE) |
+| CA-09-01 | Continuidade + 3.30V ± 0.05V no pino 3V3 | PASSOU | — |
+| CA-09-02 | Isolamento 12V→3.3V (sem curto no LM2596) | PASSOU | — |
+| CA-09-03 | GPIOs de piezo leem 0V em repouso | PASSOU | — |
+| CA-09-04 | Zener: GPIO não ultrapassa 3.3V com impacto forte | PASSOU | — |
+| CA-09-05 | Cadeia LED: os 3 respondem ao comando | PASSOU |
+| CA-09-06 | Resistência ∞ entre sinais ADC | PASSOU | — |
+| CA-09-07 | Serigrafia verificada borne a borne; bornes proibidos marcados | PASSOU | 
 
 ## CA-10 — Cablagem ([VER: 10_cablagem.md#criterios-aceitacao])
 
 | CA | Teste | Resultado | Evidência |
 |---|---|---|---|
-| CA-10-01 | Continuidade: 26 fios < 1Ω | PENDENTE | — |
-| CA-10-02 | Fios de piezo identificados por cor de zona | PENDENTE | — |
-| CA-10-03 | Strain relief nos cabos de piezo | PENDENTE | — |
-| CA-10-04 | Comprimentos respeitados | PENDENTE | — |
-| CA-10-05 | Heat shrink: sem cobre exposto | PENDENTE | — |
-| CA-10-06 | Junções da cadeia LED soldadas/travadas (clipe proibido) | PENDENTE | Motivação registrada: contato marginal dos clipes comprovado em 2026-07-02 |
+| CA-10-01 | Continuidade: 26 fios < 1Ω | PASSOU | — |
+| CA-10-02 | Fios de piezo identificados por cor de zona | PASSOU | fios vermelhos utilizados para todos os piezos para aproveitamento de material — **RESSALVA:** o CA pede identificação com fita na cor da zona (a cor do fio pode divergir; a identificação, não). Confirmar que a fita foi aplicada; senão, aplicar ou re-especificar CA-10-02 em `10_cablagem.md` |
+| CA-10-03 | Strain relief nos cabos de piezo | PASSOU | — |
+| CA-10-04 | Comprimentos respeitados | PASSOU | comprimentos de cabo utilizados conforme cabos disponíveis |
+| CA-10-05 | Heat shrink: sem cobre exposto | PASSOU | — |
+| CA-10-06 | Junções da cadeia LED soldadas/travadas (clipe proibido) | PASSOU |
 
 ## Cenários de UI ([VER: WEB_STANDARD.md#criterios-aceitacao])
 
@@ -129,10 +131,10 @@ Complementares aos CA-07; mesma disciplina de registro.
 |---|---|---|---|
 | CA-07-UI-01 | Tokens MD3 aplicados, sem hex fora de `:root` | PENDENTE | — |
 | CA-07-UI-02 | Layout responsivo em 375px e 768px | PENDENTE | — |
-| CA-07-UI-03 | Zero magic literals no script | PENDENTE | — |
+| CA-07-UI-03 | Zero magic literals no script | PASSOU | — |
 | CA-07-UI-04 | Estados mutuamente exclusivos | PENDENTE | — |
 | CA-07-UI-05 | Overlay de feedback cobre 100% da viewport | PENDENTE | — |
-| CA-07-UI-06 | Transição automática do overlay de ACERTO | PENDENTE | — |
+| CA-07-UI-06 | Transição automática do overlay de ACERTO | PASSOU | — |
 | CA-07-UI-07 | Persistência de sessão no localStorage | PENDENTE | — |
 | CA-07-UI-08 | Reconexão transparente sem recarregar | PENDENTE | — |
 
@@ -142,4 +144,6 @@ Complementares aos CA-07; mesma disciplina de registro.
 
 | Data | Mudança |
 |---|---|
-| 2026-07-03 | Criação do checklist. Status inicial derivado exclusivamente de evidência registrada (SESSION_STATE.md, TODO.md, commits): CA-07-09/12/13 PASSOU (bancada 2026-07-03); CA-04-01..08 PASSOU (native 38/38 — testes de natureza lógica); CA-05-06 OBSOLETO; demais PENDENTE |
+| 2026-07-03 | Criação do checklist. Status inicial derivado exclusivamente de evidência registrada (SESSION_STATE.md, TODO.md, commits): CA-07-09/12/13 PASSOU (bancada 2026-07-03); CA-04-01..08 PASSOU (native 38/38 — testes de natureza lógica); CA-05-06 OBSOLETO; demais PENDENTE. (Correção de contagem: a linha de estado dizia 7 PASSOU; eram 11 — 8 do CA-04 + 3 do CA-07) |
+| 2026-07-04 | Rodada de validação física de bancada preenchida pelo usuário: 41 CAs promovidos a PASSOU (+2 cenários UI). Restam 12 CAs e 6 cenários UI PENDENTES. Ressalvas anotadas sem alterar vereditos: CA-01-03 (sem osciloscópio) e CA-10-02 (fio vermelho em todos os piezos); CA-03-02/03 com proposta de nova paleta (via doc, com cascata) |
+| 2026-07-04 | Defeito D2 registrado (TODO.md): primeira interação pós-energização acende sempre roxo e trava na primeira batida; workaround PAUSAR/RETOMAR; notas adicionadas em CA-01-05/06. D2 bloqueia o gate v1.0.0 |
