@@ -1,6 +1,6 @@
 ---
 documento:    00_conceito.md
-versão:       0.2.0
+versão:       0.2.1
 status:       APROVADO
 data:         2026-06-26
 depende_de:
@@ -14,6 +14,7 @@ impacta:
   - 07_interface_pedagogo.md [CONDICIONAL: #interface-pedagogo, #gestao-dados, #feedback]
   - 08_bom.md               [CONDICIONAL: #componentes-fisicos]
   - 09_conexoes.md          [CONDICIONAL: #componentes-fisicos]
+  - 12_manual_pedagogo.md   [OBRIGATÓRIO]
 ---
 
 # 00_CONCEITO.md — Projeto [NOME A DEFINIR]
@@ -362,6 +363,7 @@ Documento derivado: [VER: 06_privacidade_lgpd.md#identificacao]
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação inicial: conceito, glossário, zonas, timings, âncoras e rastreabilidade bidirecional | Todos os documentos derivados |
 | 0.2.0 | 2026-07-03 | #exportacao, #escopo-incluido, impacta | Registra no conceito as decisões validadas na ETAPA 8 (melhorias M2/M3): exportação em dois formatos (CSV para planilha, PDF como relatório legível), escolha do formato no momento da exportação e pré-visualização com confirmação obrigatória antes de qualquer download; corrige lacuna de rastreabilidade — 07_interface_pedagogo.md adicionado ao impacta (07 já declarava 00 como Pai BLOQUEADOR) | 07_interface_pedagogo.md (já conforme na v0.3.0), 06_privacidade_lgpd.md, 01_arquitetura.md, depende_de de todos os dependentes |
+| 0.2.1 | 2026-07-03 | impacta, Rastreabilidade | Registra 12_manual_pedagogo.md (manual de uso do pedagogo — melhoria M4 da validação ETAPA 8) como dependente OBRIGATÓRIO: o manual descreve o comportamento visível ao usuário definido neste conceito e deve ser revisado a cada mudança dele | 12_manual_pedagogo.md (novo), depende_de de todos os dependentes (cascata PATCH) |
 
 ---
 
@@ -378,6 +380,7 @@ Documento derivado: [VER: 06_privacidade_lgpd.md#identificacao]
 | Filho | 07_interface_pedagogo.md | — | CONDICIONAL: #interface-pedagogo, #gestao-dados, #feedback | #interface-pedagogo, #gestao-dados, #feedback |
 | Filho | 08_bom.md | — | CONDICIONAL: #componentes-fisicos | #componentes-fisicos |
 | Filho | 09_conexoes.md | — | CONDICIONAL: #componentes-fisicos | #componentes-fisicos |
+| Filho | 12_manual_pedagogo.md | — | OBRIGATÓRIO | #publico-alvo, #componentes-fisicos, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #interface-pedagogo, #gestao-dados |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.

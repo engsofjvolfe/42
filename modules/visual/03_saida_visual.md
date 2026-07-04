@@ -1,13 +1,13 @@
 ---
 documento:    03_saida_visual.md
-versão:       0.1.5
+versão:       0.1.6
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.2.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.3.0 [BLOQUEADOR]
-  - 05_alimentacao.md v0.3.1 [BLOQUEADOR]
+  - 00_conceito.md v0.2.1    [BLOQUEADOR]
+  - 01_arquitetura.md v0.3.1 [BLOQUEADOR]
+  - 05_alimentacao.md v0.3.2 [BLOQUEADOR]
 impacta:
   - 08_bom.md                [OBRIGATÓRIO]
   - 09_conexoes.md           [OBRIGATÓRIO]
@@ -22,7 +22,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 03_saida_visual.md |
-| Versão | 0.1.5 |
+| Versão | 0.1.6 |
 | Status | APROVADO |
 | Módulo firmware | MOD_LED — [VER: 01_arquitetura.md#mod-led] |
 | GPIO de dados | 5 — [VER: 01_arquitetura.md#mapeamento-gpios] |
@@ -153,6 +153,7 @@ Especificação no BOM: [VER: 08_bom.md#passivos]
 | 0.1.3 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referências: 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4), 05_alimentacao.md v0.2.1→v0.2.2 (VIN→pino 5V) | — |
 | 0.1.4 | 2026-07-03 | #alimentacao-led, depende_de, Rastreabilidade | Corrige origem do rail 3.3V: saída direta do LM2596, não mais AMS1117 (05_alimentacao v0.3.0 — AMS1117 fora do caminho de potência); VDD e nível de dado inalterados | 08, 09 (somente depende_de) |
 | 0.1.5 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0, 05_alimentacao.md v0.3.0→v0.3.1 | — |
+| 0.1.6 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1, 05_alimentacao.md v0.3.1→v0.3.2 | — |
 
 ---
 
@@ -161,9 +162,9 @@ Especificação no BOM: [VER: 08_bom.md#passivos]
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.2.0 | BLOQUEADOR | #indicadores-led, #modos-operacao, #zonas-impacto, #feedback, #estado-boot |
-| Pai | 01_arquitetura.md | 0.3.0 | BLOQUEADOR | #mod-led, #mapeamento-gpios, #interface-jogo-led, #stack-tecnologico, #requisitos-nao-funcionais |
-| Pai | 05_alimentacao.md | 0.3.1 | BLOQUEADOR | #restricao-led, #decoupling |
+| Pai | 00_conceito.md | 0.2.1 | BLOQUEADOR | #indicadores-led, #modos-operacao, #zonas-impacto, #feedback, #estado-boot |
+| Pai | 01_arquitetura.md | 0.3.1 | BLOQUEADOR | #mod-led, #mapeamento-gpios, #interface-jogo-led, #stack-tecnologico, #requisitos-nao-funcionais |
+| Pai | 05_alimentacao.md | 0.3.2 | BLOQUEADOR | #restricao-led, #decoupling |
 | Filho | 08_bom.md | — | OBRIGATÓRIO | #componente-led, #decoupling-led |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #mapeamento-led, #decoupling-led |
 ---

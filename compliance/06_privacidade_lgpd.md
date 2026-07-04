@@ -1,11 +1,11 @@
 ---
 documento:    06_privacidade_lgpd.md
-versão:       0.2.0
+versão:       0.2.1
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0       [BLOQUEADOR]
-  - 00_conceito.md v0.2.0   [BLOQUEADOR]
+  - 00_conceito.md v0.2.1   [BLOQUEADOR]
 impacta: []
 ---
 
@@ -18,7 +18,7 @@ impacta: []
 | Campo | Valor |
 |---|---|
 | Documento | 06_privacidade_lgpd.md |
-| Versão | 0.2.0 |
+| Versão | 0.2.1 |
 | Status | APROVADO |
 | Audiência | Responsáveis legais das crianças participantes |
 | Idioma | Português brasileiro — linguagem acessível |
@@ -234,6 +234,7 @@ Se a instituição suspeitar que dados de crianças foram acessados por pessoas 
 |---|---|---|---|---|
 | 0.1.0 | 2026-06-26 | — | Criação — derivado de 00_conceito v0.1.0 com linguagem acessível para responsáveis, referências LGPD inline | — |
 | 0.2.0 | 2026-07-03 | #seus-direitos (portabilidade), depende_de | Cascata do conceito v0.2.0: portabilidade passa a citar os dois formatos de exportação (planilha CSV e relatório PDF) e a conferência dos dados na tela antes do download; nenhuma mudança na coleta, finalidade ou guarda dos dados | — |
+| 0.2.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1 | — |
 
 ---
 
@@ -242,7 +243,7 @@ Se a instituição suspeitar que dados de crianças foram acessados por pessoas 
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.2.0 | BLOQUEADOR | #privacidade-lgpd, #gestao-dados, #armazenamento, #responsabilidade-dados, #exportacao |
+| Pai | 00_conceito.md | 0.2.1 | BLOQUEADOR | #privacidade-lgpd, #gestao-dados, #armazenamento, #responsabilidade-dados, #exportacao |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.

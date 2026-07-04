@@ -1,13 +1,14 @@
 ---
 documento:    07_interface_pedagogo.md
-versão:       0.3.1
+versão:       0.3.2
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.2.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.3.0 [BLOQUEADOR]
-impacta: []
+  - 00_conceito.md v0.2.1    [BLOQUEADOR]
+  - 01_arquitetura.md v0.3.1 [BLOQUEADOR]
+impacta:
+  - 12_manual_pedagogo.md    [OBRIGATÓRIO]
 ---
 
 # 07_INTERFACE_PEDAGOGO.md — Interface do Pedagogo (MOD_WIFI)
@@ -19,7 +20,7 @@ impacta: []
 | Campo | Valor |
 |---|---|
 | Documento | 07_interface_pedagogo.md |
-| Versão | 0.3.1 |
+| Versão | 0.3.2 |
 | Status | APROVADO |
 | Módulo firmware | MOD_WIFI — [VER: 01_arquitetura.md#mod-wifi] |
 | Stack | HTML + CSS + JS puro, sem framework — [VER: 01_arquitetura.md#stack-tecnologico] |
@@ -436,6 +437,7 @@ Todos os valores acima (nome de arquivo, MIME, versão PDF, fontes, dimensões, 
 | 0.2.0 | 2026-07-03 | #exportacao-csv, #criterios-aceitacao, #identificacao | Re-especifica exportação CSV a partir do defeito D1 (validação ETAPA 8): mecanismo `data:` URI + âncora anexada ao DOM substitui blob + revokeObjectURL síncrono (falha silenciosa em Firefox/WebView); novos requisitos CSV-01..04 (UTF-8 BOM, escaping RFC 4180, charset explícito); CA-07-09 estendido; corrige versão desatualizada na tabela de Identificação (0.1.1) | WEB_STANDARD.md, spec/interface/interface.json, spec/interface/interface.schema.json, firmware/src/interface/interface.cpp |
 | 0.3.0 | 2026-07-03 | #exportacao-csv (§8 reestruturada), #pre-visualizacao, #exportacao-pdf, #tela-resultados, #criterios-aceitacao, #objetivo, #identificacao | Melhorias M2/M3 (validação ETAPA 8): pré-visualização com confirmação obrigatória antes de qualquer download (PRE-01..05); escolha de formato CSV/PDF; exportação PDF gerada em JS puro — PDF 1.4, fontes base-14, WinAnsiEncoding, A4 paisagem, paginação (PDF-01..06, DECISAO formal); botão da tela de resultados passa de "Exportar CSV" para "Exportar" (abre prévia); CA-07-09 ajustado ao novo fluxo; CA-07-12 e CA-07-13 novos | WEB_STANDARD.md, spec/interface/interface.json, spec/interface/interface.schema.json, firmware/src/interface/interface.cpp |
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0 | — |
+| 0.3.2 | 2026-07-03 | impacta, depende_de, Rastreabilidade | Registra 12_manual_pedagogo.md (manual de uso do pedagogo — melhoria M4 da validação ETAPA 8) como dependente OBRIGATÓRIO: o manual descreve as telas e fluxos aqui especificados; cascata do registro em 00 — atualiza referências 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1 | 12_manual_pedagogo.md (novo) |
 
 ---
 
@@ -444,9 +446,10 @@ Todos os valores acima (nome de arquivo, MIME, versão PDF, fontes, dimensões, 
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.2.0 | BLOQUEADOR | #conectividade, #configuracao-pre-sessao, #desconexao, #feedback-acerto, #feedback-erro, #feedback-fim-sessao, #armazenamento, #exportacao, #responsabilidade-dados |
-| Pai | 01_arquitetura.md | 0.3.0 | BLOQUEADOR | #mod-wifi, #interface-jogo-wifi, #stack-tecnologico, #requisitos-nao-funcionais |
-| Pai | 04_logica_jogo.md | 0.1.3 | CONDICIONAL: #gestao-score | #gestao-score |
+| Pai | 00_conceito.md | 0.2.1 | BLOQUEADOR | #conectividade, #configuracao-pre-sessao, #desconexao, #feedback-acerto, #feedback-erro, #feedback-fim-sessao, #armazenamento, #exportacao, #responsabilidade-dados |
+| Pai | 01_arquitetura.md | 0.3.1 | BLOQUEADOR | #mod-wifi, #interface-jogo-wifi, #stack-tecnologico, #requisitos-nao-funcionais |
+| Pai | 04_logica_jogo.md | 0.1.4 | CONDICIONAL: #gestao-score | #gestao-score |
+| Filho | 12_manual_pedagogo.md | — | OBRIGATÓRIO | #access-point, #estados-interface, #tela-configuracao, #tela-resultados, #pre-visualizacao, #exportacao-csv |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.

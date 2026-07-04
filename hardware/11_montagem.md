@@ -1,14 +1,14 @@
 ---
 documento:    11_montagem.md
-versão:       0.3.1
+versão:       0.3.2
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.2.0    [BLOQUEADOR]
-  - 08_bom.md v0.3.1         [BLOQUEADOR]
-  - 09_conexoes.md v0.3.1    [BLOQUEADOR]
-  - 10_cablagem.md v0.2.1    [BLOQUEADOR]
+  - 00_conceito.md v0.2.1    [BLOQUEADOR]
+  - 08_bom.md v0.3.2         [BLOQUEADOR]
+  - 09_conexoes.md v0.3.2    [BLOQUEADOR]
+  - 10_cablagem.md v0.2.2    [BLOQUEADOR]
 impacta: []
 ---
 
@@ -21,7 +21,7 @@ impacta: []
 | Campo | Valor |
 |---|---|
 | Documento | 11_montagem.md |
-| Versão | 0.3.1 |
+| Versão | 0.3.2 |
 | Status | APROVADO |
 | Escopo | Montagem física completa — uma unidade do instrumento |
 | Posição na cadeia | Documento final — não tem filhos |
@@ -488,6 +488,7 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 | 0.2.3 | 2026-07-01 | #instalacao-devkit, #energizacao-inicial | Substitui "VIN" por "pino 5V" / "DevKitC V4" em instruções de soldagem e conexão; atualiza depende_de: 08 v0.2.2, 09 v0.2.3, 10 v0.1.4 | — |
 | 0.3.0 | 2026-07-03 | #montagem-lm2596, #ajuste-tensao, #fase-esp32, #criterios-aceitacao-final, depende_de | Cascata 05/08/09/10 (arquitetura 3.3V direta): ajuste do LM2596 para 3.30V ± 0.05V com trava de trimpot e proibição >3.6V; verificação de serigrafia como passo 1 da instalação; P07 (1000μF) no pino 3V3; barramento 3.3V; checklist final com CA-05-08, CA-09-07, CA-10-06; atualiza depende_de 08 v0.3.0, 09 v0.3.0, 10 v0.2.0 | — |
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 08_bom.md v0.3.0→v0.3.1, 09_conexoes.md v0.3.0→v0.3.1, 10_cablagem.md v0.2.0→v0.2.1 | — |
+| 0.3.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 08_bom.md v0.3.1→v0.3.2, 09_conexoes.md v0.3.1→v0.3.2, 10_cablagem.md v0.2.1→v0.2.2 | — |
 
 ---
 
@@ -496,10 +497,10 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.2.0 | BLOQUEADOR | #componentes-fisicos, #martelos, #indicadores-led |
-| Pai | 08_bom.md | 0.3.1 | BLOQUEADOR | todo o documento |
-| Pai | 09_conexoes.md | 0.3.1 | BLOQUEADOR | todo o documento |
-| Pai | 10_cablagem.md | 0.2.1 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
+| Pai | 00_conceito.md | 0.2.1 | BLOQUEADOR | #componentes-fisicos, #martelos, #indicadores-led |
+| Pai | 08_bom.md | 0.3.2 | BLOQUEADOR | todo o documento |
+| Pai | 09_conexoes.md | 0.3.2 | BLOQUEADOR | todo o documento |
+| Pai | 10_cablagem.md | 0.2.2 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.

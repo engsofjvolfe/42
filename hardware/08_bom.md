@@ -1,15 +1,15 @@
 ---
 documento:    08_bom.md
-versão:       0.3.1
+versão:       0.3.2
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.2.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.3.0 [BLOQUEADOR]
-  - 02_sensor_impacto.md v0.2.1 [BLOQUEADOR]
-  - 03_saida_visual.md v0.1.5   [BLOQUEADOR]
-  - 05_alimentacao.md v0.3.1    [BLOQUEADOR]
+  - 00_conceito.md v0.2.1    [BLOQUEADOR]
+  - 01_arquitetura.md v0.3.1 [BLOQUEADOR]
+  - 02_sensor_impacto.md v0.2.2 [BLOQUEADOR]
+  - 03_saida_visual.md v0.1.6   [BLOQUEADOR]
+  - 05_alimentacao.md v0.3.2    [BLOQUEADOR]
 impacta:
   - 09_conexoes.md           [OBRIGATÓRIO]
   - 11_montagem.md           [OBRIGATÓRIO]
@@ -24,7 +24,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 08_bom.md |
-| Versão | 0.3.1 |
+| Versão | 0.3.2 |
 | Status | APROVADO |
 | Escopo | Todos os componentes necessários para uma unidade do projeto |
 
@@ -135,6 +135,7 @@ Fonte (A01) não contabilizada — já disponível.
 | 0.2.2 | 2026-07-01 | #eletronicos-ativos, #passivos | Especifica E01 como DevKitC V4 e esclarece rótulo "5V" do pino de entrada; atualiza P05/P06: "VIN" → "pino 5V"; atualiza depende_de: 01 v0.2.1, 02 v0.1.3, 03 v0.1.3, 05 v0.2.2 | 09, 11 |
 | 0.3.0 | 2026-07-03 | #eletronicos-ativos, #passivos, depende_de | Cascata 05 v0.3.0 (arquitetura 3.3V direta): E01 nota AMS1117 fora do caminho de potência; E02 alerta de serigrafia não confiável (falso-GND = CMD/GPIO11, causa raiz CA-07-01); P05 reduzido a 3 (LEDs); P06 pino 3V3; P07 novo (1000μF pino 3V3); atualiza depende_de 02 v0.2.0, 03 v0.1.4, 05 v0.3.0 | 09, 11 [OBRIGATÓRIO] |
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0, 02_sensor_impacto.md v0.2.0→v0.2.1, 03_saida_visual.md v0.1.4→v0.1.5, 05_alimentacao.md v0.3.0→v0.3.1 | — |
+| 0.3.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1, 02_sensor_impacto.md v0.2.1→v0.2.2, 03_saida_visual.md v0.1.5→v0.1.6, 05_alimentacao.md v0.3.1→v0.3.2 | — |
 
 ---
 
@@ -143,11 +144,11 @@ Fonte (A01) não contabilizada — já disponível.
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.2.0 | BLOQUEADOR | #componentes-fisicos |
-| Pai | 01_arquitetura.md | 0.3.0 | BLOQUEADOR | #hardware, #mapeamento-gpios |
-| Pai | 02_sensor_impacto.md | 0.2.1 | BLOQUEADOR | #componente-piezo, #componentes-protecao |
-| Pai | 03_saida_visual.md | 0.1.5 | BLOQUEADOR | #componente-led, #decoupling-led |
-| Pai | 05_alimentacao.md | 0.3.1 | BLOQUEADOR | #decoupling, #alimentacao |
+| Pai | 00_conceito.md | 0.2.1 | BLOQUEADOR | #componentes-fisicos |
+| Pai | 01_arquitetura.md | 0.3.1 | BLOQUEADOR | #hardware, #mapeamento-gpios |
+| Pai | 02_sensor_impacto.md | 0.2.2 | BLOQUEADOR | #componente-piezo, #componentes-protecao |
+| Pai | 03_saida_visual.md | 0.1.6 | BLOQUEADOR | #componente-led, #decoupling-led |
+| Pai | 05_alimentacao.md | 0.3.2 | BLOQUEADOR | #decoupling, #alimentacao |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #eletronicos-ativos, #passivos |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | todo este documento |
 ---

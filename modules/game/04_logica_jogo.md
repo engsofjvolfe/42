@@ -1,12 +1,12 @@
 ---
 documento:    04_logica_jogo.md
-versão:       0.1.3
+versão:       0.1.4
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.2.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.3.0 [BLOQUEADOR]
+  - 00_conceito.md v0.2.1    [BLOQUEADOR]
+  - 01_arquitetura.md v0.3.1 [BLOQUEADOR]
 impacta:
   - 07_interface_pedagogo.md [CONDICIONAL: #gestao-score]
 ---
@@ -300,6 +300,7 @@ O mapeamento é 1:1 por design — cada cor identifica unicamente uma zona físi
 | 0.1.1 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 01_arquitetura.md v0.1.0→v0.2.0 (bump MINOR retroativo) | 07_interface_pedagogo.md |
 | 0.1.2 | 2026-07-01 | depende_de, Rastreabilidade | Atualiza referência 01_arquitetura.md v0.2.0→v0.2.1 (especifica DevKitC V4) | 07_interface_pedagogo.md |
 | 0.1.3 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0 | — |
+| 0.1.4 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1 | — |
 
 ---
 
@@ -308,8 +309,8 @@ O mapeamento é 1:1 por design — cada cor identifica unicamente uma zona físi
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.2.0 | BLOQUEADOR | #glossario, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #aleatoriedade, #timings, #intervalo-interacoes, #contagem-score, #armazenamento |
-| Pai | 01_arquitetura.md | 0.3.0 | BLOQUEADOR | #mod-jogo, #interfaces-modulos, #diagrama-estados, #requisitos-nao-funcionais |
+| Pai | 00_conceito.md | 0.2.1 | BLOQUEADOR | #glossario, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #aleatoriedade, #timings, #intervalo-interacoes, #contagem-score, #armazenamento |
+| Pai | 01_arquitetura.md | 0.3.1 | BLOQUEADOR | #mod-jogo, #interfaces-modulos, #diagrama-estados, #requisitos-nao-funcionais |
 | Filho | 07_interface_pedagogo.md | — | CONDICIONAL: #gestao-score | #gestao-score |
 ---
 
