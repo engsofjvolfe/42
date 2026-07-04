@@ -47,10 +47,11 @@ batida (ambos os modos); workaround PAUSAR/RETOMAR; reproduz a cada ciclo
 de energização. Hipóteses (não verificadas): seed do RNG (cor fixa);
 estado inicial que gameRetomarSessao() corrige. Branch futura:
 fix/primeira-interacao.
-RESSALVAS DE PROTOCOLO anotadas no VALIDATION (vereditos do usuário
-preservados): CA-01-03 PASSOU sem osciloscópio (re-marcar PENDENTE ou
-re-especificar o CA); CA-10-02 fio vermelho em todos os piezos (confirmar
-fita de identificação); CA-03-02/03 PENDENTES com proposta de nova paleta
+RESSALVAS — DECIDIDAS PELO USUÁRIO (2026-07-04): CA-01-03 re-marcado
+PENDENTE; o método do CA será RE-ESPECIFICADO em 01_arquitetura.md (com
+cascata) para verificação sem osciloscópio — tarefa pendente. CA-10-02
+resolvido: fita pintada na cor da zona aplicada aos pares de fios —
+conforme. CA-03-02/03 PENDENTES com proposta de nova paleta
 (#F5D252/#E37C5F, #79D0F2/#8F78BF) — aplicar via 03_saida_visual.md +
 spec/visual com cascata, nunca direto no código.
 GATE v1.0.0: segue BLOQUEADO — D2 aberto + 12 CAs PENDENTES + ressalvas +

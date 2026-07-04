@@ -12,7 +12,7 @@ Como usar:
 - Status `PENDENTE` = teste ainda não executado ou executado sem registro formal.
   Evidência parcial anotada não substitui a execução formal.
 
-Estado em 2026-07-04: **52 PASSOU · 1 OBSOLETO · 12 PENDENTE** (65 CAs);
+Estado em 2026-07-04: **51 PASSOU · 1 OBSOLETO · 13 PENDENTE** (65 CAs);
 cenários UI: **2 PASSOU · 6 PENDENTE**. Defeito **D2 aberto** (TODO.md) —
 bloqueia o gate mesmo com CAs aprovados.
 
@@ -24,7 +24,7 @@ bloqueia o gate mesmo com CAs aprovados.
 |---|---|---|---|
 | CA-01-01 | Boot completo: LEDs varrem 3×4 cores; hotspot < 5s | PASSOU | 
 | CA-01-02 | Browser conecta e carrega interface < 3s | PASSOU | 
-| CA-01-03 | Latência impacto→LED < 50ms (osciloscópio, 10 amostras) | PASSOU | impossibilidade de medir com osciloscópio — **RESSALVA de protocolo:** o teste definido exige osciloscópio; sem a medição, o PASSOU não é conforme. Resolver: re-marcar PENDENTE ou re-especificar o método do CA-01-03 em `01_arquitetura.md` (com cascata) para um método verificável sem osciloscópio |
+| CA-01-03 | Latência impacto→LED < 50ms (osciloscópio, 10 amostras) | PENDENTE | Sem osciloscópio disponível. Decisão do usuário (2026-07-04): re-especificar o método do CA em `01_arquitetura.md` (com cascata) para verificação sem osciloscópio e só então executar e registrar |
 | CA-01-04 | Latência evento→tela < 200ms (inspeção visual) | PASSOU | — |
 | CA-01-05 | Sessão completa Modo 1 (N=5) | PASSOU | Nota: sujeito ao D2 (TODO.md) — primeira interação pós-energização trava; sessão conduzida com o workaround PAUSAR/RETOMAR |
 | CA-01-06 | Sessão completa Modo 2 (N=5) | PASSOU | Nota: sujeito ao D2 (TODO.md) — mesmo workaround |
@@ -117,7 +117,7 @@ bloqueia o gate mesmo com CAs aprovados.
 | CA | Teste | Resultado | Evidência |
 |---|---|---|---|
 | CA-10-01 | Continuidade: 26 fios < 1Ω | PASSOU | — |
-| CA-10-02 | Fios de piezo identificados por cor de zona | PASSOU | fios vermelhos utilizados para todos os piezos para aproveitamento de material — **RESSALVA:** o CA pede identificação com fita na cor da zona (a cor do fio pode divergir; a identificação, não). Confirmar que a fita foi aplicada; senão, aplicar ou re-especificar CA-10-02 em `10_cablagem.md` |
+| CA-10-02 | Fios de piezo identificados por cor de zona | PASSOU | Fios vermelhos em todos os piezos (aproveitamento de material); identificação conforme o CA: fita pintada na cor da zona aplicada aos pares de fios (confirmado pelo usuário, 2026-07-04 — ressalva resolvida) |
 | CA-10-03 | Strain relief nos cabos de piezo | PASSOU | — |
 | CA-10-04 | Comprimentos respeitados | PASSOU | comprimentos de cabo utilizados conforme cabos disponíveis |
 | CA-10-05 | Heat shrink: sem cobre exposto | PASSOU | — |
@@ -147,3 +147,4 @@ Complementares aos CA-07; mesma disciplina de registro.
 | 2026-07-03 | Criação do checklist. Status inicial derivado exclusivamente de evidência registrada (SESSION_STATE.md, TODO.md, commits): CA-07-09/12/13 PASSOU (bancada 2026-07-03); CA-04-01..08 PASSOU (native 38/38 — testes de natureza lógica); CA-05-06 OBSOLETO; demais PENDENTE. (Correção de contagem: a linha de estado dizia 7 PASSOU; eram 11 — 8 do CA-04 + 3 do CA-07) |
 | 2026-07-04 | Rodada de validação física de bancada preenchida pelo usuário: 41 CAs promovidos a PASSOU (+2 cenários UI). Restam 12 CAs e 6 cenários UI PENDENTES. Ressalvas anotadas sem alterar vereditos: CA-01-03 (sem osciloscópio) e CA-10-02 (fio vermelho em todos os piezos); CA-03-02/03 com proposta de nova paleta (via doc, com cascata) |
 | 2026-07-04 | Defeito D2 registrado (TODO.md): primeira interação pós-energização acende sempre roxo e trava na primeira batida; workaround PAUSAR/RETOMAR; notas adicionadas em CA-01-05/06. D2 bloqueia o gate v1.0.0 |
+| 2026-07-04 | Decisões do usuário sobre as ressalvas: CA-01-03 re-marcado PENDENTE — método será re-especificado em `01_arquitetura.md` para verificação sem osciloscópio (51 PASSOU · 13 PENDENTE); CA-10-02 confirmado conforme — fita pintada na cor da zona aplicada aos pares de fios |
