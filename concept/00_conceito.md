@@ -1,6 +1,6 @@
 ---
 documento:    00_conceito.md
-versão:       0.2.1
+versão:       0.3.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
@@ -266,6 +266,12 @@ flowchart TD
 - Estado da sessão é preservado
 - Ao reconectar: interface retoma do ponto de pausa
 
+### 11.4 Encerramento antecipado de sessão <a id="encerramento-antecipado"></a>
+- O pedagogo pode encerrar a sessão ativa antes de completar as N interações configuradas
+- Os acertos e o tempo decorrido até o momento do encerramento são preservados e tratados como resultado final da sessão — mesmo fluxo do fim de sessão natural (varredura festiva nos LEDs, tela de resultados, registro em localStorage)
+- Após o encerramento, uma nova sessão pode ser iniciada imediatamente, sem recarregar a página do browser nem reiniciar o ESP32
+- Especificação completa: [VER: 07_interface_pedagogo.md#tela-sessao-ativa]
+
 ---
 
 ## 12. Gestão de Dados <a id="gestao-dados"></a>
@@ -364,6 +370,7 @@ Documento derivado: [VER: 06_privacidade_lgpd.md#identificacao]
 | 0.1.0 | 2026-06-26 | — | Criação inicial: conceito, glossário, zonas, timings, âncoras e rastreabilidade bidirecional | Todos os documentos derivados |
 | 0.2.0 | 2026-07-03 | #exportacao, #escopo-incluido, impacta | Registra no conceito as decisões validadas na ETAPA 8 (melhorias M2/M3): exportação em dois formatos (CSV para planilha, PDF como relatório legível), escolha do formato no momento da exportação e pré-visualização com confirmação obrigatória antes de qualquer download; corrige lacuna de rastreabilidade — 07_interface_pedagogo.md adicionado ao impacta (07 já declarava 00 como Pai BLOQUEADOR) | 07_interface_pedagogo.md (já conforme na v0.3.0), 06_privacidade_lgpd.md, 01_arquitetura.md, depende_de de todos os dependentes |
 | 0.2.1 | 2026-07-03 | impacta, Rastreabilidade | Registra 12_manual_pedagogo.md (manual de uso do pedagogo — melhoria M4 da validação ETAPA 8) como dependente OBRIGATÓRIO: o manual descreve o comportamento visível ao usuário definido neste conceito e deve ser revisado a cada mudança dele | 12_manual_pedagogo.md (novo), depende_de de todos os dependentes (cascata PATCH) |
+| 0.3.0 | 2026-07-04 | #interface-pedagogo (nova §11.4) | Registra a melhoria M1 (TODO.md), validada manualmente no código antes da cascata: o pedagogo pode encerrar a sessão ativa antes do N configurado e iniciar nova sessão sem recarregar a página nem reiniciar o ESP32; acertos parciais preservados pelo mesmo fluxo do fim de sessão natural | 01_arquitetura.md, 04_logica_jogo.md, 07_interface_pedagogo.md, 12_manual_pedagogo.md, depende_de de todos os dependentes (cascata PATCH) |
 
 ---
 
