@@ -1,12 +1,12 @@
 ---
 documento:    WEB_STANDARD.md
-versão:       0.3.2
+versão:       0.4.0
 status:       APROVADO
 data:         2026-06-28
 depende_de:
   - _PADRAO.md v0.1.0                [BLOQUEADOR]
-  - 01_arquitetura.md v0.3.1         [BLOQUEADOR]
-  - 07_interface_pedagogo.md v0.3.2  [BLOQUEADOR]
+  - 01_arquitetura.md v0.4.0         [BLOQUEADOR]
+  - 07_interface_pedagogo.md v0.4.0  [BLOQUEADOR]
 impacta:
   - firmware/src/interface/ (interface.cpp — arquivo HTML/CSS/JS embutido)
 ---
@@ -22,10 +22,10 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | WEB_STANDARD.md |
-| Versão | 0.3.2 |
+| Versão | 0.4.0 |
 | Status | APROVADO |
 | Escopo | HTML/CSS/JS embutido no firmware como string literal em interface.cpp |
-| Pais | _PADRAO.md v0.1.0, 01_arquitetura.md v0.3.0, 07_interface_pedagogo.md v0.3.1 |
+| Pais | _PADRAO.md v0.1.0, 01_arquitetura.md v0.4.0, 07_interface_pedagogo.md v0.4.0 |
 
 ---
 
@@ -527,6 +527,12 @@ Os cenários abaixo são derivados diretamente de `spec/interface/interface.json
 - Ação: usar a interface completa (configurar, iniciar sessão, exportar CSV)
 - Resultado: nenhuma requisição a host externo (verificar DevTools → Network)
 
+**[CA-07-14] Encerramento antecipado**
+- Precondição: estado SESSAO_ATIVA, ao menos 1 acerto já registrado, N configurado maior que os acertos feitos
+- Ação: clicar "Encerrar Sessão", confirmar no diálogo de confirmação
+- Resultado: DevTools → Network → WS frames mostra `{"tipo":"ENCERRAR"}` enviado; ao receber `FIM_SESSAO`, tela muda para RESULTADOS com os acertos parciais corretos (mesmo caminho de CA-07-07); "Nova Sessão" retorna a CONFIGURANDO sem reload de página nem reboot do ESP32
+- Variante: cancelar no diálogo → nenhuma mensagem enviada, estado permanece SESSAO_ATIVA
+
 ---
 
 ## 12. Critérios de Aceitação <a id="criterios-aceitacao"></a>
@@ -557,6 +563,7 @@ Verificação manual no browser após flash do firmware.
 | 0.3.0 | 2026-07-03 | #esqueleto-html, #mapeamento-estado-elemento, #tabela-constantes-js, #nomenclatura-funcoes-js, #pre-visualizacao-js, #geracao-pdf-js, #teste-cenarios | Cascata do 07 v0.3.0 (melhorias M2/M3): `#overlay-exportacao` no esqueleto e no mapeamento; constantes obrigatórias EXPORT_* e PDF_* (derivadas de exportacao_ui e exportacao_pdf); nomenclatura exportarPDF/baixarArquivo/abrirPrevia/fecharPrevia/renderizarPrevia e internas de geração PDF; §10.3 regras da pré-visualização (PRE-01..05, textContent obrigatório); §10.4 regras do gerador PDF (WinAnsi, escaping, xref byte-exato, btoa, data determinística); cenário CA-07-09 ajustado ao fluxo com prévia; cenários CA-07-12 e CA-07-13 novos | firmware/src/interface/interface.cpp |
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 01_arquitetura.md v0.2.1→v0.3.0, 07_interface_pedagogo.md v0.3.0→v0.3.1 | — |
 | 0.3.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 07_interface_pedagogo.md v0.3.1→v0.3.2, 01_arquitetura.md v0.3.0→v0.3.1 | — |
+| 0.4.0 | 2026-07-04 | #teste-cenarios | Cascata do 07 v0.4.0 (melhoria M1 — encerramento antecipado de sessão): cenário CA-07-14 novo (§11.5), derivado da mensagem `ENCERRAR` e do botão "Encerrar Sessão"; sem mudança em §5/§6 (a máquina de estados JS já cobria a transição `SESSAO_ATIVA → RESULTADOS` via `FIM_SESSAO`, reaproveitada pelo encerramento antecipado); atualiza referências — 01_arquitetura.md v0.3.1→v0.4.0, 07_interface_pedagogo.md v0.3.2→v0.4.0 | firmware/src/interface/interface.cpp |
 
 ---
 
@@ -565,8 +572,8 @@ Verificação manual no browser após flash do firmware.
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 01_arquitetura.md | 0.3.1 | BLOQUEADOR | #requisitos-nao-funcionais, #stack-tecnologico |
-| Pai | 07_interface_pedagogo.md | 0.3.2 | BLOQUEADOR | #estados-interface, #feedback-sonoro, #websocket, #armazenamento-dados, #exportacao-csv, #requisitos-csv, #mecanismo-download, #pre-visualizacao, #exportacao-pdf, #tela-feedback |
+| Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #requisitos-nao-funcionais, #stack-tecnologico |
+| Pai | 07_interface_pedagogo.md | 0.4.0 | BLOQUEADOR | #estados-interface, #feedback-sonoro, #websocket, #armazenamento-dados, #exportacao-csv, #requisitos-csv, #mecanismo-download, #pre-visualizacao, #exportacao-pdf, #tela-feedback, #tela-sessao-ativa |
 | Governa | firmware/src/interface/ | — | OBRIGATÓRIO | interface.cpp (HTML/CSS/JS embutido) |
 
 ---
