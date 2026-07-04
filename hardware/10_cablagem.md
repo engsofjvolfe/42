@@ -1,11 +1,11 @@
 ---
 documento:    10_cablagem.md
-versão:       0.2.3
+versão:       0.2.4
 status:       APROVADO
-data:         2026-06-26
+data:         2026-07-04
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 09_conexoes.md v0.3.3    [BLOQUEADOR]
+  - 09_conexoes.md v0.3.4    [BLOQUEADOR]
 impacta:
   - 11_montagem.md           [OBRIGATÓRIO]
 ---
@@ -19,7 +19,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 10_cablagem.md |
-| Versão | 0.2.3 |
+| Versão | 0.2.4 |
 | Status | APROVADO |
 | Escopo | Todos os fios do sistema — bitola, cor, comprimento e destino |
 
@@ -141,6 +141,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | 0.2.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 09_conexoes.md v0.3.0→v0.3.1 | — |
 | 0.2.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 09_conexoes.md v0.3.1→v0.3.2 | — |
 | 0.2.3 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.3.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em cablagem): atualiza referência 09_conexoes.md v0.3.2→v0.3.3 | 11_montagem.md |
+| 0.2.4 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica de 09_conexoes.md v0.3.4 (correção de RGB Laranja/Roxo em 03_saida_visual.md, CA-03-02/03, sem impacto em cablagem): atualiza referência 09_conexoes.md v0.3.3→v0.3.4 | 11_montagem.md |
 
 ---
 
@@ -149,7 +150,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 09_conexoes.md | 0.3.3 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
+| Pai | 09_conexoes.md | 0.3.4 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | #tabela-fios, #regras-montagem |
 ---
 

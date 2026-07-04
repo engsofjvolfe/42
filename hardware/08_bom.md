@@ -1,14 +1,14 @@
 ---
 documento:    08_bom.md
-versão:       0.3.3
+versão:       0.3.4
 status:       APROVADO
-data:         2026-06-26
+data:         2026-07-04
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.3.0    [BLOQUEADOR]
   - 01_arquitetura.md v0.4.0 [BLOQUEADOR]
   - 02_sensor_impacto.md v0.2.3 [BLOQUEADOR]
-  - 03_saida_visual.md v0.1.7   [BLOQUEADOR]
+  - 03_saida_visual.md v0.1.8   [BLOQUEADOR]
   - 05_alimentacao.md v0.3.3    [BLOQUEADOR]
 impacta:
   - 09_conexoes.md           [OBRIGATÓRIO]
@@ -24,7 +24,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 08_bom.md |
-| Versão | 0.3.3 |
+| Versão | 0.3.4 |
 | Status | APROVADO |
 | Escopo | Todos os componentes necessários para uma unidade do projeto |
 
@@ -137,6 +137,7 @@ Fonte (A01) não contabilizada — já disponível.
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0, 02_sensor_impacto.md v0.2.0→v0.2.1, 03_saida_visual.md v0.1.4→v0.1.5, 05_alimentacao.md v0.3.0→v0.3.1 | — |
 | 0.3.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1, 02_sensor_impacto.md v0.2.1→v0.2.2, 03_saida_visual.md v0.1.5→v0.1.6, 05_alimentacao.md v0.3.1→v0.3.2 | — |
 | 0.3.3 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.3.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em lista de materiais): atualiza referências — 00_conceito.md v0.2.1→v0.3.0, 01_arquitetura.md v0.3.1→v0.4.0, 02_sensor_impacto.md v0.2.2→v0.2.3, 03_saida_visual.md v0.1.6→v0.1.7, 05_alimentacao.md v0.3.2→v0.3.3 | 09, 11 |
+| 0.3.4 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica de 03_saida_visual.md v0.1.8 (correção de RGB Laranja/Roxo, CA-03-02/03, sem impacto em lista de materiais): atualiza referência 03_saida_visual.md v0.1.7→v0.1.8 | 09, 11 |
 
 ---
 
@@ -148,7 +149,7 @@ Fonte (A01) não contabilizada — já disponível.
 | Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #componentes-fisicos |
 | Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #hardware, #mapeamento-gpios |
 | Pai | 02_sensor_impacto.md | 0.2.3 | BLOQUEADOR | #componente-piezo, #componentes-protecao |
-| Pai | 03_saida_visual.md | 0.1.7 | BLOQUEADOR | #componente-led, #decoupling-led |
+| Pai | 03_saida_visual.md | 0.1.8 | BLOQUEADOR | #componente-led, #decoupling-led |
 | Pai | 05_alimentacao.md | 0.3.3 | BLOQUEADOR | #decoupling, #alimentacao |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #eletronicos-ativos, #passivos |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | todo este documento |

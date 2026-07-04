@@ -1,14 +1,14 @@
 ---
 documento:    11_montagem.md
-versão:       0.3.3
+versão:       0.3.4
 status:       APROVADO
-data:         2026-06-26
+data:         2026-07-04
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
   - 00_conceito.md v0.3.0    [BLOQUEADOR]
-  - 08_bom.md v0.3.3         [BLOQUEADOR]
-  - 09_conexoes.md v0.3.3    [BLOQUEADOR]
-  - 10_cablagem.md v0.2.3    [BLOQUEADOR]
+  - 08_bom.md v0.3.4         [BLOQUEADOR]
+  - 09_conexoes.md v0.3.4    [BLOQUEADOR]
+  - 10_cablagem.md v0.2.4    [BLOQUEADOR]
 impacta: []
 ---
 
@@ -21,7 +21,7 @@ impacta: []
 | Campo | Valor |
 |---|---|
 | Documento | 11_montagem.md |
-| Versão | 0.3.3 |
+| Versão | 0.3.4 |
 | Status | APROVADO |
 | Escopo | Montagem física completa — uma unidade do instrumento |
 | Posição na cadeia | Documento final — não tem filhos |
@@ -490,6 +490,7 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 08_bom.md v0.3.0→v0.3.1, 09_conexoes.md v0.3.0→v0.3.1, 10_cablagem.md v0.2.0→v0.2.1 | — |
 | 0.3.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 08_bom.md v0.3.1→v0.3.2, 09_conexoes.md v0.3.1→v0.3.2, 10_cablagem.md v0.2.1→v0.2.2 | — |
 | 0.3.3 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.3.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em montagem física): atualiza referências — 00_conceito.md v0.2.1→v0.3.0, 08_bom.md v0.3.2→v0.3.3, 09_conexoes.md v0.3.2→v0.3.3, 10_cablagem.md v0.2.2→v0.2.3 | — |
+| 0.3.4 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica de 03_saida_visual.md v0.1.8 (correção de RGB Laranja/Roxo, CA-03-02/03, sem impacto em montagem física): atualiza referências — 08_bom.md v0.3.3→v0.3.4, 09_conexoes.md v0.3.3→v0.3.4, 10_cablagem.md v0.2.3→v0.2.4 | — |
 
 ---
 
@@ -499,9 +500,9 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
 | Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #componentes-fisicos, #martelos, #indicadores-led |
-| Pai | 08_bom.md | 0.3.3 | BLOQUEADOR | todo o documento |
-| Pai | 09_conexoes.md | 0.3.3 | BLOQUEADOR | todo o documento |
-| Pai | 10_cablagem.md | 0.2.3 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
+| Pai | 08_bom.md | 0.3.4 | BLOQUEADOR | todo o documento |
+| Pai | 09_conexoes.md | 0.3.4 | BLOQUEADOR | todo o documento |
+| Pai | 10_cablagem.md | 0.2.4 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.
