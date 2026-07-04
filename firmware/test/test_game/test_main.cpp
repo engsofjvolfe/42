@@ -12,6 +12,7 @@
 //   CA-04-07: Erro Modo 2 fora da janela
 //   CA-04-08: Fim de sessao — FIM_SESSAO emitido com totais corretos
 //   CA-04-10: Intervalo entre interacoes — 2000ms ± 100ms
+//   CA-04-11: Encerramento antecipado — FIM_SESSAO com acertos parciais
 //
 // CAs que requerem hardware (nao testados aqui):
 //   CA-04-09: Pausa/retomada — REQUER HARDWARE (desconexao WiFi real)
@@ -403,6 +404,87 @@ void test_game_intervalo_dentro_da_tolerancia() {
 }
 
 // ---------------------------------------------------------------------------
+// Testes — Encerramento antecipado (CA-04-11)
+// [VER: 04_logica_jogo.md#criterios-aceitacao]
+// ---------------------------------------------------------------------------
+
+// gameEncerrarSessao() no meio da sessao: emite FIM_SESSAO com acertos parciais
+void test_game_encerrar_sessao_emite_fim_sessao_parcial() {
+    ConfigSessao cfg;
+    cfg.modo      = GAME_MODO_UM;
+    cfg.mecanismo = 'A';
+    cfg.n_configurado = T_GAME_N_CONFIG_SESSAO; // 5
+    cfg.janela_ms = GAME_JANELA_MS_PADRAO;
+    gameIniciarSessao(cfg);
+
+    // Um acerto antes de encerrar
+    Cor cor = gameGetCorAtual();
+    EventoImpacto imp;
+    imp.zona         = gameZonaParaCor(cor);
+    imp.timestamp_ms = g_mock_millis;
+    gameOnImpacto(imp);
+    g_mock_millis += T_GAME_INTERVALO_APOS;
+    gameLoop(); // avanca INTERVALO -> ESTIMULO (2o estimulo)
+
+    s_cb_count = 0u; // resetar: interessa so o evento do encerramento
+    gameEncerrarSessao();
+
+    TEST_ASSERT_EQUAL_UINT8(1u, s_cb_count);
+    TEST_ASSERT_EQUAL_UINT8(static_cast<uint8_t>(ResultadoJogo::FIM_SESSAO),
+                            static_cast<uint8_t>(s_ultimo_ev.resultado));
+    TEST_ASSERT_EQUAL_UINT8(1u, s_ultimo_ev.acertos); // parcial, nao T_GAME_N_CONFIG_SESSAO
+    TEST_ASSERT_EQUAL_UINT8(T_GAME_N_CONFIG_SESSAO, s_ultimo_ev.n_configurado);
+}
+
+// gameEncerrarSessao() apaga os LEDs do estimulo em curso
+void test_game_encerrar_sessao_apaga_leds() {
+    ConfigSessao cfg;
+    cfg.modo      = GAME_MODO_UM;
+    cfg.mecanismo = 'A';
+    cfg.n_configurado = T_GAME_N_CONFIG_SESSAO;
+    cfg.janela_ms = GAME_JANELA_MS_PADRAO;
+    gameIniciarSessao(cfg); // ESTIMULO: LED central aceso
+
+    gameEncerrarSessao();
+
+    static const CRGB LED_APAGADO(0u, 0u, 0u);
+    for (uint8_t i = 0u; i < VISUAL_N_LEDS; i++) {
+        TEST_ASSERT_EQUAL_MEMORY(&LED_APAGADO, &g_mock_led_buf[i], sizeof(CRGB));
+    }
+}
+
+// gameEncerrarSessao() sem sessao iniciada (OCIOSO): no-op, nenhum evento
+void test_game_encerrar_sessao_ociosa_no_op() {
+    gameEncerrarSessao();
+    TEST_ASSERT_EQUAL_UINT8(0u, s_cb_count);
+}
+
+// gameEncerrarSessao() apos FIM_SESSAO natural: no-op, sem segundo evento
+void test_game_encerrar_sessao_apos_fim_sessao_no_op() {
+    ConfigSessao cfg;
+    cfg.modo      = GAME_MODO_UM;
+    cfg.mecanismo = 'A';
+    cfg.n_configurado = T_GAME_N_CONFIG_SESSAO;
+    cfg.janela_ms = GAME_JANELA_MS_PADRAO;
+    gameIniciarSessao(cfg);
+
+    for (uint8_t i = 0u; i < T_GAME_N_CONFIG_SESSAO; i++) {
+        Cor cor = gameGetCorAtual();
+        EventoImpacto imp;
+        imp.zona         = gameZonaParaCor(cor);
+        imp.timestamp_ms = g_mock_millis;
+        gameOnImpacto(imp);
+        g_mock_millis += T_GAME_INTERVALO_APOS;
+        gameLoop();
+    }
+    s_cb_count = 0u; // resetar: interessa so o que vem depois do FIM_SESSAO natural
+
+    gameEncerrarSessao();
+
+    TEST_ASSERT_EQUAL_UINT8(0u, s_cb_count);
+}
+
+// ---------------------------------------------------------------------------
 // Entry point
 // ---------------------------------------------------------------------------
 int main() {
@@ -432,6 +514,12 @@ int main() {
     // CA-04-10: intervalo entre interacoes
     RUN_TEST(test_game_intervalo_aciona_proximo_estimulo);
     RUN_TEST(test_game_intervalo_dentro_da_tolerancia);
+
+    // CA-04-11: encerramento antecipado
+    RUN_TEST(test_game_encerrar_sessao_emite_fim_sessao_parcial);
+    RUN_TEST(test_game_encerrar_sessao_apaga_leds);
+    RUN_TEST(test_game_encerrar_sessao_ociosa_no_op);
+    RUN_TEST(test_game_encerrar_sessao_apos_fim_sessao_no_op);
 
     return UNITY_END();
 }

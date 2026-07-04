@@ -266,6 +266,17 @@ void gameRetomarSessao() {
     }
 }
 
+void gameEncerrarSessao() {
+    // Reaproveita o caminho de FIM_SESSAO ja existente (mesmo evento, mesmos
+    // consumidores em MOD_WIFI) — [VER: 04_logica_jogo.md#encerramento-antecipado]
+    if (s_estado == Estado::OCIOSO || s_estado == Estado::FIM_SESSAO) {
+        return;
+    }
+    visualSetLED({ ComandoLED::LED::TODOS, ComandoLED::Cor::OFF });
+    s_estado = Estado::FIM_SESSAO;
+    emitir(ResultadoJogo::FIM_SESSAO);
+}
+
 // ---------------------------------------------------------------------------
 // API de teste
 // ---------------------------------------------------------------------------

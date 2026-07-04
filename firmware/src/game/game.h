@@ -92,6 +92,13 @@ void gamePausarSessao();
 // Derivado de: [VER: 01_arquitetura.md#interface-jogo-wifi]
 void gameRetomarSessao();
 
+// Encerra a sessao ativa antes do N configurado, preservando os acertos ja
+// registrados, e emite FIM_SESSAO com os totais parciais.
+// Chamado por MOD_WIFI quando o pedagogo solicita encerramento antecipado.
+// Derivado de: [VER: 01_arquitetura.md#interface-jogo-wifi]
+// [VER: 04_logica_jogo.md#encerramento-antecipado]
+void gameEncerrarSessao();
+
 // ---------------------------------------------------------------------------
 // API de teste — expoe estado interno para test_main.cpp
 // Nao chamar em producao.
