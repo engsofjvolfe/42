@@ -13,8 +13,9 @@ Como usar:
   Evidência parcial anotada não substitui a execução formal.
 
 Estado em 2026-07-04: **51 PASSOU · 1 OBSOLETO · 13 PENDENTE** (65 CAs);
-cenários UI: **2 PASSOU · 6 PENDENTE**. Defeito **D2 aberto** (TODO.md) —
-bloqueia o gate mesmo com CAs aprovados.
+cenários UI: **2 PASSOU · 6 PENDENTE**. Defeito **D2 baixado** (2026-07-04,
+validado na bancada). Defeito **D3 aberto** (TODO.md — pares de cor sem
+variedade no Modo 2) — bloqueia o gate mesmo com CAs aprovados.
 
 ---
 
@@ -26,8 +27,8 @@ bloqueia o gate mesmo com CAs aprovados.
 | CA-01-02 | Browser conecta e carrega interface < 3s | PASSOU | 
 | CA-01-03 | Latência impacto→LED < 50ms (osciloscópio, 10 amostras) | PENDENTE | Sem osciloscópio disponível. Decisão do usuário (2026-07-04): re-especificar o método do CA em `01_arquitetura.md` (com cascata) para verificação sem osciloscópio e só então executar e registrar |
 | CA-01-04 | Latência evento→tela < 200ms (inspeção visual) | PASSOU | — |
-| CA-01-05 | Sessão completa Modo 1 (N=5) | PASSOU | Nota: sujeito ao D2 (TODO.md) — primeira interação pós-energização trava; sessão conduzida com o workaround PAUSAR/RETOMAR |
-| CA-01-06 | Sessão completa Modo 2 (N=5) | PASSOU | Nota: sujeito ao D2 (TODO.md) — mesmo workaround |
+| CA-01-05 | Sessão completa Modo 1 (N=5) | PASSOU | Nota (2026-07-03): sessão conduzida com o workaround PAUSAR/RETOMAR (D2, TODO.md). D2 baixado em 2026-07-04 — workaround não é mais necessário; re-execução formal N=5 sem workaround ainda não registrada |
+| CA-01-06 | Sessão completa Modo 2 (N=5) | PASSOU | Nota (2026-07-03): mesmo workaround do CA-01-05. D2 baixado em 2026-07-04. Ressalva nova: D3 (TODO.md) aberto — pares de cor do Modo 2 sem variedade suficiente; não invalida este CA (critério é sessão completar, não variedade de pares — isso é CA-04-01/02/03), mas relevante para nova rodada de bancada |
 | CA-01-07 | Desconexão e retomada | PENDENTE | — |
 | CA-01-08 | Exportação: prévia + CSV + PDF corretos | PASSOU | 
 
@@ -148,3 +149,4 @@ Complementares aos CA-07; mesma disciplina de registro.
 | 2026-07-04 | Rodada de validação física de bancada preenchida pelo usuário: 41 CAs promovidos a PASSOU (+2 cenários UI). Restam 12 CAs e 6 cenários UI PENDENTES. Ressalvas anotadas sem alterar vereditos: CA-01-03 (sem osciloscópio) e CA-10-02 (fio vermelho em todos os piezos); CA-03-02/03 com proposta de nova paleta (via doc, com cascata) |
 | 2026-07-04 | Defeito D2 registrado (TODO.md): primeira interação pós-energização acende sempre roxo e trava na primeira batida; workaround PAUSAR/RETOMAR; notas adicionadas em CA-01-05/06. D2 bloqueia o gate v1.0.0 |
 | 2026-07-04 | Decisões do usuário sobre as ressalvas: CA-01-03 re-marcado PENDENTE — método será re-especificado em `01_arquitetura.md` para verificação sem osciloscópio (51 PASSOU · 13 PENDENTE); CA-10-02 confirmado conforme — fita pintada na cor da zona aplicada aos pares de fios |
+| 2026-07-04 | D2 corrigido (`fix/primeira-interacao`, branch validada na bancada com log serial timestampado — sessão completa, 3 interações ACERTO, sem auto-pausa) e baixado. Notas de D2 em CA-01-05/06 atualizadas. Defeito D3 registrado durante a mesma rodada de bancada: pares de cor do Modo 2 sem variedade (sempre Roxo+Amarelo e Laranja+Azul) — bloqueia o gate v1.0.0 |

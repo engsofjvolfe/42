@@ -23,6 +23,9 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `TODO.md` — lista de tarefas futuras: metadocumentos e índices de navegação por diretório (`modules/`, `spec/`, `hardware/`, `_governance/`)
 
 ### Alterado
+- `TODO.md` — D2 baixado (validado na bancada); registra novo defeito conhecido D3 (Modo 2: pares de cor sempre os mesmos dois — Roxo+Amarelo e Laranja+Azul — mesmo no Mecanismo A; hipótese não confirmada de shuffle sem efeito). D3 bloqueia o gate v1.0.0
+- `VALIDATION.md` — notas de D2 em CA-01-05/06 atualizadas (workaround não é mais necessário); nota de D3 adicionada em CA-01-06; estado de defeitos no cabeçalho atualizado (D2 baixado, D3 aberto)
+- `firmware/diag/README.md` — reforça a nota já existente sobre lixo pré-bufferizado do driver CP210x no `monitor_serial.py`, confirmando reprodução durante a investigação do D2 (2026-07-04); não é defeito de firmware/produto, sem ação necessária
 - `VALIDATION.md` — rodada de validação física de bancada (2026-07-04): 41 CAs promovidos a PASSOU (+2 cenários UI), estado 52 PASSOU · 1 OBSOLETO · 12 PENDENTE; ressalvas de protocolo anotadas sem alterar vereditos (CA-01-03 sem osciloscópio; CA-10-02 fio único vermelho); notas de D2 em CA-01-05/06; correção da contagem inicial (11 PASSOU, não 7)
 - `TODO.md` — registra defeito conhecido D2 (primeira interação após energizar acende sempre roxo e trava na primeira batida; workaround PAUSAR/RETOMAR; bloqueia o gate v1.0.0) e corrige formatação da linha D1
 - `README.md` — badge do GitHub Actions removido (apontava para owner errado `eflov/42`; remote real é `engsofjvolfe/42` — imagem quebrada) e substituído por badges estáticos informativos: licença GPL-3.0, plataforma ESP32, framework PlatformIO + Arduino, testes nativos 38/38 e status de validação (link para `VALIDATION.md`)

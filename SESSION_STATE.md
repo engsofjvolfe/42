@@ -58,6 +58,159 @@ GATE v1.0.0: segue BLOQUEADO — D2 aberto + 12 CAs PENDENTES + ressalvas +
 M1 + índices. Release em hold por ordem explícita do usuário (2026-07-03):
 NÃO lançar v1.0.0 sem autorização expressa, mesmo com checklist fechado.
 
+SESSÃO 2026-07-04 (continuação — correção do D2) — branch
+fix/primeira-interacao, criada a partir de develop, NADA COMMITADO (ordem
+explícita do usuário: "não comitar sem eu testar" — usuário valida na
+bancada antes de qualquer commit).
+Investigação (sem reler documentos já lidos na sessão anterior; reaproveitado
+o contexto já carregado de 04_logica_jogo.md, game.json, game.cpp, visual.cpp,
+main.cpp, sensor.cpp, interface.cpp, _config.h, test_main.cpp): simulação em
+Python do RNG do newlib confirmou que `rand()` sem seed produz a MESMA
+sequência a cada energização (1º shuffle do Mecanismo A e 1º sorteio do
+Mecanismo B caem sempre em ROXO) — bate exatamente com o sintoma "sempre
+roxo". Achado adicional (análise do diagrama de estados): `interfaceInit()`
+subia o AP/servidor em paralelo com a animação de boot de 3s; uma sessão
+iniciada dentro desse intervalo tinha o 1º comando de LED sobrescrito pelo
+passo final `todos_OFF` da boot animation — explica o "trava até
+PAUSAR/RETOMAR" (retomar re-renderiza o LED já fora da janela de boot).
+Antes de codar, verificado que NENHUMA das duas causas exige cascata de
+documento: `04_logica_jogo.md#mecanismo-a`/`#mecanismo-b` (v0.1.4, APROVADO)
+já especifica `random()` no pseudocódigo; `01_arquitetura.md#diagrama-estados`
+(v0.3.1, APROVADO) já exige `BOOT --> AGUARDANDO_CONEXAO` somente após
+"varredura LEDs concluída". As duas correções são `fix` puro — código
+divergia da spec já aprovada, não spec incompleta.
+Correções aplicadas (2 causas raiz, ambas em firmware/, sem hardcoded/magic
+number — tudo derivado):
+  1. `game.cpp` — `random_uint32()` chama `random()` (Arduino/ESP32 —
+     `esp_random()`, RNG de hardware, não determinístico desde a 1ª chamada)
+     em vez de `rand()` (libc, seed fixa). `test/test_game/test_main.cpp`
+     ganha a definição de `random()` (já declarada em `test/mock/Arduino.h`,
+     padrão declare→define), delegando a `rand()` em native — aceitável pois
+     os testes verificam invariantes do algoritmo, não valores sorteados.
+  2. `main.cpp` — `interfaceInit()` só é chamado em `loop()` após
+     `millis() >= VISUAL_BOOT_DURACAO_MS` (constante já derivada em
+     visual_config.h), implementando o gate de `01_arquitetura.md#diagrama-
+     estados` que faltava. Consequência observável: hotspot `BMI` passa a
+     aparecer ~3s após energizar em vez de quase imediato — ainda dentro de
+     CA-01-01/CA-07-01 (<5s), mas vale confirmar na bancada.
+Validado: `pio test -e native` 38/38 PASSED; `pio run -e esp32dev` SUCCESS
+sem warnings (RAM 13.6%, Flash 66.7%); `run_all.py` verde. `CHANGELOG.md` e
+`TODO.md` (entrada D2) atualizados no working tree, sem commit.
+Validação física do usuário (2026-07-04, mesmo dia): as 2 correções acima
+NÃO resolveram o "trava" — usuário reportou "na primeira batida de qualquer
+modo o jogo pausa sozinho e vai pra tela com o botão retomar". CORREÇÃO DE
+ENQUADRAMENTO (usuário apontou): isso NÃO é um sintoma novo nem uma faceta
+diferente — é exatamente o que o TODO.md já registrava desde 2026-07-04
+("trava na primeira batida... destrava com PAUSAR e depois RETOMAR").
+Minhas 2 correções (RNG + gate de boot) são válidas e permanecem, mas
+nenhuma delas toca WiFi/WebSocket — a causa real de "trava" segue sem
+correção.
+Análise de código (sem hardware, só leitura): a tela "Pausado/Retomar" no
+browser SÓ aparece por 2 caminhos, ambos exigindo desconexão WS real:
+(1) `s_ws.onclose` do browser dispara `aoDesconectarWS()` → `setState
+('PAUSADO')`; (2) ESP32 envia `{tipo:"PAUSADO"}`, que só sai de
+`_aplicarToggle(true,...)`, chamado exclusivamente por `WS_EVT_DISCONNECT`
+real em `onWsEvent()` (interface.cpp) ou pelo botão Pausar (não é o caso).
+Não há nenhum outro caminho no código (`game.cpp` não chama
+`gamePausarSessao()`). Logo: uma desconexão WS real acontece na hora da
+1ª batida — hipótese de brownout/WDT/reset não confirmada; precisa de log
+serial.
+Decisão do usuário sobre o processo: instrumentação de diagnóstico é
+temporária — edita direto, SEM cascata de spec; a cascata só entra quando
+houver certeza do que resolve de fato.
+INSTRUMENTAÇÃO TEMPORÁRIA ADICIONADA (branch fix/primeira-interacao, NÃO
+commitada, NÃO faz parte do fix — remover antes do commit final):
+  - `main.cpp`: `Serial.begin(115200)` no início do `setup()`; print
+    `[DIAG %lu] interfaceInit() chamado` no instante em que o gate de boot
+    libera `interfaceInit()`.
+  - `interface.cpp` `onWsEvent()`: printa CONNECT (com client id),
+    DISCONNECT, ERROR (código + payload), PONG, dados WS ignorados
+    (fragmentado/binário), JSON inválido, e tipo de mensagem recebida (com
+    heap livre).
+  - `interface.cpp` `aoEventoJogo()`: printa resultado do evento (ESTIMULO/
+    ACERTO/ERRO/FIM_SESSAO), acertos, heap livre e `s_ws.count()` (clientes
+    conectados) antes e depois de enviar a mensagem ao browser.
+Validado: `pio run -e esp32dev` SUCCESS sem warnings (RAM 13.7%, Flash
+68.5% — só sobe com a instrumentação, não faz parte do fix real);
+`pio test -e native` 38/38 PASSED (interface.cpp e main.cpp não entram no
+build native — build_src_filter não os inclui — instrumentação não afeta
+os testes).
+DESFECHO (2026-07-04): D2 CONFIRMADO CORRIGIDO e BAIXADO. Terceira captura
+(120s pedidos, usuário rodou 30s mas com tempo real suficiente desta vez)
+mostrou sessão completa e limpa: `interfaceInit()` aos 3000ms, `WS_EVT_
+CONNECT` (client=1) aos 9307ms, uma mensagem `PAUSAR` estranha aos 14695ms
+(sem sessão ativa — no-op por `s_sessao_ativa==false`; explicação mais
+provável: aba do navegador reaproveitada de um teste anterior, com estado
+JS `SESSAO_ATIVA` na memória, reconectando neste boot novo — não é bug
+deste firmware), reconexão (client=2) aos 15681ms, `INICIAR` aos 18051ms, e
+depois 3 interações seguidas — ESTIMULO→ACERTO×3, intervalo de ~2000ms
+entre cada uma, SEM nenhuma nova `WS_EVT_DISCONNECT` nem auto-pausa. Usuário
+confirmou: essa captura corresponde a um teste que funcionou. As duas
+causas raiz (RNG + gate de boot) resolvem o D2 conforme descrito.
+Instrumentação de diagnóstico REMOVIDA (game.cpp/main.cpp voltaram a ter só
+as 2 correções reais; interface.cpp voltou ao estado original, zero diff).
+`pio test -e native` 38/38 e `pio run` SUCCESS revalidados após a remoção
+(Flash 66.7%, igual ao primeiro build do fix — confirma que não sobrou
+nada da instrumentação).
+"Lixo" no monitor serial (rajada de `[DIAG 66500] WS_EVT_DISCONNECT`
+repetido ~70x, todos com o mesmo timestamp de firmware, despejados em ~5ms
+reais, ANTES do boot real aparecer): decisão — não é defeito de firmware
+nem de produto, é o driver CP210x entregando de uma vez o que ficou
+represado no buffer da porta sem monitor aberto; já documentado em
+`firmware/diag/README.md` e no docstring de `monitor_serial.py`. Reforçada
+a nota no README confirmando a reprodução nesta sessão. Nenhuma ação de
+código necessária.
+
+ACHADO NOVO — DEFEITO D3 (registrado no TODO.md, 2026-07-04): usuário
+reportou que no Modo 2 (dois martelos) os pares de cor exibidos são SEMPRE
+{Roxo,Amarelo} e {Laranja,Azul} — nunca outras combinações — mesmo no
+Mecanismo A (que deveria garantir distribuição uniforme via shuffle
+Fisher-Yates). Pista forte (hipótese, não conclusão): esses dois pares são
+EXATAMENTE os pares naturais da ordem NÃO embaralhada de `reset_meca_A()`
+— `[LARANJA, AZUL, AMARELO, ROXO]` → (Laranja,Azul) e (Amarelo,Roxo). Se
+`shuffle_bloco_A()` não efetua nenhuma troca (equivalente a `random_uint32
+(n)` sempre retornar 0, forçando `j==i` em todo o loop Fisher-Yates), o
+array fica sempre na ordem inicial — bate com o sintoma. Ironia notada:
+minha simulação ANTERIOR do RNG antigo (`rand()` newlib, seed fixa,
+scratchpad `sim_rand_newlib.py`) previu para Modo 2/Mecanismo A o par
+inicial (ROXO, AMARELO) seguido de (LARANJA, AZUL) — o MESMO padrão que o
+usuário está vendo agora, depois do fix trocar `rand()` por `random()`.
+Isso não prova nada sozinho (podem ser RNGs completamente diferentes
+coincidindo por acaso), mas levanta a pergunta necessária antes de
+investigar mais: o teste do D3 foi feito na MESMA build corrigida (com
+`random()`) ou pode ter sido em build anterior/não commitada ainda? Não
+perguntei isso ainda ao usuário. NÃO investigado a fundo ainda — próxima
+ação da sessão. D3 aberto, bloqueia o gate v1.0.0.
+
+Primeira tentativa de captura (2026-07-04, 30s, `monitor_serial.py COM9 30
+reset`) — DUAS CAPTURAS, nenhuma pegou o momento real do bug:
+  1ª captura: interrompida pelo usuário (KeyboardInterrupt) antes do fim.
+    Antes do boot real, 69 linhas idênticas `[DIAG 66500] WS_EVT_DISCONNECT`
+    (mesmo timestamp de firmware, despejadas em ~5ms de tempo real) —
+    corresponde ao aviso já documentado em `firmware/diag/README.md`
+    ("lixo pré-bufferizado do driver CP210x, fragmentos repetidos"); pode
+    ser ruído do driver OU dado real de um ciclo anterior que ficou
+    represado no buffer da porta sem monitor aberto (se for isso, é
+    evidência real de uma "tempestade" de desconexões — MAS não pertence a
+    esta captura, não posso agir sobre ela ainda sem uma captura limpa que
+    a reproduza ao vivo, após o marcador `ets Jul 29 2019`).
+    Depois disso: boot limpo (`POWERON_RESET`, sem brownout), `[DIAG 3000]
+    interfaceInit() chamado` às 3.454s reais — bate com o esperado.
+  2ª captura: rodou os 30s inteiros, boot limpo, `[DIAG 3000] interfaceInit()
+    chamado` às 3.393s — e SILÊNCIO total pelo resto da janela. Usuário
+    reportou "nem chega a capturar as batidas".
+Diagnóstico do porquê: 30s é pouco tempo real para energizar → esperar
+hotspot (3s) → conectar celular no WiFi BMI → abrir browser em 192.168.4.1
+→ preencher formulário → confirmar → bater no sensor. Não é evidência de
+falha do fix nem do gate de boot — é a janela de captura curta demais.
+Terceira captura (log colado pelo usuário) mostrou sessão completa e limpa
+(ver "DESFECHO" acima) — D2 confirmado corrigido, instrumentação removida,
+CHANGELOG/TODO.md/VALIDATION.md atualizados. Próxima ação desta sessão:
+commitar o fix de D2 (checklist da ETAPA 5, corpo obrigatório, sem
+Co-authored-by) e então investigar o D3 (pares de cor sem variedade no
+Modo 2) — primeiro confirmar com o usuário se o teste do D3 foi na mesma
+build corrigida (random()) ou build anterior, antes de decidir a correção.
+
 SESSÃO 2026-07-03 (M4/M5) — CONCLUÍDA. Três branches mergeadas em develop
 (fast-forward), run_all.py verde e CHANGELOG atualizado antes de cada commit:
   1. docs/manual-pedagogo (cd14828) — manual/12_manual_pedagogo.md v0.1.0

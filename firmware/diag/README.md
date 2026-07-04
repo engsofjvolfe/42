@@ -71,6 +71,15 @@ As primeiras linhas em `[0.000]` podem ser lixo pré-bufferizado do driver
 CP210x (fragmentos repetidos); o trecho ao vivo começa no primeiro
 `ets Jul 29 2019` após o reset.
 
+**Confirmado na investigação do D2 (2026-07-04):** reproduzido de novo — uma
+captura trouxe dezenas de linhas idênticas (mesmo timestamp de firmware, ex.
+`[DIAG 66500] WS_EVT_DISCONNECT` repetido ~70 vezes) despejadas em poucos ms
+de tempo real, antes do boot real aparecer. Não é defeito de firmware nem do
+produto (só afeta captura serial de bancada; o pedagogo nunca vê isso) — é
+o driver CP210x entregando de uma vez o que ficou represado no buffer da
+porta enquanto nenhum monitor estava aberto. Ação: nenhuma. Ignorar tudo
+antes do primeiro `ets Jul 29 2019` da captura, como já orientado acima.
+
 ## Lições de hardware registradas (2026-07-02)
 
 - **Serigrafia do shield mente:** o borne marcado "GND" entre SD3 e 5V
