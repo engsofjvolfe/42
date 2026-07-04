@@ -51,9 +51,11 @@ RESSALVAS — DECIDIDAS PELO USUÁRIO (2026-07-04): CA-01-03 re-marcado
 PENDENTE; o método do CA será RE-ESPECIFICADO em 01_arquitetura.md (com
 cascata) para verificação sem osciloscópio — tarefa pendente. CA-10-02
 resolvido: fita pintada na cor da zona aplicada aos pares de fios —
-conforme. CA-03-02/03 PENDENTES com proposta de nova paleta
-(#F5D252/#E37C5F, #79D0F2/#8F78BF) — aplicar via 03_saida_visual.md +
-spec/visual com cascata, nunca direto no código.
+conforme. CA-03-02/03 RESOLVIDOS em 2026-07-04 (ver sessão "CA-03-02/03 —
+paleta de cores" mais abaixo) — a proposta original de nova paleta
+(#F5D252/#E37C5F, #79D0F2/#8F78BF, "paleta dos tacos") FALHOU fisicamente
+(LED emitia branco); solução final foi escurecer Laranja/Roxo mantendo o
+matiz original, não a paleta dos tacos.
 GATE v1.0.0: segue BLOQUEADO — D2 aberto + 12 CAs PENDENTES + ressalvas +
 M1 + índices. Release em hold por ordem explícita do usuário (2026-07-03):
 NÃO lançar v1.0.0 sem autorização expressa, mesmo com checklist fechado.
@@ -336,6 +338,61 @@ foram para o valor exato do documento referenciado), `pio test -e native`
 e `pio run -e esp32dev` finais, depois commits atômicos por tipo (docs por
 documento/cascata mecânica agrupada, spec, feat) seguindo o contrato git —
 CHANGELOG já atualizado antes desta etapa, conforme protocolo.
+[M1 CONCLUÍDO — commits feitos em develop: 1790fdd, e6a6d96, a0394cf,
+75b2cea, 45c9182, 6e0abc4, cde18a4, c576d46, 521dc28, 98e3cec.]
+
+SESSÃO 2026-07-04 (CA-03-02/03 — paleta de cores Laranja/Roxo), direto em
+develop, sem branch de trabalho dedicada (correções pontuais de valor,
+mesmo padrão de "testar direto no código antes da cascata" usado no D2/D3/M1).
+Ponto de partida: VALIDATION.md registrava CA-03-02 (Laranja x Amarelo) e
+CA-03-03 (Azul x Roxo) PENDENTES com uma proposta já anotada de nova
+paleta (#F5D252/#E37C5F, #79D0F2/#8F78BF — medida da pintura física dos
+tacos/zonas de impacto).
+Iteração 1 (paleta dos tacos, sRGB direto): aplicada em `visual_config.h`
+(marcada `[PROVISORIO]`, sem tocar spec/doc). Usuário testou na bancada —
+TODAS as 4 cores apareciam BRANCAS, tanto na boot animation quanto no LED
+estático em sessão real. `erase_flash` completo + reflash não mudou nada
+(descarta flash obsoleto como causa).
+Iteração 2 (hipótese gama sRGB->linear): hex de amostra de tinta está em
+espaço sRGB (luz refletida); WS2812B interpreta o byte como intensidade
+quase linear (luz emitida) — implementada correção `visualSrgbParaLinear8()`
+em `visual.cpp` (EOTF sRGB padrão, testes atualizados para aplicar a mesma
+conversão). Usuário testou: "ficou ruim, muito claras" — hipótese
+insuficiente sozinha para essa paleta específica. REVERTIDO por completo
+(`git checkout --` nos 4 arquivos tocados) — decisão do usuário: manter o
+matiz original (Laranja/Azul/Amarelo/Roxo aprovados), não a paleta dos
+tacos.
+Iteração 3 (escurecer a partir do original, iterativo): usuário pediu Roxo
+mais escuro que o original `#9400D3` — testado 20% (#7600A9, "ainda
+claro"), 65% (#34004A, "ainda claro"), 80% (#1E002A, aceito). Depois pediu
+Laranja mais escuro e Amarelo mais claro — Laranja -15% (#D94400) e
+Amarelo +15% (#FFBF26, blend em direção ao branco) testados juntos:
+usuário reportou "amarelo ficou branco" — Amarelo revertido ao original
+`#FFB400`; Laranja aprofundado de -15% para -25% (#BF3C00). Estado final
+aprovado: Laranja `#BF3C00` (191,60,0), Azul `#0000FF` (inalterado),
+Amarelo `#FFB400` (inalterado), Roxo `#1E002A` (30,0,42).
+Cascata completa executada após confirmação do usuário ("aplique a
+cascata"): `03_saida_visual.md` v0.1.7→v0.1.8 (§6 cores-rgb + changelog)
+→ `spec/visual/visual.json` (cores_rgb, CA-03-02, versao_fonte 0.1.8) →
+`spec/firmware_constants.json` (6 valores) → `generate_coding_standard.py`
+(regenerou `visual_config.h` e a tabela gerada de `CODING_STANDARD.md`
+v0.2.4→v0.2.5, sem `[PROVISORIO]` remanescente) → cascata mecânica
+`08_bom.md` v0.3.3→v0.3.4, `09_conexoes.md` v0.3.3→v0.3.4, `10_cablagem.md`
+v0.2.3→v0.2.4, `11_montagem.md` v0.3.3→v0.3.4 (dependem de 03/08/09 que
+bumparam) e `TESTING_STANDARD.md` v0.1.6→v0.1.7 (depende de
+CODING_STANDARD.md) → `VALIDATION.md` (CA-03-02/03 PASSOU, 56 PASSOU · 1
+OBSOLETO · 11 PENDENTE) → `CHANGELOG.md` atualizado antes de cada commit.
+`run_all.py` zero erros, `pio test -e native` 42/42, `pio run -e esp32dev`
+SUCCESS — todos confirmados antes e depois da cascata. 4 commits atômicos:
+`b0fe46c` docs(visual) conteúdo, `36d1e2b` spec(visual), `1c811cc`
+docs(visual) cascata mecânica, `a20a256` chore VALIDATION.md.
+RESSALVA registrada (VALIDATION.md e CHANGELOG.md): teste desta sessão foi
+com ADULTO; reconfirmar com criança do público-alvo antes do fechamento
+do gate v1.0.0.
+Lição de processo (não re-perguntar): amostra de cor de tinta física
+(sRGB, luz refletida) não transfere diretamente para LED (luz emitida) —
+nem o valor bruto nem a correção gama simples resolveram; a paleta dos
+tacos foi abandonada em favor de escurecer o matiz já aprovado.
 
 SESSÃO 2026-07-03 (M4/M5) — CONCLUÍDA. Três branches mergeadas em develop
 (fast-forward), run_all.py verde e CHANGELOG atualizado antes de cada commit:
