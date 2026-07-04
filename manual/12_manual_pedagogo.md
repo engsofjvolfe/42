@@ -1,12 +1,12 @@
 ---
 documento:    12_manual_pedagogo.md
-versão:       0.1.1
+versão:       0.2.0
 status:       APROVADO
 data:         2026-07-03
 depende_de:
   - _PADRAO.md v0.1.0               [BLOQUEADOR]
-  - 00_conceito.md v0.2.1           [BLOQUEADOR]
-  - 07_interface_pedagogo.md v0.3.2 [BLOQUEADOR]
+  - 00_conceito.md v0.3.0           [BLOQUEADOR]
+  - 07_interface_pedagogo.md v0.4.0 [BLOQUEADOR]
 impacta: []
 ---
 
@@ -19,7 +19,7 @@ impacta: []
 | Campo | Valor |
 |---|---|
 | Documento | 12_manual_pedagogo.md |
-| Versão | 0.1.1 |
+| Versão | 0.2.0 |
 | Status | APROVADO |
 | Audiência | Pedagogo ou profissional habilitado que conduz as sessões |
 | Idioma | Português brasileiro — linguagem não-técnica |
@@ -172,11 +172,13 @@ No modo 2 Martelos, as duas cores exibidas juntas são **sempre diferentes entre
 
 **O que a criança vê:** as luzes na mesa. Acendeu uma cor, ela bate na zona daquela cor.
 
-**O que você vê no celular:** o andamento da sessão — quantos acertos já foram feitos do total configurado e a taxa de acerto — e um botão para **pausar** quando precisar interromper.
+**O que você vê no celular:** o andamento da sessão — quantos acertos já foram feitos do total configurado e a taxa de acerto — e dois botões: **Pausar**, para interromper temporariamente sem perder o progresso, e **Encerrar Sessão**, para finalizar antes do número de interações configurado.
 
 **Quando a criança acerta:** sua tela fica **verde** por um instante, toca um som curto ascendente, e a luz da mesa apaga. Cerca de 2 segundos depois, a próxima cor acende sozinha.
 
 **Quando a criança erra** (bate na zona errada, ou numa zona sem luz correspondente): sua tela fica **vermelha** com um som neutro de aviso — e a luz da mesa **continua acesa**. A criança simplesmente tenta de novo, quantas vezes precisar, até acertar. O erro não elimina, não pula a vez e não é anunciado para a criança: o feedback vermelho aparece só no seu aparelho.
+
+**Se precisar parar antes do previsto:** toque em **Encerrar Sessão** e confirme. A sessão termina imediatamente com os acertos já registrados até aquele momento, e a tela de resultados aparece normalmente — como se a sessão tivesse sido concluída (ver [VER: #fim-sessao]). Não é preciso recarregar a página nem desligar o instrumento: para atender a próxima criança, basta tocar em **Nova Sessão** na tela de resultados.
 
 > **[FOTO 08 — a inserir]**
 > *Criança (ou mão adulta simulando) batendo em uma zona com a luz correspondente acesa.*
@@ -194,7 +196,7 @@ Se o seu aparelho se desconectar da rede `BMI` no meio da sessão (bateria, dist
 
 ## 13. Fim da sessão <a id="fim-sessao"></a>
 
-Quando o número de interações configurado é atingido:
+Quando o número de interações configurado é atingido (ou quando você toca em **Encerrar Sessão**, ver [VER: #durante-sessao]):
 
 - **Para a criança:** as luzes fazem uma varredura festiva de cerca de 3 segundos — sempre comemorativa, **independentemente do desempenho**. A criança nunca vê pontuação, taxa ou erro. Isso é deliberado: evita que ela associe o instrumento a julgamento e preserva a experiência lúdica.
 - **Para você:** o celular mostra a tela de resultados da sessão.
@@ -293,6 +295,7 @@ Lista de referência para a sessão de fotos do exemplar final. Cada foto substi
 |---|---|---|---|---|
 | 0.1.0 | 2026-07-03 | — | Criação — manual de uso em linguagem não-técnica (melhoria M4 da validação ETAPA 8), derivado de 00_conceito v0.2.1 e 07_interface_pedagogo v0.3.2, com marcadores de fotos a produzir | — |
 | 0.1.1 | 2026-07-04 | #ler-resultados, #exportar | Corrige descrição incompleta dos dados de sessão (apontada na validação): a tabela de leitura passa a enumerar os 10 campos do registro guardado/exportado (identificador, nome, início, modo, mecanismo, interações configuradas, acertos, erros, taxa, duração) e distingue o resumo da tela de resultados do registro completo; corrige a definição da taxa (calculada de acertos e interações configuradas, conforme 07 §7) | — |
+| 0.2.0 | 2026-07-04 | #durante-sessao, #fim-sessao | Melhoria M1 (TODO.md), validada manualmente no código antes da cascata: descreve o novo botão **Encerrar Sessão** (finaliza a sessão antes do N configurado, com confirmação) e esclarece que a tela de resultados e o botão Nova Sessão funcionam da mesma forma nesse caso; atualiza referências — 00_conceito.md v0.2.1→v0.3.0, 07_interface_pedagogo.md v0.3.2→v0.4.0 | — |
 
 ---
 
@@ -301,8 +304,8 @@ Lista de referência para a sessão de fotos do exemplar final. Cada foto substi
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.2.1 | BLOQUEADOR | #publico-alvo, #componentes-fisicos, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #interface-pedagogo, #gestao-dados |
-| Pai | 07_interface_pedagogo.md | 0.3.2 | BLOQUEADOR | #access-point, #estados-interface, #tela-configuracao, #tela-resultados, #pre-visualizacao, #exportacao-csv |
+| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #publico-alvo, #componentes-fisicos, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #interface-pedagogo, #gestao-dados, #encerramento-antecipado |
+| Pai | 07_interface_pedagogo.md | 0.4.0 | BLOQUEADOR | #access-point, #estados-interface, #tela-configuracao, #tela-resultados, #pre-visualizacao, #exportacao-csv, #tela-sessao-ativa |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.
