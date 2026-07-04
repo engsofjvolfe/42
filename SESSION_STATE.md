@@ -29,7 +29,32 @@ RNF-05): CA-07-09 (CSV via prévia — regressão do D1), CA-07-12
 Merges fast-forward feitos em develop: fix/export-csv (ec94afd) e
 feat/export-preview-pdf (5ea06a9). M2 e M3 concluídos.
 
-Branch ativa: docs/conceito-exportacao — CASCATA CONCLUÍDA (2026-07-03):
+SESSÃO 2026-07-03 (M4/M5) — CONCLUÍDA. Três branches mergeadas em develop
+(fast-forward), run_all.py verde e CHANGELOG atualizado antes de cada commit:
+  1. docs/manual-pedagogo (cd14828) — manual/12_manual_pedagogo.md v0.1.0
+     (M4, linguagem não-técnica, 11 marcadores de foto); 00 v0.2.1 e
+     07 v0.3.2 registram o manual em impacta [OBRIGATÓRIO]; cascata
+     mecânica PATCH em 13 dependentes (01 v0.3.1, 02 v0.2.2, 03 v0.1.6,
+     04 v0.1.4, 05 v0.3.2, 06 v0.2.1, 08 v0.3.2, 09 v0.3.2, 10 v0.2.2,
+     11 v0.3.2, CODING v0.2.3, TESTING v0.1.5, WEB v0.3.2)
+  2. chore/checklist-validacao (2d9155d) — VALIDATION.md: checklist formal
+     dos 65 CAs + 8 cenários UI; status derivado só de evidência registrada:
+     7 PASSOU (CA-07-09/12/13 bancada; CA-04-01..08 native — natureza
+     lógica), 1 OBSOLETO (CA-05-06), 57 PENDENTE
+  3. docs/readme-v1 (9dc1231) — README reescrito não-técnico (M5): fotos a
+     inserir, aponta manual e VALIDATION.md
+GATE v1.0.0 AVALIADO E BLOQUEADO (deterministicamente, CLAUDE.md ETAPA 8):
+"todos os CAs verificados e documentados" NÃO satisfeito — 57 CAs PENDENTE
+em VALIDATION.md (exigem hardware físico/instrumentos); pendências físicas
+abertas (marcar borne falso-GND, auditar serigrafia — CA-09-07; travar
+trimpot — CA-05-01); M1 (encerrar/nova sessão) em aberto; índices de
+diretório do TODO ("antes de v1.0.0") em aberto. NENHUMA tag criada,
+NENHUM merge em main. Próxima ação: usuário executa os CAs PENDENTES de
+VALIDATION.md na bancada e registra resultado; depois M1 e índices; só
+então release doc + tag v1.0.0 + merge develop → main.
+
+Contexto da branch anterior docs/conceito-exportacao (MERGEADA) — CASCATA
+CONCLUÍDA (2026-07-03):
   1. chore 60d3bb0 — registro da validação física + baixa D1/M2/M3
   2. docs(conceito) 390bcc6 — 00 v0.2.0: §12.2 CSV+PDF com prévia,
      §15 escopo, 07 adicionado ao impacta (lacuna de rastreabilidade)

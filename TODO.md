@@ -53,8 +53,8 @@ ETAPA 8 exige todos os CAs aprovados. **D1 baixado em 2026-07-03.**
 | M1 | Botão de encerrar sessão e iniciar nova sessão | Hoje não há caminho explícito na interface para encerrar e recomeçar sem recarregar/reiniciar | Pedagogo encerra sessão ativa e inicia nova sem recarregar a página nem reiniciar o ESP32 |
 | M2 | Visualização do CSV na própria interface | Pedagogo precisa conferir os dados antes de baixar | **CONCLUÍDO (2026-07-03):** CA-07-12 PASSOU na bancada; `feat/export-preview-pdf` mergeada em develop |
 | M3 | Exportação em formato legível além do CSV | CSV é para planilha; falta formato para leitura humana (relatório) | **CONCLUÍDO (2026-07-03):** CA-07-13 (PDF) PASSOU na bancada; `feat/export-preview-pdf` mergeada em develop |
-| M4 | Documento de instrução do jogo | Não existe manual de uso para o pedagogo | Documento em linguagem não-técnica: preparação, modos, sessão, leitura de resultados |
-| M5 | Atualização do README | README desatualizado frente ao estado real (validação, arquitetura 3.3V) | README reflete o estado corrente do projeto e aponta para o manual (M4) |
+| M4 | Documento de instrução do jogo | Não existe manual de uso para o pedagogo | **CONCLUÍDO (2026-07-03):** `manual/12_manual_pedagogo.md` v0.1.0 criado (branch `docs/manual-pedagogo`, mergeada em develop) — preparação, modos, mecanismos de sorteio, sessão, resultados, exportação, privacidade; 11 marcadores de fotos a produzir com o exemplar final |
+| M5 | Atualização do README | README desatualizado frente ao estado real (validação, arquitetura 3.3V) | **CONCLUÍDO (2026-07-03):** README reescrito com foco não-técnico (branch `docs/readme-v1`, mergeada em develop) — fotos a inserir, aponta para o manual (M4) e para `VALIDATION.md` |
 
 **Quando executar:** D1 imediatamente após a cascata de alimentação; M1–M5 em
 branches próprias, priorizadas pelo usuário.
