@@ -18,6 +18,7 @@
 
 #include <unity.h>
 #include <string.h>
+#include <stdlib.h>
 #include <Arduino.h>
 #include <FastLED.h>
 #include "visual/visual.h"
@@ -46,6 +47,14 @@ uint32_t millis() { return g_mock_millis; }
 void     pinMode(uint8_t, uint8_t) {}
 void     analogSetAttenuation(adc_attenuation_t) {}
 uint16_t analogRead(uint8_t) { return 0; }
+
+// random(max) — unico consumidor de aleatoriedade de game.cpp em native.
+// [VER: 04_logica_jogo.md#mecanismo-a] [VER: 04_logica_jogo.md#mecanismo-b]
+// Em esp32dev esta funcao e fornecida pelo framework Arduino (esp_random());
+// em native, delega a rand() da libc — determinismo aceitavel pois os testes
+// verificam invariantes do algoritmo (distribuicao, nao-repeticao, distincao
+// de pares), nao valores especificos sorteados.
+long random(long max) { return static_cast<long>(rand()) % max; }
 
 // ---------------------------------------------------------------------------
 // Constantes de teste — derivadas de game_config.h

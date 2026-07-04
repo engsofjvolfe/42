@@ -6,7 +6,6 @@
 #include "game_config.h"
 #include "visual.h"
 #include <Arduino.h>
-#include <stdlib.h>
 
 // ---------------------------------------------------------------------------
 // Estado interno — Mecanismo A
@@ -57,10 +56,11 @@ static uint32_t            s_t0_ms;
 // ---------------------------------------------------------------------------
 
 static uint32_t random_uint32(uint32_t n) {
-    // HARDCODED JUSTIFICADO: rand() e a unica fonte de aleatoriedade disponivel
-    // em native sem dependencias de plataforma. Em esp32dev, substituir por random().
-    // [VER: 04_logica_jogo.md#mecanismo-a]
-    return static_cast<uint32_t>(rand()) % n;
+    // DERIVADO: 04_logica_jogo.md#mecanismo-a (random(i+1)) e #mecanismo-b (random(total))
+    // Em esp32dev: Arduino random() usa esp_random() — RNG de hardware (ruido RF/termico),
+    // nao determinista desde a primeira chamada, sem necessidade de seed manual.
+    // Em native: definido em test_main.cpp (padrao declare->define, TESTING_STANDARD.md#padrao-mock).
+    return static_cast<uint32_t>(random(static_cast<long>(n)));
 }
 
 static void shuffle_bloco_A() {
