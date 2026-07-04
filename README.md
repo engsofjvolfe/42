@@ -8,7 +8,7 @@
 
 Uma mesa de jogo para avaliar coordenação motora e reconhecimento de cores em crianças de 5 anos. Uma luz acende mostrando uma cor; a criança bate com um martelo de madeira na zona daquela cor; o pedagogo acompanha tudo pelo navegador do celular — sem instalar aplicativo, sem internet, sem os dados saírem do aparelho.
 
-Apesar do formato de brinquedo, é um **instrumento de avaliação pedagógica**: cada sessão registra acertos, erros e tempos, e os dados podem ser exportados em planilha (CSV) ou relatório (PDF) para acompanhar o desenvolvimento da criança ao longo do tempo.
+Apesar do formato de brinquedo, é um **instrumento de avaliação pedagógica**: cada sessão gera um registro completo — identificador, nome da criança, data e hora de início, modo, mecanismo de sorteio, interações configuradas, acertos, erros, taxa de acerto e duração — exportável em planilha (CSV) ou relatório (PDF) para acompanhar o desenvolvimento da criança ao longo do tempo.
 
 ---
 

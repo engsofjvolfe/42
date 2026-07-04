@@ -1,6 +1,6 @@
 ---
 documento:    12_manual_pedagogo.md
-versão:       0.1.0
+versão:       0.1.1
 status:       APROVADO
 data:         2026-07-03
 depende_de:
@@ -19,7 +19,7 @@ impacta: []
 | Campo | Valor |
 |---|---|
 | Documento | 12_manual_pedagogo.md |
-| Versão | 0.1.0 |
+| Versão | 0.1.1 |
 | Status | APROVADO |
 | Audiência | Pedagogo ou profissional habilitado que conduz as sessões |
 | Idioma | Português brasileiro — linguagem não-técnica |
@@ -206,14 +206,22 @@ Quando o número de interações configurado é atingido:
 
 ## 14. Lendo os resultados <a id="ler-resultados"></a>
 
-A tela de resultados mostra:
+A tela de resultados mostra o resumo da sessão: nome da criança, acertos / total, taxa de acerto (%) e duração.
 
-| Informação | Como interpretar |
+O registro que fica guardado — e que aparece na prévia e nos arquivos exportados — é mais completo. São **10 campos por sessão**:
+
+| Campo | O que é |
 |---|---|
-| **Acertos / total** | Cada interação termina com um acerto, então este número confirma a sessão completa |
-| **Taxa de acerto (%)** | Proporção de interações resolvidas sem erro intermediário |
+| **Identificador** | Número único criado no início da sessão — distingue registros até de mesmo nome e data |
+| **Nome** | Nome da criança, como digitado na configuração |
+| **Início** | Data e hora em que a sessão começou |
+| **Modo** | 1 Martelo ou 2 Martelos |
+| **Mecanismo** | A (uniforme) ou B (variado) |
+| **Interações configuradas** | O número que você definiu na configuração |
+| **Acertos** | Interações concluídas. Cada interação termina com um acerto, então este número confirma a sessão completa |
 | **Erros** | Batidas erradas ao longo da sessão. Erros dentro de uma mesma interação não anulam o acerto final — eles mostram o *processo*, não só o resultado |
-| **Duração** | Tempo total da sessão, em minutos e segundos |
+| **Taxa de acerto (%)** | Calculada automaticamente a partir de acertos e interações configuradas |
+| **Duração (s)** | Tempo total da sessão, em segundos |
 
 Dois botões acompanham os resultados:
 
@@ -226,7 +234,7 @@ Dois botões acompanham os resultados:
 
 Os registros de todas as sessões ficam **somente no seu aparelho** — o instrumento não guarda nada e não há nuvem envolvida. Para gerar um arquivo com tudo o que está registrado:
 
-1. Toque em **Exportar** na tela de resultados. Abre uma **prévia** com a tabela completa dos registros — exatamente o que vai para o arquivo. Nenhum download acontece ainda.
+1. Toque em **Exportar** na tela de resultados. Abre uma **prévia** com a tabela completa dos registros — todas as sessões, com os 10 campos descritos em [VER: #ler-resultados] — exatamente o que vai para o arquivo. Nenhum download acontece ainda.
 2. Confira os dados e escolha o formato:
    - **CSV** — para abrir em planilha (Excel, Google Planilhas). Ideal para análise e gráficos.
    - **PDF** — relatório pronto para leitura e impressão, com data e hora de geração.
@@ -284,6 +292,7 @@ Lista de referência para a sessão de fotos do exemplar final. Cada foto substi
 | Versão | Data | Seção | Mudança | Impacto em dependentes |
 |---|---|---|---|---|
 | 0.1.0 | 2026-07-03 | — | Criação — manual de uso em linguagem não-técnica (melhoria M4 da validação ETAPA 8), derivado de 00_conceito v0.2.1 e 07_interface_pedagogo v0.3.2, com marcadores de fotos a produzir | — |
+| 0.1.1 | 2026-07-04 | #ler-resultados, #exportar | Corrige descrição incompleta dos dados de sessão (apontada na validação): a tabela de leitura passa a enumerar os 10 campos do registro guardado/exportado (identificador, nome, início, modo, mecanismo, interações configuradas, acertos, erros, taxa, duração) e distingue o resumo da tela de resultados do registro completo; corrige a definição da taxa (calculada de acertos e interações configuradas, conforme 07 §7) | — |
 
 ---
 
