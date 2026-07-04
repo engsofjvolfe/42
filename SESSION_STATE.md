@@ -11,7 +11,7 @@ Camada atual: VALIDAÇÃO
 Fase V-Model atual: ETAPA 8 — Validação com hardware físico
 
 Fases concluídas e aprovadas:
-  [x] Fase 1 — Requisitos          (concept/00_conceito.md v0.1.0 APROVADO)
+  [x] Fase 1 — Requisitos          (concept/00_conceito.md v0.2.0 APROVADO)
   [x] Fase 2 — Arquitetura Sistema  (system/01_arquitetura.md v0.1.0 APROVADO)
   [x] Fase 3 — Design de Hardware   (hardware/08–11 v0.1.0 APROVADO)
   [x] Fase 4 — Arquitetura Firmware (modules/02–07 v0.1.0 APROVADO)
@@ -29,9 +29,21 @@ RNF-05): CA-07-09 (CSV via prévia — regressão do D1), CA-07-12
 Merges fast-forward feitos em develop: fix/export-csv (ec94afd) e
 feat/export-preview-pdf (5ea06a9). M2 e M3 concluídos.
 
-Branch ativa: docs/conceito-exportacao (criada de develop em 2026-07-03 —
-decisão do usuário: registrar exportação PDF + pré-visualização no
-00_conceito.md §12.2/§15 e executar a cascata transitiva de depende_de).
+Branch ativa: docs/conceito-exportacao — CASCATA CONCLUÍDA (2026-07-03):
+  1. chore 60d3bb0 — registro da validação física + baixa D1/M2/M3
+  2. docs(conceito) 390bcc6 — 00 v0.2.0: §12.2 CSV+PDF com prévia,
+     §15 escopo, 07 adicionado ao impacta (lacuna de rastreabilidade)
+  3. docs(arquitetura) 1605b32 — 01 v0.3.0: CA-01-08 estendido
+  4. docs(conceito) 8175027 — 06 v0.2.0: portabilidade LGPD com os
+     dois formatos
+  5. docs(conceito) 2c2f723 — cascata mecânica: 02 v0.2.1, 03 v0.1.5,
+     04 v0.1.3, 05 v0.3.1, 07 v0.3.1, 08 v0.3.1, 09 v0.3.1, 10 v0.2.1,
+     11 v0.3.1, CODING v0.2.2, TESTING v0.1.4, WEB v0.3.1 (em CODING e
+     TESTING corrigidas também versões pré-existentes desatualizadas)
+Specs .json intocadas na cascata: conteúdo derivável não mudou;
+meta.versao_fonte segue apontando a versão de que o conteúdo deriva
+(interface 0.3.0, power 0.3.0) — check_versions cobre apenas .md.
+run_all.py: TODOS OS CHECKS PASSARAM após cada commit.
 
 Contexto da branch anterior feat/export-preview-pdf (M2/M3, MERGEADA):
 Estado da branch feat/export-preview-pdf — cadeia completa commitada na
