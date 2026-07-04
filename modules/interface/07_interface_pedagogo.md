@@ -1,12 +1,12 @@
 ---
 documento:    07_interface_pedagogo.md
-versão:       0.3.2
+versão:       0.4.0
 status:       APROVADO
 data:         2026-06-26
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.2.1    [BLOQUEADOR]
-  - 01_arquitetura.md v0.3.1 [BLOQUEADOR]
+  - 00_conceito.md v0.3.0    [BLOQUEADOR]
+  - 01_arquitetura.md v0.4.0 [BLOQUEADOR]
 impacta:
   - 12_manual_pedagogo.md    [OBRIGATÓRIO]
 ---
@@ -20,7 +20,7 @@ impacta:
 | Campo | Valor |
 |---|---|
 | Documento | 07_interface_pedagogo.md |
-| Versão | 0.3.2 |
+| Versão | 0.4.0 |
 | Status | APROVADO |
 | Módulo firmware | MOD_WIFI — [VER: 01_arquitetura.md#mod-wifi] |
 | Stack | HTML + CSS + JS puro, sem framework — [VER: 01_arquitetura.md#stack-tecnologico] |
@@ -86,6 +86,9 @@ Mapeamento JSON das interfaces C++ definidas em [VER: 01_arquitetura.md#interfac
 
 // Retomar sessão após pausa
 { "tipo": "RETOMAR" }
+
+// Encerrar sessão antes do N configurado (M1) — [VER: 00_conceito.md#encerramento-antecipado]
+{ "tipo": "ENCERRAR" }
 ```
 
 Valores válidos para `modo`: `"UM_MARTELO"` | `"DOIS_MARTELOS"`
@@ -149,6 +152,7 @@ Exibe em tempo real, atualizado a cada `ACERTO` ou `ERRO` recebido:
 - Progresso: `acertos / total` e taxa percentual
 - Nome da criança (informativo)
 - Botão PAUSAR → envia `{ "tipo": "PAUSAR" }`
+- Botão ENCERRAR SESSÃO → confirmação obrigatória (ação destrutiva — descarta as interações restantes do N configurado); confirmado, envia `{ "tipo": "ENCERRAR" }` — [VER: 00_conceito.md#encerramento-antecipado]. A tela só muda ao receber `FIM_SESSAO`, tratado de forma idêntica à conclusão natural da sessão — ver [VER: #tela-resultados]
 
 Sem exibição de cor, estímulo ou informação do jogo — a criança usa a mesa física.
 
@@ -247,6 +251,8 @@ Derivado de [VER: 00_conceito.md#armazenamento] e estrutura de [VER: 04_logica_j
 | `erros` | Contagem browser de eventos `ERRO` | integer |
 | `taxa_pct` | `(acertos / n_configurado) * 100` | float, 1 casa decimal |
 | `duracao_s` | `EventoResultado.duracao_ms / 1000` | float, 1 casa decimal |
+
+**Sessão encerrada antecipadamente** ([VER: 00_conceito.md#encerramento-antecipado], botão ENCERRAR SESSÃO em [VER: #tela-sessao-ativa]): usa exatamente esta mesma estrutura, sem campo adicional. `acertos < n_configurado` identifica o registro sem ambiguidade — uma sessão concluída naturalmente só emite `FIM_SESSAO` com `acertos == n_configurado` ([VER: 04_logica_jogo.md#transicoes]).
 
 ---
 
@@ -424,6 +430,7 @@ Todos os valores acima (nome de arquivo, MIME, versão PDF, fontes, dimensões, 
 | CA-07-11 | Offline total | Interface funciona sem acesso à internet em todas as etapas |
 | CA-07-12 | Pré-visualização e confirmação | Com ≥ 2 registros: clicar **Exportar** exibe tabela com todos os registros e as 10 colunas idênticos ao localStorage, sem iniciar download; **Cancelar** fecha sem download; com localStorage vazio: aviso exibido e **Baixar** desabilitado ([VER: #pre-visualizacao]) |
 | CA-07-13 | Exportação PDF | Selecionar `PDF` na pré-visualização e confirmar: download de `bmi_sessoes.pdf` que abre sem erro em leitor de PDF; contém título, data/hora de geração, `Página N de M` e tabela com todas as sessões e todas as colunas; acentos corretos; com > 35 registros: segunda página com numeração correta ([VER: #exportacao-pdf]) |
+| CA-07-14 | Encerramento antecipado | Na tela de sessão ativa: clicar ENCERRAR SESSÃO exibe confirmação; confirmado, sessão encerra com os acertos parciais corretos, tela de Resultados exibida, e Nova Sessão retorna à Configuração — sem recarregar a página nem reiniciar o ESP32 ([VER: 00_conceito.md#encerramento-antecipado]) |
 
 ---
 
@@ -438,6 +445,7 @@ Todos os valores acima (nome de arquivo, MIME, versão PDF, fontes, dimensões, 
 | 0.3.0 | 2026-07-03 | #exportacao-csv (§8 reestruturada), #pre-visualizacao, #exportacao-pdf, #tela-resultados, #criterios-aceitacao, #objetivo, #identificacao | Melhorias M2/M3 (validação ETAPA 8): pré-visualização com confirmação obrigatória antes de qualquer download (PRE-01..05); escolha de formato CSV/PDF; exportação PDF gerada em JS puro — PDF 1.4, fontes base-14, WinAnsiEncoding, A4 paisagem, paginação (PDF-01..06, DECISAO formal); botão da tela de resultados passa de "Exportar CSV" para "Exportar" (abre prévia); CA-07-09 ajustado ao novo fluxo; CA-07-12 e CA-07-13 novos | WEB_STANDARD.md, spec/interface/interface.json, spec/interface/interface.schema.json, firmware/src/interface/interface.cpp |
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0 | — |
 | 0.3.2 | 2026-07-03 | impacta, depende_de, Rastreabilidade | Registra 12_manual_pedagogo.md (manual de uso do pedagogo — melhoria M4 da validação ETAPA 8) como dependente OBRIGATÓRIO: o manual descreve as telas e fluxos aqui especificados; cascata do registro em 00 — atualiza referências 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1 | 12_manual_pedagogo.md (novo) |
+| 0.4.0 | 2026-07-04 | #mensagens-browser-esp32, #tela-sessao-ativa, #armazenamento-dados, #criterios-aceitacao, depende_de | Melhoria M1 (TODO.md), validada manualmente no código antes da cascata: nova mensagem `ENCERRAR` (browser→ESP32) tratada só com sessão ativa; botão ENCERRAR SESSÃO na tela de sessão ativa, com confirmação obrigatória; resultado tratado pelo mesmo caminho `FIM_SESSAO` já existente (acertos parciais, sem estrutura de dado nova); novo CA-07-14 | spec/interface/interface.json, spec/interface/interface.schema.json, firmware/src/interface/interface.cpp, 12_manual_pedagogo.md |
 
 ---
 
@@ -446,8 +454,8 @@ Todos os valores acima (nome de arquivo, MIME, versão PDF, fontes, dimensões, 
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.2.1 | BLOQUEADOR | #conectividade, #configuracao-pre-sessao, #desconexao, #feedback-acerto, #feedback-erro, #feedback-fim-sessao, #armazenamento, #exportacao, #responsabilidade-dados |
-| Pai | 01_arquitetura.md | 0.3.1 | BLOQUEADOR | #mod-wifi, #interface-jogo-wifi, #stack-tecnologico, #requisitos-nao-funcionais |
+| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #conectividade, #configuracao-pre-sessao, #desconexao, #encerramento-antecipado, #feedback-acerto, #feedback-erro, #feedback-fim-sessao, #armazenamento, #exportacao, #responsabilidade-dados |
+| Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #mod-wifi, #interface-jogo-wifi, #stack-tecnologico, #requisitos-nao-funcionais |
 | Pai | 04_logica_jogo.md | 0.1.4 | CONDICIONAL: #gestao-score | #gestao-score |
 | Filho | 12_manual_pedagogo.md | — | OBRIGATÓRIO | #access-point, #estados-interface, #tela-configuracao, #tela-resultados, #pre-visualizacao, #exportacao-csv |
 ---
