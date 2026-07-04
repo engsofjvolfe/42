@@ -29,6 +29,7 @@ static constexpr uint16_t INTERFACE_JANELA_MS_PADRAO = 800u;
 static constexpr const char* MSG_INICIAR  = "INICIAR";
 static constexpr const char* MSG_PAUSAR   = "PAUSAR";
 static constexpr const char* MSG_RETOMAR  = "RETOMAR";
+static constexpr const char* MSG_ENCERRAR = "ENCERRAR";
 
 // --- DERIVADO: spec/interface/interface.json#protocolo_mensagens.esp32_para_browser[*].campos[0].valor_fixo ---
 static constexpr const char* MSG_ACERTO     = "ACERTO";
@@ -295,6 +296,7 @@ static const char HTML_PAGE[] PROGMEM = R"rawhtml(<!DOCTYPE html>
       <span class="stat-val" id="stat-total">-</span>
     </div>
     <button class="btn btn-outline" id="btn-pausar">Pausar</button>
+    <button class="btn btn-outline" id="btn-encerrar">Encerrar Sessao</button>
   </div>
 
   <!-- OVERLAY FEEDBACK — position:fixed sobre tela-sessao — WEB_STANDARD.md#mapeamento-estado-elemento -->
@@ -712,6 +714,14 @@ static const char HTML_PAGE[] PROGMEM = R"rawhtml(<!DOCTYPE html>
       setState('SESSAO_ATIVA');
     });
 
+    // 07_interface_pedagogo.md#tela-sessao-ativa: encerra a sessao antes do N
+    // configurado; a tela so muda para RESULTADOS ao receber FIM_SESSAO (mesmo
+    // caminho da conclusao natural, CA-07-14)
+    document.getElementById('btn-encerrar').addEventListener('click', function() {
+      if (!window.confirm('Encerrar a sessao atual? O progresso ja registrado sera salvo.')) { return; }
+      enviarMensagem({ tipo: 'ENCERRAR' });
+    });
+
     document.getElementById('btn-nova-sessao').addEventListener('click', function() {
       setState('CONFIGURANDO');
     });
@@ -1118,6 +1128,12 @@ static void onWsEvent(AsyncWebSocket*       server,
 
     } else if (strcmp(tipo, MSG_RETOMAR) == 0) {
         _aplicarToggle(false, nullptr);
+
+    } else if (strcmp(tipo, MSG_ENCERRAR) == 0) {
+        // Encerramento antecipado solicitado pelo pedagogo — [VER: 07_interface_pedagogo.md#tela-sessao-ativa]
+        if (s_sessao_ativa) {
+            gameEncerrarSessao();
+        }
     }
 }
 
