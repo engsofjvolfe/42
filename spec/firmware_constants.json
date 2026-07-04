@@ -177,7 +177,7 @@
     {
       "modulo": "visual",
       "constante": "VISUAL_COR_LARANJA_R",
-      "valor": 255,
+      "valor": 191,
       "tipo_c": "uint8_t",
       "classe": "DERIVADO",
       "calibrar": false,
@@ -187,7 +187,7 @@
     {
       "modulo": "visual",
       "constante": "VISUAL_COR_LARANJA_G",
-      "valor": 80,
+      "valor": 60,
       "tipo_c": "uint8_t",
       "classe": "DERIVADO",
       "calibrar": false,
@@ -267,7 +267,7 @@
     {
       "modulo": "visual",
       "constante": "VISUAL_COR_ROXO_R",
-      "valor": 148,
+      "valor": 30,
       "tipo_c": "uint8_t",
       "classe": "DERIVADO",
       "calibrar": false,
@@ -287,7 +287,7 @@
     {
       "modulo": "visual",
       "constante": "VISUAL_COR_ROXO_B",
-      "valor": 211,
+      "valor": 42,
       "tipo_c": "uint8_t",
       "classe": "DERIVADO",
       "calibrar": false,

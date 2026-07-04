@@ -1,8 +1,8 @@
 ---
 documento:    CODING_STANDARD.md
-versão:       0.2.4
+versão:       0.2.5
 status:       APROVADO
-data:         2026-06-28
+data:         2026-07-04
 depende_de:
   - _PADRAO.md v0.1.0           [BLOQUEADOR]
   - 01_arquitetura.md v0.4.0    [BLOQUEADOR]
@@ -251,8 +251,8 @@ Geradas automaticamente de `spec/firmware_constants.json`. Não editar manualmen
 | `VISUAL_LED_ESQUERDO` | 0 | `uint8_t` | DERIVADO | `spec/visual/visual.json#mapeamento_led[0].indice` |
 | `VISUAL_LED_CENTRAL` | 1 | `uint8_t` | DERIVADO | `spec/visual/visual.json#mapeamento_led[1].indice` |
 | `VISUAL_LED_DIREITO` | 2 | `uint8_t` | DERIVADO | `spec/visual/visual.json#mapeamento_led[2].indice` |
-| `VISUAL_COR_LARANJA_R` | 255 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Laranja.r` |
-| `VISUAL_COR_LARANJA_G` | 80 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Laranja.g` |
+| `VISUAL_COR_LARANJA_R` | 191 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Laranja.r` |
+| `VISUAL_COR_LARANJA_G` | 60 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Laranja.g` |
 | `VISUAL_COR_LARANJA_B` | 0 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Laranja.b` |
 | `VISUAL_COR_AZUL_R` | 0 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Azul.r` |
 | `VISUAL_COR_AZUL_G` | 0 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Azul.g` |
@@ -260,9 +260,9 @@ Geradas automaticamente de `spec/firmware_constants.json`. Não editar manualmen
 | `VISUAL_COR_AMARELO_R` | 255 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Amarelo.r` |
 | `VISUAL_COR_AMARELO_G` | 180 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Amarelo.g` |
 | `VISUAL_COR_AMARELO_B` | 0 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Amarelo.b` |
-| `VISUAL_COR_ROXO_R` | 148 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Roxo.r` |
+| `VISUAL_COR_ROXO_R` | 30 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Roxo.r` |
 | `VISUAL_COR_ROXO_G` | 0 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Roxo.g` |
-| `VISUAL_COR_ROXO_B` | 211 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Roxo.b` |
+| `VISUAL_COR_ROXO_B` | 42 | `uint8_t` | DERIVADO | `spec/visual/visual.json#cores_rgb.Roxo.b` |
 | `VISUAL_BOOT_PASSO_MS` | 150 | `uint16_t` | DERIVADO | `spec/visual/visual.json#boot_animation.passos[0].duracao_ms` |
 | `VISUAL_BOOT_PAUSA_MS` | 500 | `uint16_t` | DERIVADO | `spec/visual/visual.json#boot_animation.passos[4].duracao_ms` |
 | `VISUAL_BOOT_DURACAO_MS` | 3000 | `uint16_t` | DERIVADO | `spec/visual/visual.json#boot_animation.duracao_total_ms` |
@@ -493,6 +493,7 @@ Derivado de [VER: 01_arquitetura.md#requisitos-nao-funcionais].
 | 0.2.2 | 2026-07-03 | depende_de, Rastreabilidade, #identificacao | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 01_arquitetura.md v0.2.1→v0.3.0; corrige versões desatualizadas na Identificação (0.2.0 e 01 v0.1.0) e na Rastreabilidade (01 v0.2.0) | — |
 | 0.2.3 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 01_arquitetura.md v0.3.0→v0.3.1 | — |
 | 0.2.4 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica de 01_arquitetura v0.4.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em padrão de código): atualiza referência 01_arquitetura.md v0.3.1→v0.4.0 | TESTING_STANDARD.md |
+| 0.2.5 | 2026-07-04 | tabela_visual (gerada) | Regenerado por `generate_coding_standard.py` após correção de `VISUAL_COR_LARANJA_*` e `VISUAL_COR_ROXO_*` em `spec/firmware_constants.json` (cascata de `03_saida_visual.md` v0.1.8 — CA-03-02/03) | firmware/src/visual/ |
 
 ---
 

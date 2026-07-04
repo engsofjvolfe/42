@@ -1,7 +1,7 @@
 {
   "meta": {
     "documento_fonte": "03_saida_visual.md",
-    "versao_fonte": "0.1.0",
+    "versao_fonte": "0.1.8",
     "depende_de": [
       "spec/power/power.json"
     ]
@@ -38,10 +38,10 @@
   ],
 
   "cores_rgb": {
-    "Laranja": {"r": 255, "g": 80,  "b": 0,   "hex": "FF5000"},
+    "Laranja": {"r": 191, "g": 60,  "b": 0,   "hex": "BF3C00"},
     "Azul":    {"r": 0,   "g": 0,   "b": 255,  "hex": "0000FF"},
     "Amarelo": {"r": 255, "g": 180, "b": 0,    "hex": "FFB400"},
-    "Roxo":    {"r": 148, "g": 0,   "b": 211,  "hex": "9400D3"},
+    "Roxo":    {"r": 30,  "g": 0,   "b": 42,  "hex": "1E002A"},
     "OFF":     {"r": 0,   "g": 0,   "b": 0,    "hex": "000000"}
   },
 
@@ -85,7 +85,7 @@
 
   "criterios_aceitacao": [
     {"id": "CA-03-01", "descricao_tecnica": "boot_animation_sem_falha", "duracao_total_ms": 3000},
-    {"id": "CA-03-02", "descricao_tecnica": "cor_Laranja_distinta_de_Amarelo", "r": 255, "g": 80,  "b": 0},
+    {"id": "CA-03-02", "descricao_tecnica": "cor_Laranja_distinta_de_Amarelo", "r": 191, "g": 60,  "b": 0},
     {"id": "CA-03-03", "descricao_tecnica": "cor_Azul_distinta_de_Roxo_em_luz_ambiente"},
     {"id": "CA-03-04", "descricao_tecnica": "led_correto_por_modo", "modo1_led_ativo": 1, "modo2_leds_ativos": [0, 2]},
     {"id": "CA-03-05", "descricao_tecnica": "latencia_led_ms", "latencia_maxima_ms": 10},

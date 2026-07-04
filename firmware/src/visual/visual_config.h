@@ -26,10 +26,10 @@ constexpr uint8_t VISUAL_LED_CENTRAL = 1;
 constexpr uint8_t VISUAL_LED_DIREITO = 2;
 
 // --- DERIVADO: spec/visual/visual.json#cores_rgb.Laranja.r ---
-constexpr uint8_t VISUAL_COR_LARANJA_R = 255;
+constexpr uint8_t VISUAL_COR_LARANJA_R = 191;
 
 // --- DERIVADO: spec/visual/visual.json#cores_rgb.Laranja.g ---
-constexpr uint8_t VISUAL_COR_LARANJA_G = 80;
+constexpr uint8_t VISUAL_COR_LARANJA_G = 60;
 
 // --- DERIVADO: spec/visual/visual.json#cores_rgb.Laranja.b ---
 constexpr uint8_t VISUAL_COR_LARANJA_B = 0;
@@ -53,13 +53,13 @@ constexpr uint8_t VISUAL_COR_AMARELO_G = 180;
 constexpr uint8_t VISUAL_COR_AMARELO_B = 0;
 
 // --- DERIVADO: spec/visual/visual.json#cores_rgb.Roxo.r ---
-constexpr uint8_t VISUAL_COR_ROXO_R = 148;
+constexpr uint8_t VISUAL_COR_ROXO_R = 30;
 
 // --- DERIVADO: spec/visual/visual.json#cores_rgb.Roxo.g ---
 constexpr uint8_t VISUAL_COR_ROXO_G = 0;
 
 // --- DERIVADO: spec/visual/visual.json#cores_rgb.Roxo.b ---
-constexpr uint8_t VISUAL_COR_ROXO_B = 211;
+constexpr uint8_t VISUAL_COR_ROXO_B = 42;
 
 // --- DERIVADO: spec/visual/visual.json#boot_animation.passos[0].duracao_ms ---
 constexpr uint16_t VISUAL_BOOT_PASSO_MS = 150;
