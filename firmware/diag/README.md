@@ -96,3 +96,16 @@ antes do primeiro `ets Jul 29 2019` da captura, como já orientado acima.
   Consequência operacional: USB-only com WiFi = brownout sempre; bancada de
   WiFi exige a fonte ligada. Segurança: medir 3.30V na saída do LM2596 ANTES
   de conectar ao borne 3V3 (5V nesse rail mata o ESP32; máx. absoluto 3.6V).
+- **USB + fonte externa ligados AO MESMO TEMPO também causa brownout em
+  loop (confirmado 2026-07-04, investigação D2/D3):** com os dois
+  conectados simultaneamente, brownout batia de forma regular a cada
+  ~3.4s, sempre logo após o rádio WiFi subir (`rst:0xc SW_CPU_RESET`
+  precedido de `Brownout detector was triggered`), com o MESMO firmware
+  que já tinha rodado limpo minutos antes só com a fonte. Hipótese: o
+  regulador de bordo do DevKitC (alimentado pelo 5V do USB) e o LM2596
+  externo (injetando 3.3V direto no mesmo rail) disputam o mesmo trilho.
+  Confirmado na prática: desconectar o USB e rodar só com a fonte externa
+  eliminou o brownout. **Para bancada de WiFi: usar SOMENTE a fonte
+  externa; desconectar o USB após gravar.** Se precisar de log serial ao
+  vivo durante teste de WiFi, usar um cabo USB "somente dados" (sem o fio
+  de 5V/VBUS) — um cabo comum reintroduz o conflito.

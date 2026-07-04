@@ -23,6 +23,8 @@ Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 - `TODO.md` — lista de tarefas futuras: metadocumentos e índices de navegação por diretório (`modules/`, `spec/`, `hardware/`, `_governance/`)
 
 ### Alterado
+- `TODO.md`, `VALIDATION.md` — D3 (Modo 2: pares de cor sempre os mesmos dois) baixado: investigação interrompida por um brownout não relacionado (conflito USB + fonte externa ligados simultaneamente — ver `firmware/diag/README.md`); após corrigir a energia (só fonte externa), re-teste de bancada (observação visual, sem log serial) mostrou os pares variando normalmente. Fechado sem causa raiz confirmada por instrumentação — ressalva registrada em TODO.md para reabertura se reaparecer (checar primeiro se USB e fonte estão ligados juntos)
+- `firmware/diag/README.md` — nova entrada nas "Lições de hardware": USB + fonte externa ligados ao mesmo tempo também causa brownout em loop (confirmado 2026-07-04), distinto do brownout USB-only já documentado; recomenda usar somente a fonte externa em bancada de WiFi, desconectando o USB após gravar
 - `TODO.md` — D2 baixado (validado na bancada); registra novo defeito conhecido D3 (Modo 2: pares de cor sempre os mesmos dois — Roxo+Amarelo e Laranja+Azul — mesmo no Mecanismo A; hipótese não confirmada de shuffle sem efeito). D3 bloqueia o gate v1.0.0
 - `VALIDATION.md` — notas de D2 em CA-01-05/06 atualizadas (workaround não é mais necessário); nota de D3 adicionada em CA-01-06; estado de defeitos no cabeçalho atualizado (D2 baixado, D3 aberto)
 - `firmware/diag/README.md` — reforça a nota já existente sobre lixo pré-bufferizado do driver CP210x no `monitor_serial.py`, confirmando reprodução durante a investigação do D2 (2026-07-04); não é defeito de firmware/produto, sem ação necessária

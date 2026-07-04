@@ -205,11 +205,47 @@ hotspot (3s) → conectar celular no WiFi BMI → abrir browser em 192.168.4.1
 falha do fix nem do gate de boot — é a janela de captura curta demais.
 Terceira captura (log colado pelo usuário) mostrou sessão completa e limpa
 (ver "DESFECHO" acima) — D2 confirmado corrigido, instrumentação removida,
-CHANGELOG/TODO.md/VALIDATION.md atualizados. Próxima ação desta sessão:
-commitar o fix de D2 (checklist da ETAPA 5, corpo obrigatório, sem
-Co-authored-by) e então investigar o D3 (pares de cor sem variedade no
-Modo 2) — primeiro confirmar com o usuário se o teste do D3 foi na mesma
-build corrigida (random()) ou build anterior, antes de decidir a correção.
+CHANGELOG/TODO.md/VALIDATION.md atualizados. Commits feitos nesta branch:
+`ea484f1` (fix, RNG + gate de boot) e `c9f292a` (chore, D2 baixado + D3
+aberto).
+
+Investigação do D3 (2026-07-04, continuação): usuário confirmou o teste
+das cores repetidas foi na build já corrigida (commit ea484f1) — D3 é bug
+novo e distinto, não resíduo do rand() antigo. Adicionei instrumentação
+temporária (Serial.begin + prints de INICIAR e do par sorteado via
+gameGetParAtual()/gameGetCorAtual(), tudo em interface.cpp/main.cpp, sem
+tocar game.cpp — pio test -e native 38/38 intacto) para capturar os pares
+reais via serial.
+
+DESVIO DE ROTA — BROWNOUT (2026-07-04): antes de reproduzir o D3, usuário
+reportou "loop de animação não para e bmi não aparece" — log mostrou
+brownout regular a cada ~3.4s (`Brownout detector was triggered` →
+`rst:0xc SW_CPU_RESET`), sempre logo após o rádio WiFi subir. O MESMO
+firmware (commit ea484f1, sem a instrumentação do D3 — revertida a pedido
+do usuário, `git checkout --` confirmou diff vazio contra HEAD) já tinha
+rodado limpo minutos antes. Causa identificada e CONFIRMADA na prática:
+USB + fonte externa ligados ao mesmo tempo — desconectar o USB e rodar só
+com a fonte eliminou o brownout (usuário confirmou: "só a fonte
+funcionou"). Documentado em `firmware/diag/README.md` (nova entrada nas
+"Lições de hardware"). Não é bug de firmware — nenhum código foi alterado
+por causa disso.
+
+DESFECHO D3 (2026-07-04): usuário testou as batidas em Modo 2/Mecanismo A
+só com a fonte externa (sem USB, sem log serial) e confirmou "agora
+funcionou" — pares de cor variando normalmente, não mais travados em
+{Roxo,Amarelo}/{Laranja,Azul}. D3 fechado por instrução direta do usuário
+("feche ele, mas deixe ressalva documentada pro caso de vir a aparecer
+novamente"). IMPORTANTE — causa raiz NÃO confirmada por instrumentação:
+não foi possível capturar o log serial dos pares (`gameGetParAtual()`)
+sem reintroduzir o brownout USB+fonte. Fechado por observação visual de
+bancada, não por evidência de log. Ressalva de reabertura registrada em
+TODO.md: se os pares travarem de novo, checar primeiro se USB e fonte
+externa estão ligados ao mesmo tempo (hipótese não descartada: a mesma
+instabilidade elétrica pode ter afetado a qualidade do RNG de hardware,
+`esp_random()`, baseado em ruído RF/térmico — especulativo, não provado).
+TODO.md, VALIDATION.md e CHANGELOG.md atualizados nesta sessão refletindo
+D2 e D3 ambos baixados. Nenhuma alteração de código foi feita para o D3
+(nenhum commit de fix — só documentação/tracking).
 
 SESSÃO 2026-07-03 (M4/M5) — CONCLUÍDA. Três branches mergeadas em develop
 (fast-forward), run_all.py verde e CHANGELOG atualizado antes de cada commit:
