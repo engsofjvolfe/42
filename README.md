@@ -1,6 +1,10 @@
 # Instrumento Lúdico-Pedagógico — ESP32
 
-[![Verificação de Documentação](https://github.com/eflov/42/actions/workflows/verify-docs.yml/badge.svg)](https://github.com/eflov/42/actions/workflows/verify-docs.yml)
+[![Licença: GPL-3.0](https://img.shields.io/badge/licen%C3%A7a-GPL--3.0-blue)](LICENSE)
+[![Plataforma: ESP32](https://img.shields.io/badge/plataforma-ESP32-E7352C)](system/01_arquitetura.md)
+[![Framework: PlatformIO + Arduino](https://img.shields.io/badge/framework-PlatformIO%20%2B%20Arduino-orange)](firmware/platformio.ini)
+[![Testes nativos: 38/38](https://img.shields.io/badge/testes%20nativos-38%2F38-brightgreen)](firmware/test/)
+[![Status: validação com hardware](https://img.shields.io/badge/status-valida%C3%A7%C3%A3o%20com%20hardware-yellow)](VALIDATION.md)
 
 Uma mesa de jogo para avaliar coordenação motora e reconhecimento de cores em crianças de 5 anos. Uma luz acende mostrando uma cor; a criança bate com um martelo de madeira na zona daquela cor; o pedagogo acompanha tudo pelo navegador do celular — sem instalar aplicativo, sem internet, sem os dados saírem do aparelho.
 
