@@ -3,7 +3,7 @@
 [![Licença: GPL-3.0](https://img.shields.io/badge/licen%C3%A7a-GPL--3.0-blue)](LICENSE)
 [![Plataforma: ESP32](https://img.shields.io/badge/plataforma-ESP32-E7352C)](system/01_arquitetura.md)
 [![Framework: PlatformIO + Arduino](https://img.shields.io/badge/framework-PlatformIO%20%2B%20Arduino-orange)](firmware/platformio.ini)
-[![Testes nativos: 38/38](https://img.shields.io/badge/testes%20nativos-38%2F38-brightgreen)](firmware/test/)
+[![Testes nativos: 42/42](https://img.shields.io/badge/testes%20nativos-42%2F42-brightgreen)](firmware/test/)
 [![Status: validação com hardware](https://img.shields.io/badge/status-valida%C3%A7%C3%A3o%20com%20hardware-yellow)](VALIDATION.md)
 
 Uma mesa de jogo para avaliar coordenação motora e reconhecimento de cores em crianças de 5 anos. Uma luz acende mostrando uma cor; a criança bate com um martelo de madeira na zona daquela cor; o pedagogo acompanha tudo pelo navegador do celular — sem instalar aplicativo, sem internet, sem os dados saírem do aparelho.
@@ -50,7 +50,7 @@ O desenvolvimento segue o V-model: cada linha de firmware é rastreável a um do
 |---|---|
 | Documentação (conceito → hardware) | Aprovada — `v0.1.0` |
 | Especificações JSON + schemas | Concluídas — `v0.2.0` |
-| Firmware (4 módulos) | Concluído — `v0.3.0`, 38/38 testes, compilação sem warnings |
+| Firmware (4 módulos) | Concluído — `v0.3.0`, 42/42 testes, compilação sem warnings |
 | Validação com hardware físico | **Em andamento** — [checklist de validação](VALIDATION.md) |
 | Release `v1.0.0` | Após todos os critérios de aceitação passarem |
 
