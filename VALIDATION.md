@@ -12,14 +12,15 @@ Como usar:
 - Status `PENDENTE` = teste ainda não executado ou executado sem registro formal.
   Evidência parcial anotada não substitui a execução formal.
 
-Estado em 2026-07-04: **56 PASSOU · 1 OBSOLETO · 11 PENDENTE** (68 CAs);
-cenários UI: **2 PASSOU · 6 PENDENTE**. Defeitos **D2 e D3 baixados**
-(2026-07-04, ver TODO.md — D3 fechado por observação de bancada, sem
-causa raiz confirmada, com ressalva registrada para reabertura). CA-01-09,
-CA-04-11 e CA-07-14 novos (melhoria M1 — encerramento antecipado de sessão).
-CA-03-02/03 promovidos a PASSOU (paleta de Laranja/Roxo corrigida após
-validação de bancada — ressalva de reconfirmação com criança antes do
-gate v1.0.0).
+Estado em 2026-07-10: **63 PASSOU · 1 OBSOLETO · 4 PENDENTE** (68 CAs);
+cenários UI: **3 PASSOU · 5 PENDENTE**. Pendentes: CA-01-03 (método a
+re-especificar em `01_arquitetura.md`), CA-04-10 (medição física do
+intervalo), CA-07-04 e CA-07-08. Defeitos **D2 e D3 baixados** (2026-07-04,
+ver TODO.md — D3 fechado por observação de bancada, sem causa raiz
+confirmada, com ressalva registrada para reabertura). Ressalvas ativas:
+reconfirmar paleta de cores com criança do público-alvo antes do gate
+v1.0.0 (CA-03-02/03); cablagem executada com material fora da spec — ver
+nota na seção CA-10.
 
 ---
 
@@ -33,7 +34,7 @@ gate v1.0.0).
 | CA-01-04 | Latência evento→tela < 200ms (inspeção visual) | PASSOU | — |
 | CA-01-05 | Sessão completa Modo 1 (N=5) | PASSOU | Nota (2026-07-03): sessão conduzida com o workaround PAUSAR/RETOMAR (D2, TODO.md). D2 baixado em 2026-07-04 — workaround não é mais necessário; re-execução formal N=5 sem workaround ainda não registrada |
 | CA-01-06 | Sessão completa Modo 2 (N=5) | PASSOU | Nota (2026-07-03): mesmo workaround do CA-01-05. D2 baixado em 2026-07-04. D3 (pares de cor do Modo 2 sem variedade) também baixado em 2026-07-04 por observação de bancada — ver ressalva de reabertura em TODO.md |
-| CA-01-07 | Desconexão e retomada | PENDENTE | — |
+| CA-01-07 | Desconexão e retomada | PASSOU | — |
 | CA-01-08 | Exportação: prévia + CSV + PDF corretos | PASSOU | 
 | CA-01-09 | Encerramento antecipado: acertos parciais preservados, sem reload/reboot (M1) | PASSOU | Bancada 2026-07-04 — usuário confirmou funcionamento antes de autorizar a cascata de spec/doc |
 
@@ -41,10 +42,10 @@ gate v1.0.0).
 
 | CA | Teste | Resultado | Evidência |
 |---|---|---|---|
-| CA-02-01 | 50/50 batidas detectadas | PENDENTE | — |
-| CA-02-02 | 0 falsos positivos em 5 min | PENDENTE | — |
+| CA-02-01 | 50/50 batidas detectadas | PASSOU | — |
+| CA-02-02 | 0 falsos positivos em 5 min | PASSOU | — |
 | CA-02-03 | Bater em zona X não gera evento em Y | PASSOU | — |
-| CA-02-04 | GPIO sobrevive 100 impactos fortes | PENDENTE | — |
+| CA-02-04 | GPIO sobrevive 100 impactos fortes | PASSOU | — |
 | CA-02-05 | Uma batida → exatamente 1 evento (debounce) | PASSOU | Lógica coberta em `pio test -e native` (test_sensor 13/13, 2026-06-28)|
 | CA-02-06 | Latência detecção→evento < 10ms | PASSOU | — |
 
@@ -103,7 +104,7 @@ gate v1.0.0).
 | CA-07-08 | Registro no localStorage ao confirmar Nova Sessão | PENDENTE | — |
 | CA-07-09 | Exportação CSV via prévia (RFC 4180, UTF-8 BOM) | PASSOU |
 | CA-07-10 | Desconexão pausa; reconexão retoma | PASSOU | — |
-| CA-07-11 | Offline total em todas as etapas | PENDENTE | — |
+| CA-07-11 | Offline total em todas as etapas | PASSOU | — |
 | CA-07-12 | Pré-visualização e confirmação (incl. vazio) | PASSOU |
 | CA-07-13 | Exportação PDF (abre, paginação, acentos) | PASSOU |
 | CA-07-14 | Encerramento antecipado: mensagem ENCERRAR, confirmação, FIM_SESSAO (M1) | PASSOU | Bancada 2026-07-04 — usuário confirmou funcionamento antes de autorizar a cascata de spec/doc |
@@ -131,6 +132,19 @@ gate v1.0.0).
 | CA-10-05 | Heat shrink: sem cobre exposto | PASSOU | — |
 | CA-10-06 | Junções da cadeia LED soldadas/travadas (clipe proibido) | PASSOU |
 
+**Nota de conformidade de material (2026-07-10, decisão do usuário):** as
+bitolas e as cores dos fios utilizados na montagem deste exemplar NÃO seguem
+[VER: 10_cablagem.md#totais-compra] nem [VER: 10_cablagem.md#tabela-fios] —
+foi usado o fio disponível em bancada, eletricamente adequado (continuidade
+CA-10-01 e funcionamento ponta a ponta validados), escolha consciente para
+não exigir compra de material novo. A identificação por zona foi garantida
+pelo mecanismo alternativo já registrado no CA-10-02 (fita pintada na cor da
+zona, conforme [VER: 10_cablagem.md#regras-montagem] regra 4). **A
+especificação permanece normativa:** `10_cablagem.md` descreve o ideal do
+projeto — qualquer novo exemplar ou substituição de cablagem deve seguir as
+bitolas, cores e comprimentos especificados lá, não o executado neste
+exemplar.
+
 ## Cenários de UI ([VER: WEB_STANDARD.md#criterios-aceitacao])
 
 Complementares aos CA-07; mesma disciplina de registro.
@@ -141,7 +155,7 @@ Complementares aos CA-07; mesma disciplina de registro.
 | CA-07-UI-02 | Layout responsivo em 375px e 768px | PENDENTE | — |
 | CA-07-UI-03 | Zero magic literals no script | PASSOU | — |
 | CA-07-UI-04 | Estados mutuamente exclusivos | PENDENTE | — |
-| CA-07-UI-05 | Overlay de feedback cobre 100% da viewport | PENDENTE | — |
+| CA-07-UI-05 | Overlay de feedback cobre 100% da viewport | PASSOU | — |
 | CA-07-UI-06 | Transição automática do overlay de ACERTO | PASSOU | — |
 | CA-07-UI-07 | Persistência de sessão no localStorage | PENDENTE | — |
 | CA-07-UI-08 | Reconexão transparente sem recarregar | PENDENTE | — |
@@ -159,3 +173,4 @@ Complementares aos CA-07; mesma disciplina de registro.
 | 2026-07-04 | D2 corrigido (`fix/primeira-interacao`, branch validada na bancada com log serial timestampado — sessão completa, 3 interações ACERTO, sem auto-pausa) e baixado. Notas de D2 em CA-01-05/06 atualizadas. Defeito D3 registrado durante a mesma rodada de bancada: pares de cor do Modo 2 sem variedade (sempre Roxo+Amarelo e Laranja+Azul) — bloqueia o gate v1.0.0 |
 | 2026-07-04 | D3 baixado: investigação interrompida por brownout (conflito USB+fonte externa simultâneos — não relacionado, ver `firmware/diag/README.md`); após corrigir a energia (só fonte externa), re-teste de bancada (observação visual, sem log serial) mostrou os pares variando normalmente. Fechado sem causa raiz confirmada por instrumentação — ressalva de reabertura registrada em TODO.md |
 | 2026-07-04 | CA-03-02/03 promovidos a PENDENTE→PASSOU: paleta original (`#FF5000`/`#9400D3`) reprovada em bancada; proposta intermediária (paleta de tinta dos tacos, sRGB, sem correção) reprovada — LED emitia branco; correção gama sRGB→linear tentada e também reprovada — ainda claro demais. Solução final: escurecer Laranja e Roxo mantendo o mesmo matiz (`#BF3C00`, `#1E002A`); Azul e Amarelo mantidos no valor original. Testado direto no firmware antes da cascata (decisão do usuário); cascata completa aplicada em `03_saida_visual.md` v0.1.8 → `spec/visual` → `firmware_constants.json` → `_config.h` → 08/09/10/11 (mecânico) → TESTING_STANDARD.md (mecânico, via CODING_STANDARD.md v0.2.5). Ressalva: reconfirmar com criança do público-alvo antes do fechamento do gate v1.0.0 |
+| 2026-07-10 | Rodada de bancada preenchida pelo usuário: CA-01-07, CA-02-01, CA-02-02, CA-02-04, CA-07-11 e CA-07-UI-05 promovidos a PASSOU. Correção de contagem: a linha de estado anterior dizia 56 PASSOU · 11 PENDENTE, mas a tabela committed continha 58 · 9 — estado real agora 63 PASSOU · 1 OBSOLETO · 4 PENDENTE (+ UI 3/5). Teste exploratório de brilho: firmware provisório com `setBrightness(255)` flashado (nada commitado; `visual_config.h` revertido ao valor de spec) e validado visualmente em bancada — cores mantêm distinção (escala global proporcional preserva matiz e saturação). ATENÇÃO: 255 excede a restrição `05_alimentacao.md#restricao-led` (brilho máximo 150, budget de §5.1 calculado nessa condição) — o teste foi exploratório e pontual, fora da spec; valor em vigor MANTIDO em 150 por decisão do usuário, dentro da restrição. O `[CALIBRAR]` de `03_saida_visual.md#cores-rgb` permanece aberto para ajuste pós-montagem; qualquer calibração futura acima de 150 exige cascata iniciando em `05_alimentacao.md` (recalcular §5.1 e revisar §8.2) antes de tocar o 03. Nota de conformidade de material da cablagem adicionada à seção CA-10 (bitolas/cores fora da spec por disponibilidade; especificação permanece normativa) |
