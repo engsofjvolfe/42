@@ -1,14 +1,14 @@
 ---
 documento:    11_montagem.md
-versão:       0.3.4
+versão:       0.4.0
 status:       APROVADO
-data:         2026-07-04
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.3.0    [BLOQUEADOR]
-  - 08_bom.md v0.3.4         [BLOQUEADOR]
-  - 09_conexoes.md v0.3.4    [BLOQUEADOR]
-  - 10_cablagem.md v0.2.4    [BLOQUEADOR]
+  - 00_conceito.md v0.5.0    [BLOQUEADOR]
+  - 08_bom.md v0.3.6         [BLOQUEADOR]
+  - 09_conexoes.md v0.3.6    [BLOQUEADOR]
+  - 10_cablagem.md v0.2.6    [BLOQUEADOR]
 impacta: []
 ---
 
@@ -366,17 +366,17 @@ Ao inicializar sem USB conectado:
 O valor padrão `THRESHOLD = 500` é ponto de partida — [VER: 02_sensor_impacto.md#parametros-deteccao].
 
 1. Conectar monitor serial (`pio device monitor`)
-2. Bater com martelo em cada zona com força típica de uma criança de 5 anos
-3. Registrar o valor ADC de pico em cada batida
+2. Bater em cada zona com força típica de uma criança de 5 anos — repetir com o martelo e diretamente com a mão, já que ambos são formas válidas de uso ([VER: 00_conceito.md#martelos]): a batida com a mão tende a ser mais fraca, e o THRESHOLD precisa detectar as duas
+3. Registrar o valor ADC de pico em cada batida, por forma de impacto (martelo e mão)
 4. Bater nas bordas e cantos (batida não centrada): registrar valor ADC
 5. Deixar instrumento em repouso 2 min sem tocar: registrar valor máximo de ruído
 
 **Critério de calibração:**
 
 ```
-Valor mínimo de batida leve:   > THRESHOLD
-Valor máximo de ruído/repouso: < THRESHOLD
-Margem mínima:                   50 unidades ADC entre ruído e batida
+Valor mínimo de batida leve (a mais fraca das duas formas, martelo ou mão): > THRESHOLD
+Valor máximo de ruído/repouso:                                             < THRESHOLD
+Margem mínima:                                                               50 unidades ADC entre ruído e batida
 ```
 
 Ajustar THRESHOLD até satisfazer os três critérios. Registrar valor final escolhido.
@@ -414,6 +414,7 @@ Conforme [VER: 00_conceito.md#martelos]:
 2. Arredondar todas as arestas (segurança infantil)
 3. Pintura opcional com tinta não-tóxica
 4. Verificar peso e tamanho: adequados para criança de 5 anos
+5. O martelo é opcional para o uso do instrumento — o sensor está na zona, não no martelo ([VER: 00_conceito.md#martelos]) — mas continua fazendo parte do exemplar físico e deve ser produzido e aprovado normalmente
 
 ---
 
@@ -491,6 +492,8 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 | 0.3.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 08_bom.md v0.3.1→v0.3.2, 09_conexoes.md v0.3.1→v0.3.2, 10_cablagem.md v0.2.1→v0.2.2 | — |
 | 0.3.3 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.3.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em montagem física): atualiza referências — 00_conceito.md v0.2.1→v0.3.0, 08_bom.md v0.3.2→v0.3.3, 09_conexoes.md v0.3.2→v0.3.3, 10_cablagem.md v0.2.2→v0.2.3 | — |
 | 0.3.4 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica de 03_saida_visual.md v0.1.8 (correção de RGB Laranja/Roxo, CA-03-02/03, sem impacto em montagem física): atualiza referências — 08_bom.md v0.3.3→v0.3.4, 09_conexoes.md v0.3.3→v0.3.4, 10_cablagem.md v0.2.3→v0.2.4 | — |
+| 0.3.5 | 2026-07-13 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.4.0 (correção de honestidade das referências científicas, sem impacto em montagem física): atualiza referências — 00_conceito.md v0.3.0→v0.4.0, 08_bom.md v0.3.4→v0.3.5, 09_conexoes.md v0.3.4→v0.3.5, 10_cablagem.md v0.2.4→v0.2.5 | — |
+| 0.4.0 | 2026-07-16 | #calibracao-threshold, #martelos | Cascata do conceito v0.5.0 (§6.3 martelos — bater com a mão diretamente na zona também é detectado, martelo é opcional): passo de calibração do THRESHOLD (Fase 9) passa a exigir medição com martelo E com a mão, já que a batida com a mão tende a ser mais fraca e o THRESHOLD precisa detectar as duas; §15.3 registra que o martelo é opcional para o uso, mas continua fazendo parte do exemplar físico; atualiza referências — 00_conceito.md v0.4.0→v0.5.0, 08_bom.md v0.3.5→v0.3.6, 09_conexoes.md v0.3.5→v0.3.6, 10_cablagem.md v0.2.5→v0.2.6 | — |
 
 ---
 
@@ -499,10 +502,10 @@ Aprovação final exige todos os CAs abaixo verificados nesta ordem:
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #componentes-fisicos, #martelos, #indicadores-led |
-| Pai | 08_bom.md | 0.3.4 | BLOQUEADOR | todo o documento |
-| Pai | 09_conexoes.md | 0.3.4 | BLOQUEADOR | todo o documento |
-| Pai | 10_cablagem.md | 0.2.4 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
+| Pai | 00_conceito.md | 0.5.0 | BLOQUEADOR | #componentes-fisicos, #martelos, #indicadores-led |
+| Pai | 08_bom.md | 0.3.6 | BLOQUEADOR | todo o documento |
+| Pai | 09_conexoes.md | 0.3.6 | BLOQUEADOR | todo o documento |
+| Pai | 10_cablagem.md | 0.2.6 | BLOQUEADOR | #tabela-fios, #regras-montagem, #restricoes-comprimento |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.
