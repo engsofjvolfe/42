@@ -1,12 +1,12 @@
 ---
 documento:    WEB_STANDARD.md
-versão:       0.4.0
+versão:       0.4.2
 status:       APROVADO
-data:         2026-06-28
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0                [BLOQUEADOR]
-  - 01_arquitetura.md v0.4.0         [BLOQUEADOR]
-  - 07_interface_pedagogo.md v0.4.0  [BLOQUEADOR]
+  - 01_arquitetura.md v0.4.2         [BLOQUEADOR]
+  - 07_interface_pedagogo.md v0.4.2  [BLOQUEADOR]
 impacta:
   - firmware/src/interface/ (interface.cpp — arquivo HTML/CSS/JS embutido)
 ---
@@ -564,6 +564,8 @@ Verificação manual no browser após flash do firmware.
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 01_arquitetura.md v0.2.1→v0.3.0, 07_interface_pedagogo.md v0.3.0→v0.3.1 | — |
 | 0.3.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 07_interface_pedagogo.md v0.3.1→v0.3.2, 01_arquitetura.md v0.3.0→v0.3.1 | — |
 | 0.4.0 | 2026-07-04 | #teste-cenarios | Cascata do 07 v0.4.0 (melhoria M1 — encerramento antecipado de sessão): cenário CA-07-14 novo (§11.5), derivado da mensagem `ENCERRAR` e do botão "Encerrar Sessão"; sem mudança em §5/§6 (a máquina de estados JS já cobria a transição `SESSAO_ATIVA → RESULTADOS` via `FIM_SESSAO`, reaproveitada pelo encerramento antecipado); atualiza referências — 01_arquitetura.md v0.3.1→v0.4.0, 07_interface_pedagogo.md v0.3.2→v0.4.0 | firmware/src/interface/interface.cpp |
+| 0.4.1 | 2026-07-13 | depende_de, Rastreabilidade | Cascata mecânica de 01_arquitetura.md v0.4.1 e 07_interface_pedagogo.md v0.4.1 (correção de honestidade das referências científicas do conceito v0.4.0, sem impacto na interface web): atualiza referências — 01_arquitetura.md v0.4.0→v0.4.1, 07_interface_pedagogo.md v0.4.0→v0.4.1 | — |
+| 0.4.2 | 2026-07-16 | depende_de, Rastreabilidade | Cascata mecânica de 01_arquitetura.md v0.4.2 e 07_interface_pedagogo.md v0.4.2 (conceito v0.5.0 — §6.3 martelos, bater com a mão diretamente na zona também é detectado, martelo é opcional, sem impacto na interface web): atualiza referências — 01_arquitetura.md v0.4.1→v0.4.2, 07_interface_pedagogo.md v0.4.1→v0.4.2 | — |
 
 ---
 
@@ -572,8 +574,8 @@ Verificação manual no browser após flash do firmware.
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #requisitos-nao-funcionais, #stack-tecnologico |
-| Pai | 07_interface_pedagogo.md | 0.4.0 | BLOQUEADOR | #estados-interface, #feedback-sonoro, #websocket, #armazenamento-dados, #exportacao-csv, #requisitos-csv, #mecanismo-download, #pre-visualizacao, #exportacao-pdf, #tela-feedback, #tela-sessao-ativa |
+| Pai | 01_arquitetura.md | 0.4.2 | BLOQUEADOR | #requisitos-nao-funcionais, #stack-tecnologico |
+| Pai | 07_interface_pedagogo.md | 0.4.2 | BLOQUEADOR | #estados-interface, #feedback-sonoro, #websocket, #armazenamento-dados, #exportacao-csv, #requisitos-csv, #mecanismo-download, #pre-visualizacao, #exportacao-pdf, #tela-feedback, #tela-sessao-ativa |
 | Governa | firmware/src/interface/ | — | OBRIGATÓRIO | interface.cpp (HTML/CSS/JS embutido) |
 
 ---

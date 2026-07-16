@@ -1,12 +1,12 @@
 ---
 documento:    05_alimentacao.md
-versão:       0.3.3
+versão:       0.3.5
 status:       APROVADO
-data:         2026-06-26
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.3.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.4.0 [BLOQUEADOR]
+  - 00_conceito.md v0.5.0    [BLOQUEADOR]
+  - 01_arquitetura.md v0.4.2 [BLOQUEADOR]
 impacta:
   - 02_sensor_impacto.md    [OBRIGATÓRIO]
   - 03_saida_visual.md      [OBRIGATÓRIO]
@@ -239,6 +239,8 @@ Total de capacitores cerâmicos 100nF/50V: **5 unidades** (1 saída LM2596 + 1 p
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0 | — |
 | 0.3.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1 | — |
 | 0.3.3 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.3.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em alimentação): atualiza referências — 00_conceito.md v0.2.1→v0.3.0, 01_arquitetura.md v0.3.1→v0.4.0 | 02, 03, 08, 09 |
+| 0.3.4 | 2026-07-13 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.4.0 (correção de honestidade das referências científicas — sem impacto em alimentação): atualiza referências — 00_conceito.md v0.3.0→v0.4.0, 01_arquitetura.md v0.4.0→v0.4.1 | 02, 03, 08, 09 |
+| 0.3.5 | 2026-07-16 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.5.0 (§6.3 martelos — bater com a mão diretamente na zona também é detectado, martelo é opcional — sem impacto em alimentação): atualiza referências — 00_conceito.md v0.4.0→v0.5.0, 01_arquitetura.md v0.4.1→v0.4.2 | 02, 03, 08, 09 |
 
 ---
 
@@ -247,8 +249,8 @@ Total de capacitores cerâmicos 100nF/50V: **5 unidades** (1 saída LM2596 + 1 p
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #energizacao |
-| Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #hardware, #requisitos-nao-funcionais |
+| Pai | 00_conceito.md | 0.5.0 | BLOQUEADOR | #energizacao |
+| Pai | 01_arquitetura.md | 0.4.2 | BLOQUEADOR | #hardware, #requisitos-nao-funcionais |
 | Filho | 02_sensor_impacto.md | — | OBRIGATÓRIO | #restricao-sensor |
 | Filho | 03_saida_visual.md | — | OBRIGATÓRIO | #restricao-led |
 | Filho | 08_bom.md | — | OBRIGATÓRIO | #restricao-bom |

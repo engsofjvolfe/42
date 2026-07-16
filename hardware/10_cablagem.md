@@ -1,11 +1,11 @@
 ---
 documento:    10_cablagem.md
-versão:       0.2.4
+versão:       0.2.6
 status:       APROVADO
-data:         2026-07-04
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 09_conexoes.md v0.3.4    [BLOQUEADOR]
+  - 09_conexoes.md v0.3.6    [BLOQUEADOR]
 impacta:
   - 11_montagem.md           [OBRIGATÓRIO]
 ---
@@ -142,6 +142,8 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | 0.2.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 09_conexoes.md v0.3.1→v0.3.2 | — |
 | 0.2.3 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.3.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em cablagem): atualiza referência 09_conexoes.md v0.3.2→v0.3.3 | 11_montagem.md |
 | 0.2.4 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica de 09_conexoes.md v0.3.4 (correção de RGB Laranja/Roxo em 03_saida_visual.md, CA-03-02/03, sem impacto em cablagem): atualiza referência 09_conexoes.md v0.3.3→v0.3.4 | 11_montagem.md |
+| 0.2.5 | 2026-07-13 | depende_de, Rastreabilidade | Cascata mecânica de 09_conexoes.md v0.3.5 (correção de honestidade das referências científicas do conceito v0.4.0, sem impacto em cablagem): atualiza referência 09_conexoes.md v0.3.4→v0.3.5 | 11_montagem.md |
+| 0.2.6 | 2026-07-16 | depende_de, Rastreabilidade | Cascata mecânica de 09_conexoes.md v0.3.6 (conceito v0.5.0 — §6.3 martelos, bater com a mão diretamente na zona também é detectado, martelo é opcional, sem impacto em cablagem): atualiza referência 09_conexoes.md v0.3.5→v0.3.6 | 11_montagem.md |
 
 ---
 
@@ -150,7 +152,7 @@ Quantidades de compra registradas em [VER: 08_bom.md#cabos-fios].
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 09_conexoes.md | 0.3.4 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
+| Pai | 09_conexoes.md | 0.3.6 | BLOQUEADOR | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | #tabela-fios, #regras-montagem |
 ---
 

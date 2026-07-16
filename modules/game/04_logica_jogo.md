@@ -1,12 +1,12 @@
 ---
 documento:    04_logica_jogo.md
-versão:       0.2.0
+versão:       0.2.2
 status:       APROVADO
-data:         2026-06-26
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.3.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.4.0 [BLOQUEADOR]
+  - 00_conceito.md v0.5.0    [BLOQUEADOR]
+  - 01_arquitetura.md v0.4.2 [BLOQUEADOR]
 impacta:
   - 07_interface_pedagogo.md [CONDICIONAL: #gestao-score]
 ---
@@ -320,6 +320,8 @@ O mapeamento é 1:1 por design — cada cor identifica unicamente uma zona físi
 | 0.1.3 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0 | — |
 | 0.1.4 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1 | — |
 | 0.2.0 | 2026-07-04 | #transicoes (nova §3.2), #criterios-aceitacao, depende_de | Melhoria M1 (TODO.md), validada manualmente no código antes da cascata: nova transição `SESSAO_ATIVA (qualquer) → FIM_SESSAO` via `encerrarSessao()`, chamada por MOD_WIFI quando o pedagogo encerra a sessão antes do N configurado; reaproveita o evento `FIM_SESSAO` existente com acertos parciais; novo CA-04-11 | 07_interface_pedagogo.md |
+| 0.2.1 | 2026-07-13 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.4.0 (correção de honestidade das referências científicas — janela de 800ms e intervalo de 2000ms permanecem `[CALIBRAR]`, sem mudança de valor ou de lógica): atualiza referências — 00_conceito.md v0.3.0→v0.4.0, 01_arquitetura.md v0.4.0→v0.4.1 | 07_interface_pedagogo.md |
+| 0.2.2 | 2026-07-16 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.5.0 (§6.3 martelos — bater com a mão diretamente na zona também é detectado, martelo é opcional — sem impacto na lógica de jogo: `onImpacto(evt)` já abstrai a zona, não o objeto que gerou o impacto): atualiza referências — 00_conceito.md v0.4.0→v0.5.0, 01_arquitetura.md v0.4.1→v0.4.2 | 07_interface_pedagogo.md |
 
 ---
 
@@ -328,8 +330,8 @@ O mapeamento é 1:1 por design — cada cor identifica unicamente uma zona físi
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #glossario, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #aleatoriedade, #timings, #intervalo-interacoes, #contagem-score, #armazenamento, #encerramento-antecipado |
-| Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #mod-jogo, #interfaces-modulos, #diagrama-estados, #requisitos-nao-funcionais |
+| Pai | 00_conceito.md | 0.5.0 | BLOQUEADOR | #glossario, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #aleatoriedade, #timings, #intervalo-interacoes, #contagem-score, #armazenamento, #encerramento-antecipado |
+| Pai | 01_arquitetura.md | 0.4.2 | BLOQUEADOR | #mod-jogo, #interfaces-modulos, #diagrama-estados, #requisitos-nao-funcionais |
 | Filho | 07_interface_pedagogo.md | — | CONDICIONAL: #gestao-score | #gestao-score |
 ---
 

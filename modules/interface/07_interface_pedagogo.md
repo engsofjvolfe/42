@@ -1,12 +1,12 @@
 ---
 documento:    07_interface_pedagogo.md
-versão:       0.4.0
+versão:       0.4.2
 status:       APROVADO
-data:         2026-06-26
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.3.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.4.0 [BLOQUEADOR]
+  - 00_conceito.md v0.5.0    [BLOQUEADOR]
+  - 01_arquitetura.md v0.4.2 [BLOQUEADOR]
 impacta:
   - 12_manual_pedagogo.md    [OBRIGATÓRIO]
 ---
@@ -446,6 +446,8 @@ Todos os valores acima (nome de arquivo, MIME, versão PDF, fontes, dimensões, 
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0 | — |
 | 0.3.2 | 2026-07-03 | impacta, depende_de, Rastreabilidade | Registra 12_manual_pedagogo.md (manual de uso do pedagogo — melhoria M4 da validação ETAPA 8) como dependente OBRIGATÓRIO: o manual descreve as telas e fluxos aqui especificados; cascata do registro em 00 — atualiza referências 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1 | 12_manual_pedagogo.md (novo) |
 | 0.4.0 | 2026-07-04 | #mensagens-browser-esp32, #tela-sessao-ativa, #armazenamento-dados, #criterios-aceitacao, depende_de | Melhoria M1 (TODO.md), validada manualmente no código antes da cascata: nova mensagem `ENCERRAR` (browser→ESP32) tratada só com sessão ativa; botão ENCERRAR SESSÃO na tela de sessão ativa, com confirmação obrigatória; resultado tratado pelo mesmo caminho `FIM_SESSAO` já existente (acertos parciais, sem estrutura de dado nova); novo CA-07-14 | spec/interface/interface.json, spec/interface/interface.schema.json, firmware/src/interface/interface.cpp, 12_manual_pedagogo.md |
+| 0.4.1 | 2026-07-13 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.4.0 (correção de honestidade das referências científicas — sem impacto em interface/WebSocket/telas): atualiza referências — 00_conceito.md v0.3.0→v0.4.0, 01_arquitetura.md v0.4.0→v0.4.1, 04_logica_jogo.md v0.1.4→v0.2.1 | 12_manual_pedagogo.md |
+| 0.4.2 | 2026-07-16 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.5.0 (§6.3 martelos — bater com a mão diretamente na zona também é detectado, martelo é opcional — sem impacto em interface/WebSocket/telas: campo `modo` continua `UM_MARTELO`/`DOIS_MARTELOS`, nomes fixos): atualiza referências — 00_conceito.md v0.4.0→v0.5.0, 01_arquitetura.md v0.4.1→v0.4.2, 04_logica_jogo.md v0.2.1→v0.2.2 | 12_manual_pedagogo.md |
 
 ---
 
@@ -454,9 +456,9 @@ Todos os valores acima (nome de arquivo, MIME, versão PDF, fontes, dimensões, 
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #conectividade, #configuracao-pre-sessao, #desconexao, #encerramento-antecipado, #feedback-acerto, #feedback-erro, #feedback-fim-sessao, #armazenamento, #exportacao, #responsabilidade-dados |
-| Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #mod-wifi, #interface-jogo-wifi, #stack-tecnologico, #requisitos-nao-funcionais |
-| Pai | 04_logica_jogo.md | 0.1.4 | CONDICIONAL: #gestao-score | #gestao-score |
+| Pai | 00_conceito.md | 0.5.0 | BLOQUEADOR | #conectividade, #configuracao-pre-sessao, #desconexao, #encerramento-antecipado, #feedback-acerto, #feedback-erro, #feedback-fim-sessao, #armazenamento, #exportacao, #responsabilidade-dados |
+| Pai | 01_arquitetura.md | 0.4.2 | BLOQUEADOR | #mod-wifi, #interface-jogo-wifi, #stack-tecnologico, #requisitos-nao-funcionais |
+| Pai | 04_logica_jogo.md | 0.2.2 | CONDICIONAL: #gestao-score | #gestao-score |
 | Filho | 12_manual_pedagogo.md | — | OBRIGATÓRIO | #access-point, #estados-interface, #tela-configuracao, #tela-resultados, #pre-visualizacao, #exportacao-csv |
 ---
 

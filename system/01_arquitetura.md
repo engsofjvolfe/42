@@ -1,11 +1,11 @@
 ---
 documento:    01_arquitetura.md
-versão:       0.4.0
+versão:       0.4.2
 status:       APROVADO
-data:         2026-06-26
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0       [BLOQUEADOR]
-  - 00_conceito.md v0.3.0   [BLOQUEADOR]
+  - 00_conceito.md v0.5.0   [BLOQUEADOR]
 impacta:
   - 05_alimentacao.md       [OBRIGATÓRIO]
   - 02_sensor_impacto.md    [OBRIGATÓRIO]
@@ -233,6 +233,8 @@ stateDiagram-v2
 | 0.3.0 | 2026-07-03 | #criterios-aceitacao, depende_de, #identificacao | Cascata do conceito v0.2.0 (M2/M3 validados na ETAPA 8): CA-01-08 estendido — exportação com pré-visualização e dois formatos (CSV e PDF); corrige versão desatualizada na tabela de Identificação (0.2.0 em vez de 0.2.1) | 02, 03, 04, 05, 07, 08, 09, CODING_STANDARD, WEB_STANDARD, TESTING_STANDARD |
 | 0.3.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1 | — |
 | 0.4.0 | 2026-07-04 | #interface-jogo-wifi, #diagrama-estados, #criterios-aceitacao, depende_de | Cascata do conceito v0.3.0 (melhoria M1, validada manualmente no código antes da cascata): nova função `encerrarSessao()` na interface MOD_JOGO↔MOD_WIFI; novo estado-transição `SESSAO_ATIVA → FIM_SESSAO` por encerramento antecipado do pedagogo; novo CA-01-09 | 02, 03, 04, 05, 07, 08, 09, CODING_STANDARD, TESTING_STANDARD, WEB_STANDARD (cascata mecânica) |
+| 0.4.1 | 2026-07-13 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.4.0 (correção de honestidade das referências científicas — sem mudança de arquitetura, GPIOs ou RNFs): atualiza referência 00_conceito.md v0.3.0→v0.4.0 | — |
+| 0.4.2 | 2026-07-16 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.5.0 (§6.3 martelos — bater com a mão diretamente na zona também é detectado, martelo é opcional — sem mudança de arquitetura, GPIOs ou RNFs; enums `Modo::UM_MARTELO`/`DOIS_MARTELOS` e CA-01-06 permanecem válidos como nomes fixos e método de teste, respectivamente): atualiza referência 00_conceito.md v0.4.0→v0.5.0 | 02, 03, 04, 05, 07, 08, 09, CODING_STANDARD, TESTING_STANDARD, WEB_STANDARD (cascata mecânica) |
 
 ---
 
@@ -241,7 +243,7 @@ stateDiagram-v2
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #publico-alvo, #componentes-fisicos, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #interface-pedagogo, #gestao-dados |
+| Pai | 00_conceito.md | 0.5.0 | BLOQUEADOR | #publico-alvo, #componentes-fisicos, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #interface-pedagogo, #gestao-dados |
 | Filho | 05_alimentacao.md | — | OBRIGATÓRIO | #hardware |
 | Filho | 02_sensor_impacto.md | — | OBRIGATÓRIO | #mod-sensor, #mapeamento-gpios, #requisitos-nao-funcionais |
 | Filho | 03_saida_visual.md | — | OBRIGATÓRIO | #mod-led, #mapeamento-gpios, #requisitos-nao-funcionais |

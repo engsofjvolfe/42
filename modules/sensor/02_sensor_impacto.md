@@ -1,13 +1,13 @@
 ---
 documento:    02_sensor_impacto.md
-versão:       0.2.3
+versão:       0.2.5
 status:       APROVADO
-data:         2026-06-26
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.3.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.4.0 [BLOQUEADOR]
-  - 05_alimentacao.md v0.3.3 [BLOQUEADOR]
+  - 00_conceito.md v0.5.0    [BLOQUEADOR]
+  - 01_arquitetura.md v0.4.2 [BLOQUEADOR]
+  - 05_alimentacao.md v0.3.5 [BLOQUEADOR]
 impacta:
   - 08_bom.md                [OBRIGATÓRIO]
   - 09_conexoes.md           [OBRIGATÓRIO]
@@ -175,6 +175,8 @@ if (leitura > THRESHOLD) {
 | 0.2.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do conceito v0.2.0 (exportação CSV+PDF com pré-visualização, M2/M3 validados): atualiza referências — 00_conceito.md v0.1.0→v0.2.0, 01_arquitetura.md v0.2.1→v0.3.0, 05_alimentacao.md v0.3.0→v0.3.1 | — |
 | 0.2.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1, 05_alimentacao.md v0.3.1→v0.3.2 | — |
 | 0.2.3 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.3.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em sensor): atualiza referências — 00_conceito.md v0.2.1→v0.3.0, 01_arquitetura.md v0.3.1→v0.4.0, 05_alimentacao.md v0.3.2→v0.3.3 | 08, 09 |
+| 0.2.4 | 2026-07-13 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.4.0 (correção de honestidade das referências científicas — sem impacto em sensor): atualiza referências — 00_conceito.md v0.3.0→v0.4.0, 01_arquitetura.md v0.4.0→v0.4.1, 05_alimentacao.md v0.3.3→v0.3.4 | 08, 09 |
+| 0.2.5 | 2026-07-16 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.5.0 (§6.3 martelos — bater com a mão diretamente na zona também é detectado, martelo é opcional — sem impacto no algoritmo de detecção: o THRESHOLD já é calibrado por força de impacto, não por objeto usado): atualiza referências — 00_conceito.md v0.4.0→v0.5.0, 01_arquitetura.md v0.4.1→v0.4.2, 05_alimentacao.md v0.3.4→v0.3.5 | 08, 09 |
 
 ---
 
@@ -183,9 +185,9 @@ if (leitura > THRESHOLD) {
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #zonas-impacto |
-| Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #mod-sensor, #mapeamento-gpios, #interface-sensor-jogo, #requisitos-nao-funcionais |
-| Pai | 05_alimentacao.md | 0.3.3 | BLOQUEADOR | #restricao-sensor |
+| Pai | 00_conceito.md | 0.5.0 | BLOQUEADOR | #zonas-impacto |
+| Pai | 01_arquitetura.md | 0.4.2 | BLOQUEADOR | #mod-sensor, #mapeamento-gpios, #interface-sensor-jogo, #requisitos-nao-funcionais |
+| Pai | 05_alimentacao.md | 0.3.5 | BLOQUEADOR | #restricao-sensor |
 | Filho | 08_bom.md | — | OBRIGATÓRIO | #componente-piezo, #componentes-protecao |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #esquema-protecao, #mapeamento-gpios-sensor, #fios-sensor |
 ---

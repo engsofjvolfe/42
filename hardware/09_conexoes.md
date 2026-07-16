@@ -1,16 +1,16 @@
 ---
 documento:    09_conexoes.md
-versão:       0.3.4
+versão:       0.3.6
 status:       APROVADO
-data:         2026-07-04
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0           [BLOQUEADOR]
-  - 00_conceito.md v0.3.0       [BLOQUEADOR]
-  - 01_arquitetura.md v0.4.0    [BLOQUEADOR]
-  - 02_sensor_impacto.md v0.2.3 [BLOQUEADOR]
-  - 03_saida_visual.md v0.1.8   [BLOQUEADOR]
-  - 05_alimentacao.md v0.3.3    [BLOQUEADOR]
-  - 08_bom.md v0.3.4            [BLOQUEADOR]
+  - 00_conceito.md v0.5.0       [BLOQUEADOR]
+  - 01_arquitetura.md v0.4.2    [BLOQUEADOR]
+  - 02_sensor_impacto.md v0.2.5 [BLOQUEADOR]
+  - 03_saida_visual.md v0.1.10  [BLOQUEADOR]
+  - 05_alimentacao.md v0.3.5    [BLOQUEADOR]
+  - 08_bom.md v0.3.6            [BLOQUEADOR]
 impacta:
   - 10_cablagem.md              [OBRIGATÓRIO]
   - 11_montagem.md              [OBRIGATÓRIO]
@@ -205,6 +205,8 @@ R300Ω em série na linha de dados: protege GPIO5 e atenua reflexões no cabo.
 | 0.3.2 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1, 02_sensor_impacto.md v0.2.1→v0.2.2, 03_saida_visual.md v0.1.5→v0.1.6, 05_alimentacao.md v0.3.1→v0.3.2, 08_bom.md v0.3.1→v0.3.2 | — |
 | 0.3.3 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.3.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em conexões): atualiza referências — 00_conceito.md v0.2.1→v0.3.0, 01_arquitetura.md v0.3.1→v0.4.0, 02_sensor_impacto.md v0.2.2→v0.2.3, 03_saida_visual.md v0.1.6→v0.1.7, 05_alimentacao.md v0.3.2→v0.3.3, 08_bom.md v0.3.2→v0.3.3 | 10, 11 |
 | 0.3.4 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica de 03_saida_visual.md v0.1.8 (correção de RGB Laranja/Roxo, CA-03-02/03, sem impacto em conexões): atualiza referências — 03_saida_visual.md v0.1.7→v0.1.8, 08_bom.md v0.3.3→v0.3.4 | 10, 11 |
+| 0.3.5 | 2026-07-13 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.4.0 (correção de honestidade das referências científicas, sem impacto em conexões): atualiza referências — 00_conceito.md v0.3.0→v0.4.0, 01_arquitetura.md v0.4.0→v0.4.1, 02_sensor_impacto.md v0.2.3→v0.2.4, 03_saida_visual.md v0.1.8→v0.1.9, 05_alimentacao.md v0.3.3→v0.3.4, 08_bom.md v0.3.4→v0.3.5 | 10, 11 |
+| 0.3.6 | 2026-07-16 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.5.0 (§6.3 martelos — bater com a mão diretamente na zona também é detectado, martelo é opcional, sem impacto em conexões): atualiza referências — 00_conceito.md v0.4.0→v0.5.0, 01_arquitetura.md v0.4.1→v0.4.2, 02_sensor_impacto.md v0.2.4→v0.2.5, 03_saida_visual.md v0.1.9→v0.1.10, 05_alimentacao.md v0.3.4→v0.3.5, 08_bom.md v0.3.5→v0.3.6 | 10, 11 |
 
 ---
 
@@ -213,12 +215,12 @@ R300Ω em série na linha de dados: protege GPIO5 e atenua reflexões no cabo.
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #componentes-fisicos |
-| Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #hardware, #mapeamento-gpios |
-| Pai | 02_sensor_impacto.md | 0.2.3 | BLOQUEADOR | #esquema-protecao, #mapeamento-gpios-sensor |
-| Pai | 03_saida_visual.md | 0.1.8 | BLOQUEADOR | #mapeamento-led, #decoupling-led |
-| Pai | 05_alimentacao.md | 0.3.3 | BLOQUEADOR | #cadeia-alimentacao, #decoupling, #conexao-fisica |
-| Pai | 08_bom.md | 0.3.4 | BLOQUEADOR | #eletronicos-ativos, #passivos |
+| Pai | 00_conceito.md | 0.5.0 | BLOQUEADOR | #componentes-fisicos |
+| Pai | 01_arquitetura.md | 0.4.2 | BLOQUEADOR | #hardware, #mapeamento-gpios |
+| Pai | 02_sensor_impacto.md | 0.2.5 | BLOQUEADOR | #esquema-protecao, #mapeamento-gpios-sensor |
+| Pai | 03_saida_visual.md | 0.1.10 | BLOQUEADOR | #mapeamento-led, #decoupling-led |
+| Pai | 05_alimentacao.md | 0.3.5 | BLOQUEADOR | #cadeia-alimentacao, #decoupling, #conexao-fisica |
+| Pai | 08_bom.md | 0.3.6 | BLOQUEADOR | #eletronicos-ativos, #passivos |
 | Filho | 10_cablagem.md | — | OBRIGATÓRIO | #cadeia-alimentacao-ascii, #mapeamento-shield, #circuito-protecao-perfboard, #cadeia-leds |
 | Filho | 11_montagem.md | — | OBRIGATÓRIO | todo este documento |
 ---

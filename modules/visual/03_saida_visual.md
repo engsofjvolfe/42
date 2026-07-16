@@ -1,13 +1,13 @@
 ---
 documento:    03_saida_visual.md
-versão:       0.1.8
+versão:       0.1.10
 status:       APROVADO
-data:         2026-07-04
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0        [BLOQUEADOR]
-  - 00_conceito.md v0.3.0    [BLOQUEADOR]
-  - 01_arquitetura.md v0.4.0 [BLOQUEADOR]
-  - 05_alimentacao.md v0.3.3 [BLOQUEADOR]
+  - 00_conceito.md v0.5.0    [BLOQUEADOR]
+  - 01_arquitetura.md v0.4.2 [BLOQUEADOR]
+  - 05_alimentacao.md v0.3.5 [BLOQUEADOR]
 impacta:
   - 08_bom.md                [OBRIGATÓRIO]
   - 09_conexoes.md           [OBRIGATÓRIO]
@@ -158,6 +158,8 @@ Especificação no BOM: [VER: 08_bom.md#passivos]
 | 0.1.6 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1, 01_arquitetura.md v0.3.0→v0.3.1, 05_alimentacao.md v0.3.1→v0.3.2 | — |
 | 0.1.7 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.3.0 (melhoria M1 — encerramento antecipado de sessão, sem impacto em saída visual): atualiza referências — 00_conceito.md v0.2.1→v0.3.0, 01_arquitetura.md v0.3.1→v0.4.0, 05_alimentacao.md v0.3.2→v0.3.3 | 08, 09 |
 | 0.1.8 | 2026-07-04 | #cores-rgb | Corrige valores de Laranja e Roxo após validação física de bancada apontar confusão perceptual (CA-03-02, CA-03-03, antes PENDENTE): Laranja `#FF5000`→`#BF3C00` (191,60,0 — 75% do valor original), Roxo `#9400D3`→`#1E002A` (30,0,42 — 20% do valor original), ambos por escala proporcional em direção ao preto, mesmo matiz. Azul e Amarelo mantidos inalterados. Testado direto no firmware (`visual_config.h`) antes desta cascata, por decisão do usuário | 08, 09 |
+| 0.1.9 | 2026-07-13 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.4.0 (correção de honestidade das referências científicas — Wong 2011 mantida como referência da paleta, sem impacto em saída visual): atualiza referências — 00_conceito.md v0.3.0→v0.4.0, 01_arquitetura.md v0.4.0→v0.4.1, 05_alimentacao.md v0.3.3→v0.3.4 | 08, 09 |
+| 0.1.10 | 2026-07-16 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.5.0 (§6.3 martelos — bater com a mão diretamente na zona também é detectado, martelo é opcional — sem impacto em saída visual: qual LED acende independe do objeto usado para bater): atualiza referências — 00_conceito.md v0.4.0→v0.5.0, 01_arquitetura.md v0.4.1→v0.4.2, 05_alimentacao.md v0.3.4→v0.3.5 | 08, 09 |
 
 ---
 
@@ -166,9 +168,9 @@ Especificação no BOM: [VER: 08_bom.md#passivos]
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #indicadores-led, #modos-operacao, #zonas-impacto, #feedback, #estado-boot |
-| Pai | 01_arquitetura.md | 0.4.0 | BLOQUEADOR | #mod-led, #mapeamento-gpios, #interface-jogo-led, #stack-tecnologico, #requisitos-nao-funcionais |
-| Pai | 05_alimentacao.md | 0.3.3 | BLOQUEADOR | #restricao-led, #decoupling |
+| Pai | 00_conceito.md | 0.5.0 | BLOQUEADOR | #indicadores-led, #modos-operacao, #zonas-impacto, #feedback, #estado-boot |
+| Pai | 01_arquitetura.md | 0.4.2 | BLOQUEADOR | #mod-led, #mapeamento-gpios, #interface-jogo-led, #stack-tecnologico, #requisitos-nao-funcionais |
+| Pai | 05_alimentacao.md | 0.3.5 | BLOQUEADOR | #restricao-led, #decoupling |
 | Filho | 08_bom.md | — | OBRIGATÓRIO | #componente-led, #decoupling-led |
 | Filho | 09_conexoes.md | — | OBRIGATÓRIO | #mapeamento-led, #decoupling-led |
 ---
