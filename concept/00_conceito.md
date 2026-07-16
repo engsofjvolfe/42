@@ -1,8 +1,8 @@
 ---
 documento:    00_conceito.md
-versão:       0.3.0
+versão:       0.5.0
 status:       APROVADO
-data:         2026-06-26
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0  [BLOQUEADOR]
 impacta:
@@ -15,6 +15,7 @@ impacta:
   - 08_bom.md               [CONDICIONAL: #componentes-fisicos]
   - 09_conexoes.md          [CONDICIONAL: #componentes-fisicos]
   - 12_manual_pedagogo.md   [OBRIGATÓRIO]
+  - escopo_e_limitacoes.md [CONDICIONAL: #contexto, #fundamentos-pedagogicos, #publico-principal, #timings, #intervalo-interacoes, #feedback-fim-sessao, #escopo-v1]
 ---
 
 # 00_CONCEITO.md — Projeto [NOME A DEFINIR]
@@ -42,11 +43,11 @@ Definir de forma determinística e fechada o conceito do projeto: o que é, para
 
 ## 3. Contexto e Justificativa <a id="contexto"></a>
 
-O projeto nasce da necessidade de um instrumento de estímulo e avaliação motora para crianças na faixa pré-escolar que combine robustez técnica, fundamentação pedagógica e baixo custo de produção local.
+O projeto nasce da necessidade de um instrumento lúdico de estímulo e registro de dados para crianças na faixa pré-escolar, que combine robustez técnica, baixo custo e operação por um profissional (fisioterapeuta, terapeuta ocupacional, pedagogo, profissional de educação física) usando o que ele já sabe do próprio ofício, sem exigir uma certificação nova para operar o aparelho.
 
-O Simon Says comercial (Hasbro, 1978) é o produto mais próximo conceitualmente, mas não oferece: interface de controle para o pedagogo, registro de sessão, exportação de dados, modos adaptados a neurodivergência de alto rendimento, nem rastreabilidade clínica. Este projeto preenche essas lacunas.
+O Simon Says comercial (Hasbro, 1978) é o produto mais próximo conceitualmente, mas não oferece: interface de controle para o pedagogo, registro de sessão, exportação de dados, nem modos adaptados a neurodivergência de alto rendimento. Este projeto se propõe a isso.
 
-A construção justifica-se mesmo com custo similar ao produto comercial porque o resultado é um **instrumento de avaliação com shell de brinquedo** — categoria distinta de um brinquedo comercial.
+Dito com honestidade: o resultado não é um instrumento de avaliação clínica testado ou validado, e não é equivalente a instrumentos padronizados já existentes — nenhum estudo de confiabilidade ou validade foi feito sobre ele. "Barato e acessível" é uma escolha de engenharia, não uma prova científica de eficácia. O profissional que usa o instrumento faz isso com o próprio julgamento clínico ou pedagógico — o instrumento é um ponto de estímulo e registro, não um protocolo fechado. Os autores do projeto não se responsabilizam por uso indevido, incluindo uso como ferramenta de diagnóstico clínico formal. Posicionamento completo: [VER: escopo_e_limitacoes.md#o-que-e].
 
 ---
 
@@ -76,7 +77,7 @@ Termos com significado específico neste projeto. O uso de sinônimos não lista
 - Desenvolvimento: típico
 - Pré-requisito motor: coordenação unimanual estabelecida
 - Pré-requisito cognitivo: discriminação de cores estabelecida
-- Base teórica: estágio pré-operacional (Piaget), capacidade atencional de 3–4 itens (Cowan, 2001)
+- Base teórica: estágio pré-operacional (Piaget), com capacidade atencional limitada nessa idade
 
 ### 5.2 Público estendido <a id="publico-estendido"></a>
 - Crianças com altas habilidades, superdotação ou neurodivergência de alto rendimento
@@ -115,6 +116,7 @@ Termos com significado específico neste projeto. O uso de sinônimos não lista
 - Completamente passivos: sem sensores, sem LEDs, sem fios
 - Robustez mecânica para uso por crianças de 5 anos
 - O sensor de impacto está na zona de impacto, não no martelo
+- Uso do martelo é opcional: como o sensor está na zona (não no martelo), bater diretamente com a mão na zona também é detectado normalmente. O martelo é a ferramenta padrão da atividade, não uma exigência técnica do sensor.
 
 ### 6.4 Microcontrolador <a id="microcontrolador"></a>
 - ESP32 DevKit
@@ -131,13 +133,13 @@ Termos com significado específico neste projeto. O uso de sinônimos não lista
 ## 7. Modos de Operação <a id="modos-operacao"></a>
 
 ### 7.1 Modo 1 Martelo (principal) <a id="modo-1-martelo"></a>
-- Um único martelo em uso
+- Um único martelo em uso (ou a própria mão — [VER: 00_conceito.md#martelos])
 - LED central acende exibindo a cor-alvo
 - Criança deve identificar e bater na zona da cor correspondente
 - Indicado para: público principal (5 anos, desenvolvimento típico)
 
 ### 7.2 Modo 2 Martelos (estendido) <a id="modo-2-martelos"></a>
-- Dois martelos em uso simultâneo
+- Dois martelos em uso simultâneo (ou as duas mãos — [VER: 00_conceito.md#martelos])
 - LED esquerdo e LED direito acendem simultaneamente
 - As duas cores exibidas são **sempre distintas entre si**
 - Criança deve bater nas duas zonas correspondentes dentro da janela de simultaneidade
@@ -204,7 +206,7 @@ flowchart TD
 - Não é tempo de reação. É a tolerância entre os dois impactos após a criança iniciar a resposta.
 - Valor padrão: **800ms** [CALIBRAR]
 - Configurável via interface do pedagogo antes de iniciar sessão
-- Referências: Swinnen (2002) *Nature Reviews Neuroscience* Q1; Corbetta & Thelen (1996) *JEPHPP* Q1
+- Valor de calibração inicial do instrumento, a confirmar com teste piloto real com crianças da faixa etária — [VER: escopo_e_limitacoes.md#o-que-nao-e]
 
 ### 9.6 Aleatoriedade <a id="aleatoriedade"></a>
 - **Mecanismo A — Shuffle por bloco:** 4 cores embaralhadas e percorridas em sequência completa antes de repetir. Distribuição uniforme garantida. Indicado para uso padrão.
@@ -216,7 +218,7 @@ flowchart TD
 
 ### 9.7 Intervalo entre interações <a id="intervalo-interacoes"></a>
 - Valor padrão: **2000ms** automático após acerto [CALIBRAR]
-- Referências: Ruff & Lawson (1990) *Developmental Psychology* Q1; Kail (1991) *Psychological Bulletin* Q1
+- Valor de calibração inicial do instrumento, a confirmar com teste piloto real
 
 ---
 
@@ -236,7 +238,7 @@ flowchart TD
 ### 10.3 Feedback de fim de sessão <a id="feedback-fim-sessao"></a>
 - **Criança (LEDs da mesa):** varredura festiva nos 3 LEDs percorrendo as 4 cores (~3s), sempre celebratória, independente do score
 - **Pedagogo (interface):** tela de resultados completa [VER: 07_interface_pedagogo.md#tela-resultados]
-- Fundamentação: instrumentos de avaliação pediátrica não expõem score à criança para evitar associação negativa com o instrumento
+- Fundamentação: decisão de projeto — separa a experiência afetiva da criança do dado objetivo do profissional
 
 ### 10.4 Responsabilidade do feedback <a id="responsabilidade-feedback"></a>
 - Feedback sonoro e tela verde/vermelha: dispositivo móvel do pedagogo
@@ -301,15 +303,17 @@ flowchart TD
 
 | # | Decisão | Fundamentação | Referência |
 |---|---|---|---|
-| 1 | 4 zonas de cor | Limite da memória de trabalho em pré-escolares | Cowan (2001) *Behavioral and Brain Sciences* Q1 |
+| 1 | 4 zonas de cor | Compatibilidade com as 4 zonas físicas já definidas | Decisão de projeto |
 | 2 | Paleta de cores | Acessibilidade para daltonismo | Wong (2011) *Nature Methods* Q1 |
-| 3 | Manutenção do estímulo pós-erro | SD mantido até resposta correta (ABA) | Literatura de correção de erros em discriminação |
-| 4 | Fim de sessão celebratório | Separação entre experiência afetiva e dado objetivo | Padrão em avaliação pediátrica |
-| 5 | Coordenação bimanual no Modo 2 | Habilidade que matura após unimanual | Swinnen (2002) *Nature Reviews Neuroscience* Q1 |
-| 6 | Janela de 800ms [CALIBRAR] | Ponto médio de 500–1200ms suportado na literatura | Corbetta & Thelen (1996) *JEPHPP* Q1 |
-| 7 | Intervalo de 2000ms [CALIBRAR] | Janela de 1500–2500ms para processamento em 5 anos | Ruff & Lawson (1990) *Developmental Psychology* Q1 |
-| 8 | Mecanismo B para público estendido | Processamento preditivo hipereficiente em neurodivergência | Pellicano & Burr (2012) *Trends in Cognitive Sciences* Q1 |
-| 9 | Sem limite de tempo por interação | Pressão temporal é contraproducente para 5 anos | Kail (1991) *Psychological Bulletin* Q1 |
+| 3 | Manutenção do estímulo pós-erro | Evita punição, mantém oportunidade de acerto | Decisão de projeto |
+| 4 | Fim de sessão celebratório | Separação entre experiência afetiva e dado objetivo | Decisão de projeto |
+| 5 | Coordenação bimanual no Modo 2 | Habilidade motora própria, distinta da unimanual | Decisão de projeto |
+| 6 | Janela de 800ms [CALIBRAR] | Valor inicial de calibração do instrumento | Decisão de projeto — a validar com piloto real |
+| 7 | Intervalo de 2000ms [CALIBRAR] | Valor inicial de calibração do instrumento | Decisão de projeto — a validar com piloto real |
+| 8 | Mecanismo B para público estendido | Reduz previsibilidade da sequência de estímulos | Decisão de projeto |
+| 9 | Sem limite de tempo por interação | Crianças de 5 anos processam informação mais devagar que adultos | Kail (1991) *Psychological Bulletin* Q1 |
+
+Posicionamento completo sobre o que este projeto é, o que não é, e o que fica em aberto para pesquisa futura: [VER: escopo_e_limitacoes.md#o-que-e].
 
 ---
 
@@ -344,6 +348,9 @@ Documento derivado: [VER: 06_privacidade_lgpd.md#identificacao]
 - Múltiplos perfis simultâneos
 - Operação por bateria
 
+### Ideias registradas para versões futuras <a id="ideias-futuras"></a>
+- **Modo Memória Crescente:** sequência de cores que cresce a cada rodada (estilo Simon original), como modo **adicional** — não substitui o Modo 1 nem o Modo 2. Ainda não especificado. Ver [VER: escopo_e_limitacoes.md#o-que-e].
+
 ---
 
 ## 16. Documentos Derivados <a id="documentos-derivados"></a>
@@ -371,6 +378,7 @@ Documento derivado: [VER: 06_privacidade_lgpd.md#identificacao]
 | 0.2.0 | 2026-07-03 | #exportacao, #escopo-incluido, impacta | Registra no conceito as decisões validadas na ETAPA 8 (melhorias M2/M3): exportação em dois formatos (CSV para planilha, PDF como relatório legível), escolha do formato no momento da exportação e pré-visualização com confirmação obrigatória antes de qualquer download; corrige lacuna de rastreabilidade — 07_interface_pedagogo.md adicionado ao impacta (07 já declarava 00 como Pai BLOQUEADOR) | 07_interface_pedagogo.md (já conforme na v0.3.0), 06_privacidade_lgpd.md, 01_arquitetura.md, depende_de de todos os dependentes |
 | 0.2.1 | 2026-07-03 | impacta, Rastreabilidade | Registra 12_manual_pedagogo.md (manual de uso do pedagogo — melhoria M4 da validação ETAPA 8) como dependente OBRIGATÓRIO: o manual descreve o comportamento visível ao usuário definido neste conceito e deve ser revisado a cada mudança dele | 12_manual_pedagogo.md (novo), depende_de de todos os dependentes (cascata PATCH) |
 | 0.3.0 | 2026-07-04 | #interface-pedagogo (nova §11.4) | Registra a melhoria M1 (TODO.md), validada manualmente no código antes da cascata: o pedagogo pode encerrar a sessão ativa antes do N configurado e iniciar nova sessão sem recarregar a página nem reiniciar o ESP32; acertos parciais preservados pelo mesmo fluxo do fim de sessão natural | 01_arquitetura.md, 04_logica_jogo.md, 07_interface_pedagogo.md, 12_manual_pedagogo.md, depende_de de todos os dependentes (cascata PATCH) |
+| 0.4.0 | 2026-07-13 | #contexto, #publico-principal, #timings, #intervalo-interacoes, #feedback-fim-sessao, #fundamentos-pedagogicos, #escopo-v1 (nova #ideias-futuras), impacta | Correção de honestidade, derivada de pesquisa determinística sobre as referências científicas citadas no conceito (`concept/escopo_e_limitacoes.md`, novo): removidas 7 citações que não se sustentavam (autor real, mas população/construto errados, ou caracterização invertida — ver `escopo_e_limitacoes.md` para o registro completo); mantidas Wong (2011, paleta) e Kail (1991, sem limite de tempo), únicas que resistiram à conferência em texto bruto; linhas sem fonte real marcadas "Decisão de projeto" em vez de citação forçada; §3 reescrito para não superestimar o instrumento como "avaliação" validada — reposicionado como instrumento lúdico de estímulo e registro, não testado nem validado, com disclaimer de responsabilidade; nova §15 #ideias-futuras registra "Memória Crescente" como modo adicional (não substitui Modo 1/2), ideia futura ainda não especificada; `escopo_e_limitacoes.md` adicionado ao `impacta` [CONDICIONAL] | 01_arquitetura.md, 06_privacidade_lgpd.md, 07_interface_pedagogo.md revisados — sem mudança de conteúdo necessária (wording de fundamentação, não de comportamento/arquitetura); README.md e 12_manual_pedagogo.md atualizados (mesmo overclaim corrigido) |
 
 ---
 
@@ -388,6 +396,7 @@ Documento derivado: [VER: 06_privacidade_lgpd.md#identificacao]
 | Filho | 08_bom.md | — | CONDICIONAL: #componentes-fisicos | #componentes-fisicos |
 | Filho | 09_conexoes.md | — | CONDICIONAL: #componentes-fisicos | #componentes-fisicos |
 | Filho | 12_manual_pedagogo.md | — | OBRIGATÓRIO | #publico-alvo, #componentes-fisicos, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #interface-pedagogo, #gestao-dados |
+| Filho | escopo_e_limitacoes.md | — | CONDICIONAL: #contexto, #fundamentos-pedagogicos, #publico-principal, #timings, #intervalo-interacoes, #feedback-fim-sessao, #escopo-v1 | #o-que-e |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.
