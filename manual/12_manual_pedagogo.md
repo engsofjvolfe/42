@@ -1,12 +1,12 @@
 ---
 documento:    12_manual_pedagogo.md
-versão:       0.2.0
+versão:       0.4.0
 status:       APROVADO
-data:         2026-07-03
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0               [BLOQUEADOR]
-  - 00_conceito.md v0.3.0           [BLOQUEADOR]
-  - 07_interface_pedagogo.md v0.4.0 [BLOQUEADOR]
+  - 00_conceito.md v0.5.0           [BLOQUEADOR]
+  - 07_interface_pedagogo.md v0.4.2 [BLOQUEADOR]
 impacta: []
 ---
 
@@ -36,9 +36,11 @@ As fotos indicadas ao longo do texto serão adicionadas após a produção do ex
 
 ## 3. O que é este instrumento <a id="o-que-e"></a>
 
-É uma mesa de jogo com **4 zonas coloridas** (laranja, azul, amarelo e roxo), **3 luzes indicadoras** posicionadas acima das zonas e **martelos de madeira**. Uma luz acende mostrando uma cor; a criança deve bater com o martelo na zona daquela cor. Você acompanha e controla tudo pelo navegador do seu celular ou tablet — sem instalar aplicativo e sem internet.
+É uma mesa de jogo com **4 zonas coloridas** (laranja, azul, amarelo e roxo), **3 luzes indicadoras** posicionadas acima das zonas e **martelos de madeira**. Uma luz acende mostrando uma cor; a criança deve bater na zona daquela cor — com o martelo ou diretamente com a mão, como preferir. Você acompanha e controla tudo pelo navegador do seu celular ou tablet — sem instalar aplicativo e sem internet.
 
-Apesar do formato de brinquedo, este é um **instrumento de avaliação pedagógica**: ele registra acertos, erros e tempos de cada sessão para que você acompanhe o desenvolvimento da coordenação motora e da discriminação de cores da criança ao longo do tempo.
+Apesar do formato de brinquedo, este instrumento registra acertos, erros e tempos de cada sessão para que você acompanhe o desenvolvimento da coordenação motora e da discriminação de cores da criança ao longo do tempo — de forma informal, com base no seu julgamento profissional.
+
+**Importante:** este instrumento não foi testado nem validado cientificamente, e não substitui nem é equivalente a instrumentos de avaliação padronizados já existentes. Ele não deve ser usado para diagnóstico clínico formal. Os autores do projeto não se responsabilizam por uso indevido.
 
 > **[FOTO 01 — a inserir]**
 > *Vista geral do instrumento montado: zonas coloridas, luzes e martelos.*
@@ -53,9 +55,9 @@ Apesar do formato de brinquedo, este é um **instrumento de avaliação pedagóg
 
 | Item | Para que serve |
 |---|---|
-| Mesa com 4 zonas de cor | Onde a criança bate com o martelo. Cada zona sente a batida |
+| Mesa com 4 zonas de cor | Onde a criança bate — com o martelo ou com a mão. Cada zona sente a batida |
 | 3 luzes acima das zonas | Mostram a cor-alvo. A luz central é usada no modo de 1 martelo; as luzes da esquerda e da direita, no modo de 2 martelos |
-| 1 ou 2 martelos de madeira | Ferramenta da criança. Não têm eletrônica nenhuma — podem ser trocados por outro martelo semelhante se necessário |
+| 1 ou 2 martelos de madeira | Ferramenta opcional da criança — bater diretamente com a mão também funciona. Não têm eletrônica nenhuma — podem ser trocados por outro martelo semelhante se necessário |
 | Fonte de energia | Liga na tomada. O instrumento não tem bateria |
 | Seu celular ou tablet | O painel de controle. Qualquer aparelho com navegador serve |
 
@@ -127,9 +129,9 @@ Toque em iniciar e a primeira cor acende na mesa.
 
 ## 9. Os dois modos <a id="modos"></a>
 
-**Modo 1 Martelo** — o modo principal. A luz **central** acende com uma cor e a criança bate na zona daquela cor, usando um martelo. Indicado para o público principal: 5 anos, desenvolvimento típico.
+**Modo 1 Martelo** — o modo principal. A luz **central** acende com uma cor e a criança bate na zona daquela cor, usando um martelo ou a própria mão. Indicado para o público principal: 5 anos, desenvolvimento típico.
 
-**Modo 2 Martelos** — o modo estendido. As luzes da **esquerda e da direita** acendem ao mesmo tempo, sempre com **cores diferentes entre si**. A criança, com um martelo em cada mão, deve bater nas duas zonas correspondentes **quase ao mesmo tempo**. Este modo avalia coordenação bimanual e é indicado para o público estendido, a seu critério profissional.
+**Modo 2 Martelos** — o modo estendido. As luzes da **esquerda e da direita** acendem ao mesmo tempo, sempre com **cores diferentes entre si**. A criança, com um martelo em cada mão (ou as duas mãos diretamente), deve bater nas duas zonas correspondentes **quase ao mesmo tempo**. Este modo avalia coordenação bimanual e é indicado para o público estendido, a seu critério profissional.
 
 **A "janela" do modo 2 Martelos:** é a tolerância de tempo entre a primeira e a segunda batida — não é o tempo que a criança tem para responder. A criança pode olhar e pensar pelo tempo que precisar; mas, depois que der a primeira batida, a segunda precisa vir dentro dessa janela para valer como acerto. O valor sugerido é 800 milissegundos (menos de 1 segundo).
 
@@ -296,6 +298,8 @@ Lista de referência para a sessão de fotos do exemplar final. Cada foto substi
 | 0.1.0 | 2026-07-03 | — | Criação — manual de uso em linguagem não-técnica (melhoria M4 da validação ETAPA 8), derivado de 00_conceito v0.2.1 e 07_interface_pedagogo v0.3.2, com marcadores de fotos a produzir | — |
 | 0.1.1 | 2026-07-04 | #ler-resultados, #exportar | Corrige descrição incompleta dos dados de sessão (apontada na validação): a tabela de leitura passa a enumerar os 10 campos do registro guardado/exportado (identificador, nome, início, modo, mecanismo, interações configuradas, acertos, erros, taxa, duração) e distingue o resumo da tela de resultados do registro completo; corrige a definição da taxa (calculada de acertos e interações configuradas, conforme 07 §7) | — |
 | 0.2.0 | 2026-07-04 | #durante-sessao, #fim-sessao | Melhoria M1 (TODO.md), validada manualmente no código antes da cascata: descreve o novo botão **Encerrar Sessão** (finaliza a sessão antes do N configurado, com confirmação) e esclarece que a tela de resultados e o botão Nova Sessão funcionam da mesma forma nesse caso; atualiza referências — 00_conceito.md v0.2.1→v0.3.0, 07_interface_pedagogo.md v0.3.2→v0.4.0 | — |
+| 0.3.0 | 2026-07-13 | #o-que-e | Correção de honestidade derivada da cascata do conceito v0.4.0 (`concept/escopo_e_limitacoes.md`, novo): remove o rótulo "instrumento de avaliação pedagógica" e adiciona parágrafo explícito — não testado nem validado cientificamente, não substitui instrumentos padronizados, não deve ser usado para diagnóstico clínico formal, sem responsabilização dos autores por uso indevido; atualiza referências — 00_conceito.md v0.3.0→v0.4.0, 07_interface_pedagogo.md v0.4.0→v0.4.1 | — |
+| 0.4.0 | 2026-07-16 | #o-que-e, #componentes, #modos | Cascata do conceito v0.5.0 (§6.3 martelos — bater com a mão diretamente na zona também é detectado, martelo é opcional): descrição do instrumento, tabela de componentes e os dois modos passam a citar a mão como alternativa ao martelo; atualiza referências — 00_conceito.md v0.4.0→v0.5.0, 07_interface_pedagogo.md v0.4.1→v0.4.2 | — |
 
 ---
 
@@ -304,8 +308,8 @@ Lista de referência para a sessão de fotos do exemplar final. Cada foto substi
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #publico-alvo, #componentes-fisicos, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #interface-pedagogo, #gestao-dados, #encerramento-antecipado |
-| Pai | 07_interface_pedagogo.md | 0.4.0 | BLOQUEADOR | #access-point, #estados-interface, #tela-configuracao, #tela-resultados, #pre-visualizacao, #exportacao-csv, #tela-sessao-ativa |
+| Pai | 00_conceito.md | 0.5.0 | BLOQUEADOR | #publico-alvo, #componentes-fisicos, #modos-operacao, #fluxo-interacao, #regras-sistema, #feedback, #interface-pedagogo, #gestao-dados, #encerramento-antecipado, #contexto |
+| Pai | 07_interface_pedagogo.md | 0.4.2 | BLOQUEADOR | #access-point, #estados-interface, #tela-configuracao, #tela-resultados, #pre-visualizacao, #exportacao-csv, #tela-sessao-ativa |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.

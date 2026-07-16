@@ -1,11 +1,11 @@
 ---
 documento:    06_privacidade_lgpd.md
-versão:       0.2.2
+versão:       0.4.0
 status:       APROVADO
-data:         2026-06-26
+data:         2026-07-16
 depende_de:
   - _PADRAO.md v0.1.0       [BLOQUEADOR]
-  - 00_conceito.md v0.3.0   [BLOQUEADOR]
+  - 00_conceito.md v0.5.0   [BLOQUEADOR]
 impacta: []
 ---
 
@@ -18,7 +18,7 @@ impacta: []
 | Campo | Valor |
 |---|---|
 | Documento | 06_privacidade_lgpd.md |
-| Versão | 0.2.2 |
+| Versão | 0.3.0 |
 | Status | APROVADO |
 | Audiência | Responsáveis legais das crianças participantes |
 | Idioma | Português brasileiro — linguagem acessível |
@@ -36,7 +36,9 @@ Explicar, de forma direta e sem rodeios, o que acontece com os dados da criança
 
 ## 3. O que é este instrumento <a id="o-que-e"></a>
 
-Este é um instrumento de **avaliação pedagógica com formato de brinquedo**. A criança bate com um martelo de madeira em zonas coloridas enquanto o profissional responsável observa e registra como ela responde a estímulos visuais. É uma ferramenta de trabalho do pedagogo, não um produto de entretenimento.
+Este é um instrumento lúdico de estímulo e registro de dados, com formato de brinquedo. A criança bate — com o martelo de madeira ou diretamente com a mão — em zonas coloridas enquanto o profissional responsável observa e registra como ela responde a estímulos visuais. É uma ferramenta de trabalho do pedagogo, não um produto de entretenimento.
+
+Importante para o seu consentimento: este instrumento não foi testado nem validado cientificamente, e não substitui nem é equivalente a instrumentos de avaliação padronizados já existentes. Ele não deve ser usado para diagnóstico clínico formal.
 
 O instrumento foi desenvolvido especificamente para ser usado **sob supervisão de um profissional habilitado**, em ambiente pedagógico. Não foi feito para uso doméstico ou sem orientação. **(→ LGPD Art. 14, §1 — dados de crianças exigem tratamento no melhor interesse do menor)**
 
@@ -236,6 +238,9 @@ Se a instituição suspeitar que dados de crianças foram acessados por pessoas 
 | 0.2.0 | 2026-07-03 | #seus-direitos (portabilidade), depende_de | Cascata do conceito v0.2.0: portabilidade passa a citar os dois formatos de exportação (planilha CSV e relatório PDF) e a conferência dos dados na tela antes do download; nenhuma mudança na coleta, finalidade ou guarda dos dados | — |
 | 0.2.1 | 2026-07-03 | depende_de, Rastreabilidade | Cascata do registro do manual do pedagogo (12_manual_pedagogo.md no impacta de 00 e 07): atualiza referências — 00_conceito.md v0.2.0→v0.2.1 | — |
 | 0.2.2 | 2026-07-04 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.3.0 (melhoria M1 — encerramento antecipado de sessão): revisado — nenhuma mudança na coleta, finalidade ou guarda dos dados (mesma estrutura de 10 campos, `acertos < n_configurado` identifica encerramento antecipado); atualiza referência 00_conceito.md v0.2.1→v0.3.0 | — |
+| 0.2.3 | 2026-07-13 | depende_de, Rastreabilidade | Cascata mecânica do conceito v0.4.0 (correção de honestidade das referências científicas): revisado — nenhuma mudança na coleta, finalidade ou guarda dos dados; atualiza referência 00_conceito.md v0.3.0→v0.4.0 | — |
+| 0.3.0 | 2026-07-13 | #o-que-e | Correção de honestidade (mesma revisão de `escopo_e_limitacoes.md`): remove o rótulo "instrumento de avaliação pedagógica com formato de brinquedo" e adiciona parágrafo explícito para o consentimento do responsável — não testado nem validado cientificamente, não substitui instrumentos padronizados, não deve ser usado para diagnóstico clínico formal; corrige tabela de Identificação, que mostrava versão desatualizada (0.2.2) | — |
+| 0.4.0 | 2026-07-16 | #o-que-e | Cascata do conceito v0.5.0 (§6.3 martelos — bater com a mão diretamente na zona também é detectado, martelo é opcional): descrição do instrumento passa a citar as duas formas de bater; nenhuma mudança na coleta, finalidade ou guarda dos dados | — |
 
 ---
 
@@ -244,7 +249,7 @@ Se a instituição suspeitar que dados de crianças foram acessados por pessoas 
 | Tipo | Documento | Versão | Vínculo | Âncora relevante |
 |---|---|---|---|---|
 | Pai | _PADRAO.md | 0.1.0 | BLOQUEADOR | — |
-| Pai | 00_conceito.md | 0.3.0 | BLOQUEADOR | #privacidade-lgpd, #gestao-dados, #armazenamento, #responsabilidade-dados, #exportacao |
+| Pai | 00_conceito.md | 0.5.0 | BLOQUEADOR | #privacidade-lgpd, #gestao-dados, #armazenamento, #responsabilidade-dados, #exportacao |
 ---
 
 Licenca: GPL-3.0 — consulte `/LICENSE` na raiz do repositorio.
