@@ -24,6 +24,10 @@ coordenação motora em crianças de 5 anos. O repositório segue o V-model de
 engenharia: toda linha de firmware é rastreável a um documento de especificação,
 que é rastreável ao documento de conceito.
 
+Este documento descreve o quê fazer e como. Para o porquê — como e por que a
+IA é usada desta forma neste projeto, e onde ela é deliberadamente impedida
+de decidir sozinha — ver `.claude/IA_USO.md`.
+
 **Posição atual no V-model:**
 
 ```
