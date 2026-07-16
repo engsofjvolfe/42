@@ -3,12 +3,129 @@
 # Atualizar ao encerrar cada sessão. Enviar junto com arquivo2 ao retomar.
 ---
 
-CONTEXTO: continuando projeto Instrumento Ludico-Pedagogico ESP32 — 2026-07-02
+CONTEXTO: continuando projeto Instrumento Ludico-Pedagogico ESP32 — 2026-07-13
 Processo: V-Model (ISO 26262 / IEC 61508 / IEC 62304)
-Estado verificado em 2026-07-02: run_all.py → TODOS OS CHECKS PASSARAM (47 constantes, 6 seções, 4 _config.h em sync)
+Estado verificado em 2026-07-13: run_all.py → TODOS OS CHECKS PASSARAM (47 constantes, 6 seções, 4 _config.h em sync)
 
 Camada atual: VALIDAÇÃO
-Fase V-Model atual: ETAPA 8 — Validação com hardware físico
+Fase V-Model atual: ETAPA 8 — Validação com hardware físico (nenhuma mudança de firmware/hardware nesta sessão — sessão puramente documental, ver abaixo)
+
+---
+
+SESSÃO 2026-07-13 (pesquisa de referências científicas + correção de honestidade) — branch
+docs/registro-bancada-readme (mesma branch de trabalho já ativa), NADA COMMITADO ainda.
+Origem: pedido do usuário para buscar, de forma determinística, os autores que "defendem"
+o conceito do projeto, sem forçar encaixe. Processo teve várias correções de rota
+importantes de registrar para não repetir:
+  - Primeira rodada de verificação (título/resumo apenas) encontrou que das 7 referências
+    nomeadas em `00_conceito.md#fundamentos-pedagogicos`, 5 não se sustentavam: Cowan (2001)
+    mede memória de trabalho em ADULTOS, não em crianças de 5 anos; Swinnen (2002) e
+    Corbetta & Thelen (1996) são sobre populações/construtos errados para a janela de 800ms
+    (o segundo é sobre bebês <1 ano, acoplamento espontâneo de braço ao alcançar objetos,
+    não sincronismo intencional de resposta); Ruff & Lawson (1990) não mede o intervalo de
+    2000ms; Pellicano & Burr (2012) propõe o OPOSTO do que a linha 8 afirmava (hypo-priors =
+    priors atenuados, não "processamento preditivo hipereficiente").
+  - Usuário corrigiu a direção da pesquisa por completo (não caçar autor a partir de lembrança
+    vaga; derivar a pergunta do mecanismo real do jogo — tentativa discreta, não sequência).
+  - Usuário identificou falha de método: `WebFetch` resume via modelo pequeno, não extrai
+    texto verbatim — pelo menos um número (Riggs et al. 2006, "~1,5 item aos 5 anos") tinha
+    sido apresentado como citação literal quando era conta própria em cima do texto. Método
+    corrigido: toda citação usada nesta sessão foi conferida em texto bruto via API da Europe
+    PMC (`fullTextXML`) ou API do PubMed (`efetch`), lido diretamente via `curl`, sem agente
+    e sem resumo intermediário de IA.
+  - Usuário rejeitou explicitamente a inclusão de teorias/citações que não sustentam
+    ("o que não se encaixa não tem que ser citado") — documento final não lista descartes,
+    só o que resiste à conferência.
+  - Usuário pediu para não usar Task/Agent em nenhuma fase — cumprido, nenhum agente usado.
+Resultado: `concept/escopo_e_limitacoes.md` (novo, RASCUNHO v0.1.0) — posicionamento
+honesto do 42 (não testado, não validado, não substitui instrumentos padronizados, uso com
+julgamento profissional, sem responsabilização dos autores por mau uso, campo aberto para
+pesquisa futura). Cascata completa aplicada em `00_conceito.md` v0.3.0→v0.4.0 (remove as 5
+citações que não se sustentavam — linhas passam a dizer "Decisão de projeto"; mantém Wong
+2011 e Kail 1991, únicas que resistiram; §3 reescrito sem o rótulo "instrumento de avaliação
+validado"; nova §15 `#ideias-futuras` registra "Modo Memória Crescente" como ideia aditiva,
+não especificada) e cascata mecânica em todos os 14 dependentes diretos/indiretos
+(01_arquitetura, 02_sensor_impacto, 03_saida_visual, 04_logica_jogo, 05_alimentacao,
+06_privacidade_lgpd, 07_interface_pedagogo, 08_bom, 09_conexoes, 10_cablagem, 11_montagem,
+CODING_STANDARD, TESTING_STANDARD, WEB_STANDARD — todos só bump de versão/depende_de, sem
+mudança de conteúdo funcional) + `manual/12_manual_pedagogo.md` v0.2.0→v0.3.0 e `README.md`
+(mesma correção de honestidade — remove "instrumento de avaliação pedagógica"). `CHANGELOG.md`
+atualizado antes desta anotação, conforme protocolo. `run_all.py` verde após cada etapa da
+cascata. Nenhum commit feito ainda nesta sessão — pendente revisão final do usuário.
+Nenhuma mudança de firmware/hardware — sessão inteiramente documental.
+
+Continuação (mesmo dia): usuário apontou que o nome `referencias_cientificas.md` não cabia
+mais no conteúdo final (virou posicionamento honesto, não lista de citações) — renomeado
+para `concept/escopo_e_limitacoes.md` via plan mode (plano revisado uma vez: usuário rejeitou
+a primeira versão por narrar a própria renomeação dentro do conteúdo/changelog; corrigido para
+o documento "nascer" com o nome novo, sem citar o nome antigo em lugar nenhum — 6 arquivos
+atualizados, zero ocorrências do nome antigo confirmadas por busca). Depois, três correções
+adicionais pedidas pelo usuário, todas aplicadas:
+  1. `escopo_e_limitacoes.md` ganhou parágrafo explícito de que versões anteriores deste
+     projeto (histórico do git) citaram autores/teorias com confiança não confirmada por
+     auditoria — tratar qualquer "certeza" de versão anterior como não verificada.
+  2. Removida uma frase de metadocumentação da seção 5 (dizia que algo "precisa estar dito no
+     README" — instruía outro documento em vez de simplesmente afirmar o fato).
+  3. Auditoria estendida a `compliance/06_privacidade_lgpd.md` (documento que vai aos
+     responsáveis legais) — tinha o MESMO overclaim "instrumento de avaliação pedagógica" que
+     já tinha sido corrigido em README/manual, mas escapou da cascata anterior; corrigido,
+     v0.2.3→v0.3.0. `.claude/IA_USO.md` também corrigido: afirmava que toda citação científica
+     fora conferida contra a fonte antes de entrar em documento aprovado — falso, a auditoria
+     desta sessão achou 5 de 7 que não resistiram; reescrito para admitir isso como exemplo
+     concreto do próprio argumento do documento. `README.md` ganhou aviso em destaque logo
+     após o título (antes dos badges), para quem não lê o resto: instrumento não validado,
+     qualquer referência do projeto deve ser tratada como não validada até prova em contrário.
+`run_all.py` verde após cada correção. Ainda nenhum commit feito.
+
+Continuação (mesmo dia, 2026-07-16): usuário pediu para revisar e formatar
+`.claude/IA_USO.md` (rascunho próprio sobre como a IA é usada no projeto) —
+corrigido, formatado, e enriquecido com exemplos concretos já registrados
+neste arquivo (bancada antes do commit, hold do release v1.0.0), sempre em
+linguagem acessível a leigos. Apontado a partir de `CLAUDE.md` ETAPA 1 (ponto
+de entrada real de toda sessão) e do `README.md`.
+
+README ganhou galeria de imagens do exemplar físico (`imagens/frente.png`,
+`imagens/perfil.png`) e 8 capturas de tela reais da interface do pedagogo
+(`imagens/tela_*.jpg`, miniaturas em `imagens/thumbs/` geradas via
+System.Drawing para tamanho uniforme sem distorção — todas 240×520,
+proporcionais); tabela em Markdown puro (não HTML bruto) para renderização
+consistente entre visualizadores; placeholder de vídeo de demonstração.
+
+Formalizada, pela cascata determinística do CLAUDE.md ETAPA 4, a partir do
+campo `impacta` de cada documento (sem grep/agente — só leitura integral): o
+martelo é opcional — o sensor está na zona, não no martelo, e bater
+diretamente com a mão também é detectado. `00_conceito.md` v0.4.0→v0.5.0
+(§6.3, §7.1, §7.2); conteúdo real também em `11_montagem.md` v0.3.5→v0.4.0
+(calibração do THRESHOLD passa a exigir medição com martelo E com a mão),
+`12_manual_pedagogo.md` v0.3.0→v0.4.0 e `06_privacidade_lgpd.md`
+v0.3.0→v0.4.0; cascata mecânica (só `depende_de`) em mais 12 documentos.
+Nomes dos modos (`Modo 1 Martelo`, enums `UM_MARTELO`/`DOIS_MARTELOS`)
+mantidos — identificadores fixos, não seriam renomeados sem pedido explícito.
+
+Criado `LANCAMENTO.md` — nota de lançamento em linguagem simples (não
+técnica), com link em badge no topo do README. Usuário perguntou se seria
+coerente marcar todos os documentos como "1.0.0 beta" para lançamento;
+resposta: não — `VALIDATION.md` ainda tem 4 CAs + 5 cenários de UI PENDENTE
+e ressalvas ativas (paleta de cor a reconfirmar com criança do público-alvo;
+cablagem de um exemplar fora da spec original), e existe ordem explícita do
+usuário (2026-07-03, ver acima nesta sessão) para não lançar v1.0.0 sem
+autorização expressa mesmo com checklist fechado — `LANCAMENTO.md` registra
+o estado real (pré-lançamento) em vez de simular uma versão não alcançada.
+Usuário confirmou: atualizar versão "apenas seguindo a cascata" — nenhum
+documento foi bumpado para 1.0.0 fora do processo normal de versionamento.
+
+Usuário pediu commits atômicos de tudo isto (incluindo o trabalho desta
+sessão e da sessão de correção de honestidade acima, nunca commitados).
+Dado que as duas sessões alteraram os mesmos arquivos sem commit entre
+elas, não é possível separar automaticamente cada bump de versão em commit
+próprio sem reconstrução manual de estado intermediário (arriscado — uma
+tentativa de reset via `cp`/overwrite do CHANGELOG.md foi bloqueada pelo
+classificador de segurança do Claude Code por risco de perda de dados).
+Decisão: agrupar commits por arquivo/tema (um commit = um arquivo ou grupo
+de arquivos com uma razão lógica única), com `CHANGELOG.md` e este arquivo
+commitados juntos por último, num commit `chore` que documenta o lote
+inteiro — não uma entrada por commit como o ideal do protocolo, mas seguro
+e sem mistura de tipos.
 
 Fases concluídas e aprovadas:
   [x] Fase 1 — Requisitos          (concept/00_conceito.md v0.2.0 APROVADO)
